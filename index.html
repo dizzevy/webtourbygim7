@@ -1070,39 +1070,11 @@ nav button{
 }
 
 /* Крупные пальцы/пульт: увеличиваем кликабельные зоны */
-/* ===== FIX: хотспоты карты на телефоне не залезают друг на друга ===== */
-@media (max-width: 600px){
-  /* делаем точки меньше */
+@media (pointer: coarse){
   .hotspot{
-    width: 32px;
-    height: 32px;
-    font-size: 12px;
-    border-width: 2px;
+    width: 46px; height: 46px;
+    font-size: 15px;
   }
-
-  /* по желанию: подпись чуть компактнее */
-  .hotspot .dot-label{
-    font-size: 11px;
-    padding: 4px 8px;
-    transform: translateY(-110%);
-  }
-
-  /* разводим самые близкие точки (подкрути под свою карту) */
-  .hotspot[data-target="museum"]{ left: 49%; top: 14%; }
-  .hotspot[data-target="school"]{ left: 59%; top: 18%; }
-
-  /* если вдруг в центре тоже тесно — лёгкий нудж */
-  .hotspot[data-target="dronki"]{ left: 41%; top: 40%; }
-  .hotspot[data-target="pogonnoe"]{ left: 52%; top: 48%; }
-  .hotspot[data-target="orevichi"]{ left: 39%; top: 53%; }
-}
-
-/* на тачах показываем подпись при тапе */
-.hotspot:active .dot-label,
-.hotspot:focus .dot-label{
-  display:block;
-}
-
   .pano-controls button{
     padding: 12px 16px;
     font-size: 15px;
@@ -1801,6 +1773,83 @@ const navButtons = document.querySelectorAll("nav button");
 const sections = document.querySelectorAll("main section");
 const hotspots = document.querySelectorAll(".hotspot");
 
+
+
+(function autoSpreadHotspots(){
+  const map = document.getElementById('map');
+  if (!map) return;
+
+  function run(){
+    if (!window.matchMedia('(max-width: 600px)').matches) return;
+
+    const spots = Array.from(map.querySelectorAll('.hotspot'));
+    if (spots.length < 2) return;
+
+    const rect = map.getBoundingClientRect();
+    const W = rect.width, H = rect.height;
+
+    // стартовые позиции из inline style left/top (в %)
+    const pts = spots.map(el => {
+      const leftP = parseFloat(el.style.left || getComputedStyle(el).left) / 100;
+      const topP  = parseFloat(el.style.top  || getComputedStyle(el).top)  / 100;
+      return {
+        el,
+        x: leftP * W,
+        y: topP * H,
+        r: el.offsetWidth / 2
+      };
+    });
+
+    const gap = 6;        // зазор между кругами
+    const iters = 80;     // сколько итераций "раздвига"
+
+    for (let k = 0; k < iters; k++){
+      for (let i = 0; i < pts.length; i++){
+        for (let j = i + 1; j < pts.length; j++){
+          const a = pts[i], b = pts[j];
+          let dx = b.x - a.x;
+          let dy = b.y - a.y;
+          let dist = Math.hypot(dx, dy) || 0.0001;
+
+          const minDist = a.r + b.r + gap;
+          if (dist < minDist){
+            const push = (minDist - dist) / 2;
+            dx /= dist; dy /= dist;
+            a.x -= dx * push; a.y -= dy * push;
+            b.x += dx * push; b.y += dy * push;
+          }
+        }
+      }
+
+      // держим внутри карты
+      for (const p of pts){
+        p.x = Math.max(p.r, Math.min(W - p.r, p.x));
+        p.y = Math.max(p.r, Math.min(H - p.r, p.y));
+      }
+    }
+
+    // сохраняем обратно в %
+    pts.forEach(p => {
+      p.el.style.left = (p.x / W * 100).toFixed(2) + '%';
+      p.el.style.top  = (p.y / H * 100).toFixed(2) + '%';
+    });
+  }
+
+  // запуск после загрузки картинки карты
+  const img = document.getElementById('map-img');
+  if (img && !img.complete){
+    img.addEventListener('load', run);
+  } else {
+    run();
+  }
+
+  // и при ресайзе/повороте экрана
+  let t;
+  window.addEventListener('resize', () => {
+    clearTimeout(t);
+    t = setTimeout(run, 120);
+  });
+})();
 
 
 
