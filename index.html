@@ -1774,6 +1774,23 @@ const sections = document.querySelectorAll("main section");
 const hotspots = document.querySelectorAll(".hotspot");
 
 
+// Lazy-load для панорам
+const panoIO = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting) return;
+    const el = e.target;
+    const url = el.dataset.bg;
+    if(url){
+      el.style.backgroundImage = `url('${url}')`;
+      el.removeAttribute('data-bg');
+    }
+    panoIO.unobserve(el);
+  });
+},{ rootMargin: "250px 0px" });
+
+document.querySelectorAll(".pano[data-bg]").forEach(el=>panoIO.observe(el));
+
+
 
 (function autoSpreadHotspots(){
   const map = document.getElementById('map');
