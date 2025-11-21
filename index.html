@@ -1148,13 +1148,107 @@ nav button{
   to { stroke-dashoffset: -240; }
 }
 
+/* ---------- BETA MODAL (startup notice) ---------- */
+.beta-modal{
+  position: fixed;
+  inset: 0;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: rgba(15,23,42,0.55);
+  backdrop-filter: blur(10px);
+  z-index: 5000; /* выше топбара и галереи */
+}
+.beta-modal.show{ display:flex; }
+
+.beta-card{
+  width: min(520px, 92vw);
+  background: rgba(255,255,255,0.98);
+  border: 1px solid rgba(226,232,240,0.95);
+  border-radius: 20px;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.45), var(--shadow-glow);
+  padding: 18px 18px 14px;
+  animation: betaAppear .28s ease-out;
+  position: relative;
+}
+@keyframes betaAppear {
+  from{ opacity:0; transform: translateY(8px) scale(.96); }
+  to{ opacity:1; transform:none; }
+}
+
+.beta-card h3{
+  font-size: 20px;
+  margin-bottom: 6px;
+  color: #123524;
+  font-weight: 800;
+}
+.beta-card p{
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #111827;
+  margin-bottom: 12px;
+}
+
+.beta-actions{
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+}
+
+.beta-btn{
+  background: linear-gradient(135deg, var(--leaf1), var(--leaf2));
+  color: white;
+  border: 0;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-2);
+  transition: transform .15s ease, box-shadow .15s ease, filter .15s ease;
+}
+.beta-btn:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 24px rgba(15,23,42,0.28);
+  filter: brightness(1.03);
+}
+
+.beta-close{
+  position:absolute;
+  right:10px; top:10px;
+  width:34px; height:34px;
+  border-radius:999px;
+  border:1px solid rgba(226,232,240,0.9);
+  background: rgba(255,255,255,0.9);
+  color:#111827;
+  font-weight:800;
+  cursor:pointer;
+}
+.beta-close:hover{ background:#eef5ef; }
+
 
 </style>
 
 </head>
 
 <body>
+
+
 <button id="toTop" aria-label="Наверх">↑</button>
+
+<!-- BETA MODAL: окно при входе -->
+<div id="beta-modal" class="beta-modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="beta-card" role="document">
+    <button class="beta-close" id="beta-close" aria-label="Закрыть">✕</button>
+    <h3>Сайт в бета-тесте</h3>
+    <p>
+      Сайт находится в разработке
+    </p>
+    <div class="beta-actions">
+      <button id="beta-ok" class="beta-btn">Понятно, продолжаем</button>
+    </div>
+  </div>
+</div>
+
 <header class="topbar" aria-hidden="false">
   <div id="scroll-progress" aria-hidden="true"></div>
   <div class="inner">
@@ -1842,6 +1936,47 @@ nav button{
 const navButtons = document.querySelectorAll("nav button");
 const sections = document.querySelectorAll("main section");
 const hotspots = document.querySelectorAll(".hotspot");
+
+
+
+// ==========================
+// BETA MODAL (при входе)
+// ==========================
+(function initBetaModal(){
+  const betaModal = document.getElementById('beta-modal');
+  const betaOk = document.getElementById('beta-ok');
+  const betaClose = document.getElementById('beta-close');
+  if (!betaModal || !betaOk || !betaClose) return;
+
+  const KEY = 'betaAck_v1';
+
+  // показываем только если ещё не закрывали
+  if (!localStorage.getItem(KEY)) {
+    betaModal.classList.add('show');
+    betaModal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open'); // у тебя уже есть этот класс для запрета скролла
+  }
+
+  function closeBeta(){
+    betaModal.classList.remove('show');
+    betaModal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    localStorage.setItem(KEY, '1');
+  }
+
+  betaOk.addEventListener('click', closeBeta);
+  betaClose.addEventListener('click', closeBeta);
+
+  // клик по фону тоже закрывает
+  betaModal.addEventListener('click', (e)=>{
+    if (e.target === betaModal) closeBeta();
+  });
+
+  // Esc закрывает
+  document.addEventListener('keydown', (e)=>{
+    if (e.key === 'Escape' && betaModal.classList.contains('show')) closeBeta();
+  });
+})();
 
 
 // Lazy-load для панорам
