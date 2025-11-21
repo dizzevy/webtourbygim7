@@ -1,0 +1,2128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Веб-Экскурсия</title>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --max-width:1200px;
+
+    /* НОВАЯ спокойная лесная палитра */
+    --leaf1: #1f4f37;   /* тёмно-зелёный, лес */
+    --leaf2: #2f6f4a;   /* основной зелёный */
+    --leaf3: #4f9468;   /* акцентный зелёный */
+    --moss:  #a3b18a;   /* мох / трава */
+    --earth: #8b6b4a;   /* земля / дерево */
+    --sun:   #f4eed7;   /* мягкий солнечный свет */
+    --sky:   #e0f2f1;   /* приглушённое небо */
+    --violet: #9fb5a9;  /* спокойный холодный акцент */
+    --pink:   #c8d9c0;  /* тёплый светлый акцент */
+    --orange: #d9c2a3;  /* оттенок древесины */
+
+    --card: rgba(255,255,255,0.96);
+    --glass: rgba(255,255,255,0.12);
+    --muted: #6b7280;
+
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --shadow-1: 0 10px 30px rgba(15, 23, 42, 0.12);
+    --shadow-2: 0 6px 18px rgba(15, 23, 42, 0.10);
+    --shadow-glow: 0 0 30px rgba(31, 79, 55, 0.22);
+  }
+
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+
+  body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: #111827;
+    /* МЯГКИЙ АНИМИРОВАННЫЙ ФОН БЕЗ РЕЗКИХ ПЕРЕХОДОВ */
+    background:
+      radial-gradient(circle at 10% 0%, rgba(184, 230, 192, 0.5) 0, transparent 55%),
+      radial-gradient(circle at 90% 100%, rgba(190, 227, 248, 0.55) 0, transparent 55%),
+      radial-gradient(circle at 0% 100%, rgba(199, 210, 254, 0.18) 0, transparent 50%),
+      linear-gradient(135deg, #f5f7f4 0%, #e8f1ea 45%, #f4f8fb 100%);
+    background-size: 200% 200%;
+    background-attachment: fixed;
+    animation: forestGradient 38s ease-in-out infinite;
+  }
+
+  @keyframes forestGradient {
+    0% { background-position: 0% 0%; }
+    50% { background-position: 100% 100%; }
+    100% { background-position: 0% 0%; }
+  }
+
+  /* ---------- TOPBAR ---------- */
+  .topbar{
+    position:fixed;
+    top:0;left:0;right:0;
+    z-index:2000;
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid rgba(148,163,184,0.25);
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.18);
+    background: linear-gradient(90deg,
+      rgba(250,252,251,0.96),
+      rgba(237,246,241,0.98)
+    );
+  }
+
+  .topbar .inner{
+    max-width:var(--max-width);
+    margin:0 auto;
+    display:flex;
+    align-items:center;
+    padding:12px 20px;
+    gap:20px;
+  }
+
+  .brand{
+    display:flex;
+    gap:12px;
+    align-items:center;
+    color: #1f2933;
+    font-weight:700;
+    letter-spacing:0.3px;
+  }
+
+  .brand .logo{
+    width:44px;
+    height:44px;
+    border-radius:14px;
+    background: radial-gradient(circle at 40% 30%, rgba(244, 228, 187, 0.85), rgba(255,255,255,0.6) 70%);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.3);
+    display:grid;place-items:center;
+    color:rgba(31, 41, 55, 0.95);
+    border:1px solid rgba(255,255,255,0.65);
+    overflow: hidden;
+  }
+
+  .brand > div > div:first-child {
+    font-size:16px;
+  }
+
+  .brand small{
+    font-weight:500;
+    font-size:12px;
+    color:#4b5563 !important;
+  }
+
+  nav{
+    margin-left:auto;
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+  }
+
+  nav button{
+    background: rgba(255,255,255,0.9);
+    border:1px solid rgba(148,163,184,0.4);
+    padding:8px 14px;
+    color:#1f2933;
+    font-weight:600;
+    border-radius:999px;
+    cursor:pointer;
+    transition: all 0.22s ease;
+    font-size:13px;
+  }
+
+  nav button:hover{
+    background: #e5f3ea;
+    border-color: rgba(74, 158, 109, 0.65);
+    color:#123524;
+    box-shadow: 0 6px 16px rgba(15, 23, 42, 0.15);
+    transform: translateY(-1px);
+  }
+
+  nav button.active{
+    background: linear-gradient(135deg, #d7f0e1, #e6f4ee);
+    color:#123524;
+    border-color: rgba(55, 118, 84, 0.9);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
+  }
+
+  /* ---------- LAYOUT / SECTIONS ---------- */
+
+  main {
+    max-width: var(--max-width);
+    margin: 80px auto 40px;
+    padding: 0 20px 80px;
+  }
+
+  section{
+    background: var(--card);
+    border-radius:var(--radius-lg);
+    padding:24px 24px 26px;
+    margin-bottom:22px;
+    box-shadow: var(--shadow-1);
+    border:1px solid rgba(226, 232, 240, 0.9);
+    scroll-margin-top: 120px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  section + section {
+    margin-top: 18px;
+  }
+
+  h2{
+    margin:0 0 10px 0;
+    font-size:22px;
+    font-weight:750;
+    letter-spacing:0.02em;
+    color:#123524;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+
+  .icon{
+    width:38px;height:38px;
+    display:grid;place-items:center;
+    border-radius:12px;
+    background: linear-gradient(135deg, rgba(47, 111, 74, 0.11), rgba(226, 232, 240, 0.8));
+    border: 1px solid rgba(203, 213, 225, 0.9);
+    font-size: 18px;
+    color:#123524;
+  }
+
+  .lead{
+    font-size:14px;
+    color:#4b5563;
+  }
+
+  .muted{
+    color:var(--muted);
+  }
+
+  /* ---------- MAP ---------- */
+  .map{
+    position:relative;
+    overflow:hidden;
+    border-radius:18px;
+    background: linear-gradient(135deg, rgba(31,79,55,0.03), rgba(148,163,184,0.05));
+    border: 1px solid rgba(226,232,240,0.9);
+    box-shadow: var(--shadow-2);
+  }
+
+  .map img{
+    width:100%;
+    height:auto;
+    display:block;
+    border-radius:16px;
+  }
+
+  .hotspot{
+    position:absolute;
+    width:40px;height:40px;
+    display:grid;place-items:center;
+    background: var(--leaf2);
+    color:#f9fafb;
+    border:2px solid #f9fafb;
+    border-radius:999px;
+    font-weight:700;
+    cursor:pointer;
+    transform:translate(-50%,-50%);
+    box-shadow:0 8px 20px rgba(15, 23, 42, 0.35);
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+    z-index: 10;
+    font-size:14px;
+  }
+
+  .hotspot:hover{
+    transform:translate(-50%,-50%) scale(1.06);
+    background: var(--leaf3);
+    box-shadow:0 10px 26px rgba(15, 23, 42, 0.38);
+  }
+
+  .hotspot .dot-label{
+    position:absolute;
+    top:0;
+    transform:translateY(-120%);
+    background: rgba(255,255,255,0.98);
+    padding:5px 10px;
+    border-radius:999px;
+    white-space:nowrap;
+    display:none;
+    box-shadow:var(--shadow-2);
+    color:#111827;
+    font-weight:600;
+    border:1px solid rgba(226,232,240,0.9);
+    z-index: 100;
+    font-size:12px;
+  }
+
+  .hotspot:hover .dot-label{display:block;}
+
+  /* ---------- PANORAMAS ---------- */
+
+  .pano-wrap{
+    position:relative;
+    overflow:hidden;
+    border-radius:18px;
+    height:420px;
+    background: #0f172a;
+    border: 1px solid rgba(15,23,42,0.7);
+    box-shadow: var(--shadow-1);
+  }
+
+  .pano{
+    height:100%;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center center;
+    transition: none; /* чтобы не было рывков */
+  }
+
+  .pano-caption{
+    position:absolute;
+    bottom:18px;left:50%;
+    transform:translateX(-50%);
+    padding:8px 16px;
+    background: rgba(15,23,42,0.68);
+    backdrop-filter:blur(10px);
+    color:#e5e7eb;
+    border-radius:999px;
+    opacity:0;
+    transition:.25s;
+    font-weight:600;
+    border: 1px solid rgba(55,65,81,0.7);
+    font-size:13px;
+  }
+
+  .pano-wrap:hover .pano-caption{
+    opacity:1;
+    transform:translateX(-50%) translateY(-4px);
+  }
+
+  .pano-controls{
+    position:absolute;
+    top:50%;left:12px;right:12px;
+    transform:translateY(-50%);
+    display:flex;
+    justify-content:space-between;
+    pointer-events:auto;
+    z-index:100;
+  }
+
+  .pano-controls button{
+    background: rgba(243,244,246,0.96);
+    border:0;
+    padding:10px 14px;
+    border-radius:999px;
+    cursor:pointer;
+    font-weight:700;
+    box-shadow:0 8px 22px rgba(15, 23, 42, 0.35);
+    transition: all 0.18s ease;
+    color: var(--leaf1);
+    font-size:14px;
+  }
+
+  .pano-controls button:hover {
+    transform: translateY(-1px);
+    box-shadow:0 10px 26px rgba(15, 23, 42, 0.42);
+  }
+
+  /* ---------- GRID (фотографии) ---------- */
+
+  .grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 16px;
+    justify-content: center;
+    align-items: stretch;
+    max-width: 100%;
+  }
+
+  .cell{
+    background: linear-gradient(135deg, #ffffff, #f7faf7);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(226,232,240,0.95);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    flex-shrink: 0;
+    box-shadow: var(--shadow-2);
+  }
+
+  .cell:hover{
+    transform: translateY(-4px);
+    box-shadow: 0 12px 26px rgba(15, 23, 42, 0.20);
+    border-color: rgba(148,163,184,0.7);
+  }
+
+  .cell img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.25s ease;
+  }
+
+  .cell:hover img {
+    transform: scale(1.04);
+  }
+
+  .photo-caption{
+    position:absolute;
+    bottom:10px;left:50%;
+    transform:translateX(-50%) translateY(8px);
+    background: rgba(15,23,42,0.8);
+    padding:6px 14px;
+    color:#f9fafb;
+    font-size:13px;
+    border-radius:999px;
+    opacity:0;
+    transition:.22s;
+    font-weight:500;
+    backdrop-filter: blur(4px);
+    border:1px solid rgba(55,65,81,0.7);
+  }
+
+  .cell:hover .photo-caption{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  /* ---------- MODAL ---------- */
+
+  .modal{
+    position:fixed;
+    inset:0;
+    background: linear-gradient(135deg, rgba(95, 95, 95, 0.559), rgba(63, 63, 63, 0.445));
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:3000;
+    backdrop-filter: blur(10px);
+  }
+
+  .modal.show{display:flex;}
+
+  .modal-content{
+    position:relative;
+    max-width:94%;
+    max-height:94%;
+    animation: modalAppear 0.25s ease-out;
+  }
+
+  @keyframes modalAppear {
+    from { opacity: 0; transform: scale(0.92); }
+    to { opacity: 1; transform: scale(1); }
+  }
+
+  #modal-img{
+    max-width:100%;
+    max-height:85vh;
+    border-radius:18px;
+    box-shadow:0 24px 70px rgba(0,0,0,0.85), var(--shadow-glow);
+    border: 1px solid rgba(148,163,184,0.6);
+    background:#000;
+  }
+
+  .modal-caption{
+    position:absolute;
+    bottom:14px;left:50%;
+    transform:translateX(-50%);
+    background: rgba(15,23,42,0.78);
+    padding:10px 20px;
+    color:#e5e7eb;
+    border-radius:999px;
+    max-width:90%;
+    text-align:center;
+    font-size:14px;
+    font-weight:500;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(75,85,99,0.8);
+  }
+
+  .modal-arrow{
+    position:absolute;top:50%;
+    transform:translateY(-50%);
+    background: rgba(17,24,39,0.7);
+    border:1px solid rgba(55,65,81,0.9);
+    color:#e5e7eb;
+    cursor:pointer;
+    padding:10px 14px;
+    border-radius:999px;
+    backdrop-filter: blur(6px);
+    transition: all 0.18s ease;
+    font-weight:600;
+    font-size:14px;
+  }
+
+  .modal-arrow:hover {
+    background: rgba(17,24,39,0.9);
+    transform: translateY(-50%) translateY(-1px);
+  }
+
+  .modal-arrow.left{left:18px;}
+  .modal-arrow.right{right:18px;}
+
+  #modal-close{
+    background: rgba(15,23,42,0.65) !important;
+    border-radius:999px !important;
+    border:1px solid rgba(75,85,99,0.9) !important;
+    color:#e5e7eb !important;
+    padding:6px 9px !important;
+    font-size:14px;
+  }
+
+  #modal-close:hover{
+    background: rgba(15,23,42,0.9) !important;
+  }
+
+  /* ---------- 3D Тур кнопка ---------- */
+  .tour-button,
+  a[href*="3d-tur-muzeum"]{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: linear-gradient(135deg, #2f6f4a, #4f9468);
+    color: white !important;
+    padding: 12px 24px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    box-shadow: var(--shadow-1);
+    transition: all 0.22s ease;
+    border: 1px solid rgba(209,250,229,0.7);
+  }
+
+  .tour-button:hover,
+  a[href*="3d-tur-muzeum"]:hover{
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(15, 23, 42, 0.35);
+    filter: brightness(1.03);
+  }
+
+  /* ---------- JOURNAL блок ---------- */
+  .journal > strong{
+    display:block;
+    margin-top:4px;
+    font-size:15px;
+    color:#111827;
+  }
+
+  /* ---------- ПРОЧЕЕ ---------- */
+
+  /* Секции мест всегда показаны */
+  .place-section {
+    display: block !important;
+  }
+
+  /* Адаптив */
+  @media (max-width: 768px) {
+    .topbar .inner{
+      flex-wrap:wrap;
+      gap:10px;
+    }
+    nav{
+      width:100%;
+      justify-content:flex-start;
+      overflow-x:auto;
+      padding-bottom:4px;
+    }
+    .pano-wrap{
+      height:280px;
+    }
+    .grid{
+      justify-content:center;
+    }
+    section{
+      padding:18px 16px 22px;
+    }
+  }
+
+  /* ---------- OREVICHI STORY ---------- */
+.orevichi-section .story{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  margin-top:14px;
+}
+
+.orevichi-section .story-item{
+  display:grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap:16px;
+  align-items:center;
+
+  background: linear-gradient(135deg, #ffffff, #f7faf7);
+  border:1px solid rgba(226,232,240,0.95);
+  border-radius:16px;
+  padding:14px;
+  box-shadow: var(--shadow-2);
+}
+
+.orevichi-section .story-item.reverse{
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+.orevichi-section .story-text{
+  font-size:15px;
+  line-height:1.55;
+  color:#111827;
+}
+
+.orevichi-section .story-text p + p{
+  margin-top:8px;
+}
+
+/* делаем фото большими, но оставляем .cell для модалки */
+.orevichi-section .story-photo.cell{
+  width:100%;
+  height:260px;
+  border-radius:14px;
+}
+
+.orevichi-section .story-photo.cell img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+@media (max-width: 900px){
+  .orevichi-section .story-item,
+  .orevichi-section .story-item.reverse{
+    grid-template-columns:1fr;
+  }
+  .orevichi-section .story-photo.cell{
+    height:220px;
+  }
+}
+
+
+/* ---------- SCHOOL SEPARATE LAYOUT (Бабчины) ---------- */
+.school-section .school-hero{
+  margin: 10px 0 16px 0;
+  border-radius: 18px;
+  overflow:hidden;
+  box-shadow: var(--shadow-2);
+  border:1px solid rgba(226,232,240,0.95);
+}
+.school-section .school-hero img{
+  width:100%;
+  height: 360px;
+  object-fit: cover;
+  display:block;
+}
+@media (max-width: 900px){
+  .school-section .school-hero img{ height:220px; }
+}
+
+.school-section .quote-wrap{
+  margin-top: 10px;
+  background: linear-gradient(135deg, #ffffff, #f3f7f3);
+  border:1px solid rgba(226,232,240,0.95);
+  border-radius:18px;
+  padding:16px 16px 10px;
+  box-shadow: var(--shadow-2);
+  position:relative;
+}
+.school-section .quote-wrap:before{
+  content:"“";
+  position:absolute;
+  top:-10px; left:12px;
+  font-size:46px;
+  color: rgba(31,79,55,0.18);
+  font-weight:900;
+}
+.school-section .quote-head{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  margin-bottom:8px;
+}
+.school-section .quote-head .who{
+  font-weight:800;
+  color:#123524;
+}
+.school-section .quote-head .badge{
+  font-size:12px;
+  font-weight:700;
+  padding:4px 8px;
+  border-radius:999px;
+  background: rgba(47,111,74,0.12);
+  border:1px solid rgba(47,111,74,0.25);
+  color:#123524;
+}
+
+.school-section details.quote-details{
+  margin-top:6px;
+}
+.school-section details.quote-details > summary{
+  cursor:pointer;
+  font-weight:700;
+  color:#0f3b25;
+  list-style:none;
+  user-select:none;
+  padding:6px 0;
+}
+.school-section details.quote-details > summary::-webkit-details-marker{ display:none; }
+.school-section .quote-text{
+  font-size:15px;
+  line-height:1.65;
+  color:#111827;
+  padding:6px 2px 2px;
+}
+
+.gallery-title{
+  margin:18px 0 10px;
+  font-weight:800;
+  color:#0f172a;
+}
+.school-section .gallery-note{
+  font-size:14px;
+  color: var(--muted);
+  margin-bottom:10px;
+}
+/* HERO фото школы — растянуть в ширину */
+.school-section .school-hero.cell{
+  width:100%;
+  height:auto;          /* снимаем 150px */
+  flex: 1 1 100%;       /* занимает всю строку */
+}
+
+.school-section .school-hero.cell img{
+  width:100%;
+  height:420px;         /* можешь менять */
+  object-fit:cover;
+  display:block;
+}
+@media (max-width: 900px){
+  .school-section .school-hero.cell img{ height:240px; }
+}
+
+
+/* ---------- POGONNOE STORY LAYOUT ---------- */
+.pogonnoe-section .pogonnoe-hero{
+  width:100%;
+  height:auto;
+  border-radius:18px;
+  overflow:hidden;
+  margin: 8px 0 14px;
+  box-shadow: var(--shadow-2);
+  border:1px solid rgba(226,232,240,0.95);
+  flex:1 1 100%;
+}
+
+.pogonnoe-section .pogonnoe-hero img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+  display:block;
+}
+@media (max-width: 900px){
+  .pogonnoe-section .pogonnoe-hero img{ height:240px; }
+}
+
+.pogonnoe-section .facts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin: 8px 0 16px;
+}
+
+.pogonnoe-section .fact{
+  flex:1 1 160px;
+  min-width:140px;
+  background: linear-gradient(135deg, #ffffff, #f7faf7);
+  border:1px solid rgba(226,232,240,0.95);
+  border-radius:14px;
+  padding:10px 12px;
+  text-align:center;
+  box-shadow: var(--shadow-2);
+}
+
+.pogonnoe-section .fact-num{
+  font-size:20px;
+  font-weight:800;
+  color:#123524;
+  letter-spacing:0.02em;
+}
+
+.pogonnoe-section .fact-label{
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.pogonnoe-section .story-text strong{
+  font-size:16px;
+  color:#0f3b25;
+}
+
+/* ===========================
+   UPGRADE PACK (safe)
+   вставь в самый низ style
+   =========================== */
+
+html{
+  scroll-behavior:smooth;
+}
+
+::selection{
+  background: rgba(79,148,104,0.25);
+  color:#0b1a12;
+}
+
+/* чуть больше воздуха и "глубины" у секций */
+section{
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+section::after{
+  content:"";
+  position:absolute;
+  inset:-40% -20% auto auto;
+  width:260px;height:260px;
+  background: radial-gradient(circle, rgba(79,148,104,0.10), transparent 60%);
+  filter: blur(8px);
+  pointer-events:none;
+}
+section:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 14px 40px rgba(15,23,42,0.14);
+  border-color: rgba(79,148,104,0.45);
+}
+
+/* заголовки по-богатому */
+h2{
+  position:relative;
+  padding-bottom:6px;
+}
+h2::after{
+  content:"";
+  position:absolute;
+  left:0; bottom:-2px;
+  width:120px; height:3px;
+  border-radius:99px;
+  background: linear-gradient(90deg, var(--leaf2), transparent);
+  opacity:.9;
+}
+
+/* навбар — добавим подсветку "пилюлей" */
+nav button{
+  position:relative;
+  overflow:hidden;
+}
+nav button::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: radial-gradient(circle at 30% 20%, rgba(79,148,104,0.18), transparent 50%);
+  opacity:0;
+  transition:.22s ease;
+}
+nav button:hover::before{ opacity:1; }
+nav button.active{
+  background: linear-gradient(135deg, #d7f0e1, #ecf7f1);
+}
+
+/* карта — легкий живой зум */
+.map img{
+  transition: transform .6s ease;
+  transform-origin: center;
+}
+.map:hover img{
+  transform: scale(1.015);
+}
+
+/* хотспоты — мягкий пульс */
+.hotspot::after{
+  content:"";
+  position:absolute;
+  inset:-6px;
+  border-radius:999px;
+  border:2px solid rgba(255,255,255,0.8);
+  opacity:.0;
+  animation: pulse 2.2s ease-out infinite;
+}
+@keyframes pulse{
+  0%{ transform:scale(.7); opacity:.45; }
+  70%{ transform:scale(1.25); opacity:0; }
+  100%{ transform:scale(1.25); opacity:0; }
+}
+
+/* панорамы — тень/рамка и легкий "стеклянный" верх */
+.pano-wrap::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(180deg, rgba(0,0,0,0.25), transparent 40%);
+  pointer-events:none;
+}
+.pano-wrap{
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+.pano-wrap:hover{
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(15,23,42,0.35);
+}
+
+/* умная сетка галерей на больших экранах */
+@media(min-width: 900px){
+  .grid{
+    display:grid !important;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap:14px;
+  }
+  .grid .cell{
+    width:100% !important;
+    height:auto !important;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+/* модалка — плавнее + чуть больше "кино" */
+.modal{
+  animation: modalFade .18s ease;
+}
+@keyframes modalFade{
+  from{opacity:0}
+  to{opacity:1}
+}
+
+/* запрет скролла фона при открытой модалке */
+body.modal-open{
+  overflow:hidden;
+  touch-action:none;
+}
+
+/* красивый focus для доступности */
+button:focus-visible, a:focus-visible, details > summary:focus-visible{
+  outline: 3px solid rgba(79,148,104,0.55);
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+
+/* плавное появление блоков — класс .reveal */
+.reveal{
+  opacity:0;
+  transform: translateY(14px);
+  transition: .7s cubic-bezier(.2,.8,.2,1);
+}
+.reveal.show{
+  opacity:1;
+  transform:none;
+}
+
+/* если у человека снижены анимации — уважаем */
+@media(prefers-reduced-motion: reduce){
+  *{ animation: none !important; transition: none !important; }
+  body{ background-attachment: initial; }
+}
+
+/* прогресс-бар скролла */
+#scroll-progress{
+  position:fixed;
+  top:0; left:0;
+  height:3px;
+  width:0%;
+  background: linear-gradient(90deg, var(--leaf2), var(--moss));
+  z-index:2500;
+  box-shadow: 0 2px 10px rgba(15,23,42,0.25);
+}
+
+/* кнопка наверх */
+#toTop{
+  position:fixed;
+  right:18px; bottom:18px;
+  width:46px;height:46px;
+  border-radius:999px;
+  border:1px solid rgba(226,232,240,0.9);
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(8px);
+  box-shadow: var(--shadow-2);
+  font-weight:800;
+  color:#123524;
+  cursor:pointer;
+  display:none;
+  transition:.22s ease;
+  z-index:2600;
+}
+#toTop:hover{
+  transform: translateY(-3px);
+  box-shadow: 0 14px 30px rgba(15,23,42,0.22);
+}
+#toTop.show{ display:grid; place-items:center; }
+
+/* ===========================
+   FULL RESPONSIVE PATCH
+   вставь в самый низ style
+   =========================== */
+
+/* делаем контейнер шире для больших экранов и гибким в целом */
+:root{
+  --max-width: clamp(920px, 95vw, 1500px);
+}
+
+/* iOS/Android: не даем браузеру самовольно увеличивать текст */
+html{
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* мобилки с динамической высотой экрана */
+body{
+  min-height: 100dvh;
+}
+
+/* safe-area для айфонов/безрамочных */
+.topbar{
+  padding-top: env(safe-area-inset-top);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+main{
+  margin-top: calc(80px + env(safe-area-inset-top));
+  padding-left: calc(20px + env(safe-area-inset-left));
+  padding-right: calc(20px + env(safe-area-inset-right));
+  padding-bottom: clamp(64px, 8vh, 120px);
+}
+
+/* заголовки/текст — плавные размеры под любой экран */
+h2{
+  font-size: clamp(18px, 2.2vw, 28px);
+}
+.lead, .story-text, .quote-text{
+  font-size: clamp(14px, 1.6vw, 17px);
+  line-height: 1.6;
+}
+
+/* NAV — лучше читается на ТВ и не жирно на телефоне */
+nav button{
+  font-size: clamp(12px, 1.1vw, 16px);
+  padding: clamp(7px, 0.9vw, 11px) clamp(12px, 1.4vw, 18px);
+}
+
+/* Панорамы — высота по экрану, а не фикс 420px */
+.pano-wrap{
+  height: clamp(260px, 45vh, 520px);
+}
+@media (max-width: 768px){
+  .pano-wrap{
+    height: clamp(220px, 35vh, 320px);
+  }
+}
+
+/* Галереи на маленьких экранах:
+   убираем фикс 150x150 и делаем клетки по ширине экрана */
+@media (max-width: 600px){
+  .grid{
+    gap: 10px;
+  }
+  .grid .cell{
+    width: clamp(110px, 45vw, 170px);
+    height: auto;
+    aspect-ratio: 1 / 1;
+    flex: 1 1 auto;
+  }
+}
+
+/* очень маленькие телефоны */
+@media (max-width: 480px){
+  .topbar .inner{
+    padding: 10px 12px;
+  }
+  main{
+    padding: 0 12px 64px;
+  }
+  section{
+    padding: 14px 12px 18px;
+  }
+  .brand .logo{
+    width: 38px; height: 38px;
+  }
+  .pano-controls button{
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
+/* ТАЧ-ЭКРАНЫ: hover нет → показываем подписи всегда */
+@media (hover: none){
+  .photo-caption{
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+  .pano-caption{
+    opacity: 1;
+    transform: translateX(-50%);
+  }
+  /* убираем эффекты hover, чтобы не было “залипаний” */
+  .cell:hover img{ transform: none; }
+}
+
+/* Крупные пальцы/пульт: увеличиваем кликабельные зоны */
+/* ===== FIX: хотспоты карты на телефоне не залезают друг на друга ===== */
+@media (max-width: 600px){
+  /* делаем точки меньше */
+  .hotspot{
+    width: 32px;
+    height: 32px;
+    font-size: 12px;
+    border-width: 2px;
+  }
+
+  /* по желанию: подпись чуть компактнее */
+  .hotspot .dot-label{
+    font-size: 11px;
+    padding: 4px 8px;
+    transform: translateY(-110%);
+  }
+
+  /* разводим самые близкие точки (подкрути под свою карту) */
+  .hotspot[data-target="museum"]{ left: 49%; top: 14%; }
+  .hotspot[data-target="school"]{ left: 59%; top: 18%; }
+
+  /* если вдруг в центре тоже тесно — лёгкий нудж */
+  .hotspot[data-target="dronki"]{ left: 41%; top: 40%; }
+  .hotspot[data-target="pogonnoe"]{ left: 52%; top: 48%; }
+  .hotspot[data-target="orevichi"]{ left: 39%; top: 53%; }
+}
+
+/* на тачах показываем подпись при тапе */
+.hotspot:active .dot-label,
+.hotspot:focus .dot-label{
+  display:block;
+}
+
+  .pano-controls button{
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+  #toTop{
+    width: 52px; height: 52px;
+    font-size: 18px;
+  }
+}
+
+/* ТВ / очень большие экраны */
+@media (min-width: 1600px){
+  body{ font-size: 18px; }
+  section{ padding: 28px 28px 30px; }
+  .hotspot{
+    width: 52px; height: 52px;
+    font-size: 17px;
+  }
+  .pano-wrap{
+    height: clamp(420px, 40vh, 600px);
+  }
+}
+
+/* фикс опечатки в reveal (у тебя cubic-bezier странный) */
+.reveal{
+  transition: .7s cubic-bezier(.2,.8,.2,1);
+}
+
+/* мобилки: fixed background часто лагает → делаем scroll */
+@media (max-width: 768px){
+  body{ background-attachment: scroll; }
+}
+
+
+
+</style>
+
+</head>
+
+<body>
+<button id="toTop" aria-label="Наверх">↑</button>
+<header class="topbar" aria-hidden="false">
+  <div id="scroll-progress" aria-hidden="true"></div>
+  <div class="inner">
+    <div class="brand" role="banner" aria-label="Веб-Экскурсия">
+      <div class="logo" aria-hidden="true">
+        <img src="logo/eco.jpg" alt="Логотип" style="width:100%;height:100%;object-fit:cover;border-radius:12px;">
+      </div>
+      <div>
+        <div style="font-size:16px">Веб-Экскурсия</div>
+        <small style="display:block;font-weight:600;font-size:12px;color:rgba(255,255,255,0.92)">Гимназия №7</small>
+      </div>
+    </div>
+
+    <div class="leaves" aria-hidden="true" style="margin-left:14px;display:inline-block;opacity:0.9;filter:drop-shadow(0 6px 18px rgba(0,0,0,0.12))">
+      <svg viewBox="0 0 64 32" xmlns="http://www.w3.org/2000/svg" fill="none">
+        <path d="M4 28c8-10 22-14 36-14 4 0 10 0 18 6" stroke="rgba(255,255,255,0.28)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M10 18c6-6 18-8 28-6" stroke="rgba(255,255,255,0.14)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <nav id="nav" role="navigation" aria-label="Навигация по секциям">
+      <button data-target="map-section" class="active">Карта</button>
+      <button data-target="museum">Музей</button>
+      <button data-target="dronki">Дроньки</button>
+      <button data-target="pogonnoe">Погонное</button>
+      <button data-target="school">Старая школа</button>
+      <button data-target="orevichi">Оревичи</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section id="map-section" aria-labelledby="map-title">
+    <h2 id="map-title">Карта местности</h2>
+    <p class="lead muted" style="margin:6px 0 12px 0">Нажми на точки на карте, чтобы перейти к соответствующей локации.</p>
+
+    <div class="map" id="map" role="img" aria-label="Карта местности">
+      <img src="assets/map.jpg" alt="Карта местности" id="map-img" />
+
+      <!-- Hotspots: позиции сохранены из архива -->
+      <button class="hotspot" data-target="museum" style="left:51.8%;top:15.5%;" title="Музей (Бабчины)">
+        M
+        <span class="dot-label">Музей (Бабчины)</span>
+      </button>
+      <button class="hotspot" data-target="dronki" style="left:43.3%;top:41.2%;" title="Дроньки">
+        Д
+        <span class="dot-label">Дроньки</span>
+      </button>
+      <button class="hotspot" data-target="pogonnoe" style="left:50.5%;top:46.4%;" title="Погонное">
+        П
+        <span class="dot-label">Погонное</span>
+      </button>
+      <button class="hotspot" data-target="school" style="left:55.8%;top:15.5%;" title="Старая школа">
+        Ш
+        <span class="dot-label">Старая школа</span>
+      </button>
+      <button class="hotspot" data-target="orevichi" style="left:41%;top:50%;" title="Оревичи">
+        O
+        <span class="dot-label">Оревичи</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- ====== MUSEUM (панорама + сетка) ====== -->
+  <section id="museum" class="place-section" aria-labelledby="museum-title">
+    <h2 id="museum-title">Музей (Бабчины)</h2>
+
+    <div class="pano-wrap" id="museum-pano-wrap" aria-hidden="false" style="margin-bottom:12px">
+      <div class="pano" id="museum-pano" style="background-image:url('assets/museum_pano.jpg');"></div>
+      <div class="pano-caption">Панорама музея — перетаскивай или используй стрелки</div>
+      <div class="pano-controls">
+        <button id="museum-left" aria-label="Влево">&larr;</button>
+        <button id="museum-right" aria-label="Вправо">&rarr;</button>
+      </div>
+    </div>
+
+    <!-- Кнопка для перехода на сайт -->
+      <div style="margin-bottom: 18px; text-align: center;">
+        <a href="https://zapovednik.by/3d-tur-muzeum" target="_blank" 
+          style="display: inline-flex; align-items: center; gap: 10px; 
+                  background: linear-gradient(135deg, var(--leaf1), var(--leaf2));
+                  color: white; padding: 12px 24px; border-radius: 999px;
+                  text-decoration: none; font-weight: 600; font-size: 15px;
+                  box-shadow: var(--shadow-1); transition: all 0.3s ease;
+                  border: 2px solid rgba(255,255,255,0.2);">
+          <span>🌐 3D Тур по музею</span>
+          <!-- Стрелочка -->
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+            <polyline points="15 3 21 3 21 9"></polyline>
+            <line x1="10" y1="14" x2="21" x2="3"></line>
+          </svg>
+        </a>
+        <p style="margin: 8px 0 0 0; font-size: 13px; color: var(--muted);">
+          Открыть интерактивный 3D тур на официальном сайте заповедника
+        </p>
+      </div>
+
+    <div class="grid" id="museum-grid" aria-live="polite">
+      <div class="cell"><img src="assets/museum/m1.jpg" alt="вход в музей" data-caption="вход в музей"> <div class="photo-caption">вход в музей</div></div>
+      <div class="cell"><img src="assets/museum/m2.jpg" alt="ветераны" data-caption="ветераны"> <div class="photo-caption">ветераны</div></div>
+      <div class="cell"><img src="assets/museum/m3.jpg" alt="герпетофауна" data-caption="герпетофауна позвоночные рыбы"> <div class="photo-caption">герпетофауна</div></div>
+      <div class="cell"><img src="assets/museum/m4.jpg" alt="крансокнижные птицы" data-caption="крансокнижные птицы"> <div class="photo-caption">птицы</div></div>
+      <div class="cell"><img src="assets/museum/m5.jpg" alt="краснокнижные животные" data-caption="краснокнижные животные"> <div class="photo-caption">животные</div></div>
+      <div class="cell"><img src="assets/museum/m6.jpg" alt="литература" data-caption="литература"> <div class="photo-caption">литература</div></div>
+      <div class="cell"><img src="assets/museum/m7.jpg" alt="литература" data-caption="литература"> <div class="photo-caption">литература</div></div>
+      <div class="cell"><img src="assets/museum/m8.jpg" alt="литература" data-caption="литература"> <div class="photo-caption">литература</div></div>
+      <div class="cell"><img src="assets/museum/m9.jpg" alt="литература" data-caption="литература"> <div class="photo-caption">литература</div></div>
+      <div class="cell"><img src="assets/museum/m10.jpg" alt="музей стенд" data-caption="музей стенд сотрудник"> <div class="photo-caption">музей стенд</div></div>
+      <div class="cell"><img src="assets/museum/m11.jpg" alt="оборудование" data-caption="оборудование и приборы"> <div class="photo-caption">оборудование</div></div>
+      <div class="cell"><img src="assets/museum/m12.jpg" alt="памятник" data-caption="памятник ВОВ напротив музея"> <div class="photo-caption">памятник</div></div>
+      <div class="cell"><img src="assets/museum/m13.jpg" alt="прылады працы" data-caption="прылады працы"> <div class="photo-caption">прылады працы</div></div>
+      <div class="cell"><img src="assets/museum/m14.jpg" alt="растения" data-caption="растения и грибы"> <div class="photo-caption">растения</div></div>
+      <div class="cell"><img src="assets/museum/m15.jpg" alt="СИЧ" data-caption="СИЧ"> <div class="photo-caption">СИЧ</div></div>
+      <div class="cell"><img src="assets/museum/m16.jpg" alt="техника" data-caption="техника испозьуемая"> <div class="photo-caption">техника</div></div>
+      <div class="cell"><img src="assets/museum/m17.jpg" alt="форма" data-caption="форма одежды работника"> <div class="photo-caption">форма</div></div>
+      <div class="cell"><img src="assets/museum/m18.jpg" alt="маршруты" data-caption="экскурсионные маршруты"> <div class="photo-caption">маршруты</div></div>
+      <div class="cell"><img src="assets/museum/m19.jpg" alt="газета" data-caption="экспозиция старой газеты"> <div class="photo-caption">старая газета</div></div>
+      <div class="cell"><img src="assets/museum/m20.jpg" alt="напротив музея" data-caption="напротив музея"> <div class="photo-caption">напротив музея</div></div>
+    </div>
+  </section>
+
+  <!-- ====== DRONKI ====== -->
+  <section id="dronki" class="place-section" aria-labelledby="dronki-title">
+    <h2 id="dronki-title">Дроньки</h2>
+
+    <div class="pano-wrap" id="dronki-pano-wrap" style="margin-bottom:18px">
+      <div class="pano-caption">начальная школа</div>
+      <div class="pano" id="dronki-pano" style="background-image:url('assets/dronki/pano1.jpg');"></div>
+      <div class="pano-controls">
+        <button id="dronki-left" aria-label="Влево">&larr;</button>
+        <button id="dronki-right" aria-label="Вправо">&rarr;</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="cell"><img src="assets/dronki/d1.jpg" alt="класс с доской" data-caption="класс с доской"> <div class="photo-caption">класс с доской</div></div>
+      <div class="cell"><img src="assets/dronki/d1_03.jpg" alt="класс с доской" data-caption="класс с доской"> <div class="photo-caption">класс с доской</div></div>
+      <div class="cell"><img src="assets/dronki/d2.jpg" alt="учительская" data-caption="учительская"> <div class="photo-caption">учительская</div></div>
+      <div class="cell"><img src="assets/dronki/d2_02.jpg" alt="учительская" data-caption="учительская"> <div class="photo-caption">учительская</div></div>
+      <div class="cell"><img src="assets/dronki/d2_03.jpg" alt="учительская" data-caption="учительская"> <div class="photo-caption">старая сумка</div></div>
+      <div class="cell"><img src="assets/dronki/d2_04.jpg" alt="учительская" data-caption="учительская"> <div class="photo-caption">игрушка-плита</div></div>
+      <div class="cell"><img src="assets/dronki/d2_05.jpg" alt="учительская" data-caption="учительская"> <div class="photo-caption">игрушка-машинка</div></div>
+      <div class="cell"><img src="assets/dronki/d3.jpg" alt="парта" data-caption="парта"> <div class="photo-caption">парта</div></div>
+      <div class="cell"><img src="assets/dronki/d4.jpg" alt="принадлежности" data-caption="принадлежности на столе"> <div class="photo-caption">принадлежности</div></div>
+      <div class="cell"><img src="assets/dronki/d5.jpg" alt="план урока" data-caption="план урока"> <div class="photo-caption">план урока</div></div>
+      <div class="cell"><img src="assets/dronki/d6.jpg" alt="книга" data-caption="книга польская поэзия"> <div class="photo-caption">книга</div></div>
+      <div class="cell"><img src="assets/dronki/d7.jpg" alt="интерес к труду" data-caption="интерес к труду"> <div class="photo-caption">интерес</div></div>
+      <div class="cell"><img src="assets/dronki/d8.jpg" alt="плакат" data-caption="плакат культура поведения"> <div class="photo-caption">плакат</div></div>
+      <div class="cell"><img src="assets/dronki/d9_01.jpg" alt="мотоциклы" data-caption="мотоциклы за школой"> <div class="photo-caption">мотоциклы</div></div>
+      <div class="cell"><img src="assets/dronki/d9_02.jpg" alt="мотоциклы" data-caption="мотоциклы за школой"> <div class="photo-caption">мотоциклы</div></div>
+      <div class="cell"><img src="assets/dronki/d10.jpg" alt="территория" data-caption="территория охраняемая птиц"> <div class="photo-caption">территория</div></div>
+      <div class="cell"><img src="assets/dronki/d11.jpg" alt="кпп" data-caption="кпп"> <div class="photo-caption">кпп</div></div>
+    </div>
+
+    <div class="pano-wrap" id="dronki2-pano-wrap" style="margin-top:18px; margin-bottom:18px">
+      <div class="pano-caption">кабинет</div>
+      <div class="pano" id="dronki2-pano" style="background-image:url('assets/dronki/pano2.jpg');"></div>
+      <div class="pano-controls">
+        <button id="dronki2-left" aria-label="Влево">&larr;</button>
+        <button id="dronki2-right" aria-label="Вправо">&rarr;</button>
+      </div>
+    </div>
+
+    <div class="pano-wrap" id="dronki3-pano-wrap" style="margin-top:18px; margin-bottom:18px">
+      <div class="pano-caption">мотоциклы на заднем дворе</div>
+      <div class="pano" id="dronki3-pano" style="background-image:url('assets/dronki/pano3.jpg');"></div>
+      <div class="pano-controls">
+        <button id="dronki3-left" aria-label="Влево">&larr;</button>
+        <button id="dronki3-right" aria-label="Вправо">&rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== POGONNOE (новый красивый сторителлинг) ====== -->
+<section id="pogonnoe"
+         class="place-section orevichi-section pogonnoe-section"
+         aria-labelledby="pogonnoe-title">
+
+  <h2 id="pogonnoe-title">Погонное</h2>
+
+  <!-- HERO / главное фото -->
+  <div class="pogonnoe-hero cell">
+    <img src="assets/pogonnoe/p0_01.jpg"
+         alt="поганное снаружи"
+         data-caption="поганное снаружи">
+    <div class="photo-caption">снаружи</div>
+  </div>
+
+  <!-- Короткие факты-цифры -->
+  <div class="facts" aria-label="Короткие факты о деревне Погонное">
+    <div class="fact">
+      <div class="fact-num">1516–1526</div>
+      <div class="fact-label">первые документы о земле и Погонном</div>
+    </div>
+    <div class="fact">
+      <div class="fact-num">6 улиц</div>
+      <div class="fact-label">погонная планировка деревни</div>
+    </div>
+    <div class="fact">
+      <div class="fact-num">1053</div>
+      <div class="fact-label">жителя до аварии на ЧАЭС</div>
+    </div>
+    <div class="fact">
+      <div class="fact-num">май 1943</div>
+      <div class="fact-label">деревня сожжена, 13 жителей убиты</div>
+    </div>
+  </div>
+
+  <!-- ИСТОРИЯ: текст — фото — текст — фото -->
+  <div class="story">
+
+    <!-- 1 -->
+    <div class="story-item">
+      <div class="story-text">
+        <strong>Первые упоминания (XVI век)</strong>
+        <p>
+          Самые ранние документы связывают Погонное с землями по Припяти.
+          В «Литовской Метрике» есть лист короля Жигимонта от 14 (24) мая 1516 года,
+          где говорится о даровании «землицы нагонной (пагонной)» — это ещё не было селением,
+          а местом прогона и выпаса скота.
+        </p>
+        <p>
+          Памятная запись 1526 года и грамота 1543 года подтверждают владение
+          этими землями Михайловским (Златоверхим) монастырём в Киеве и упоминают Погонное
+          как уже значимое место. 
+        </p>
+      </div>
+
+      <div class="story-photo cell">
+        <img src="assets/pogonnoe/p1.jpg"
+             alt="дорога в погонное"
+             data-caption="дорога в погонное">
+        <div class="photo-caption">дорога</div>
+      </div>
+    </div>
+
+    <!-- 2 -->
+    <div class="story-item reverse">
+      <div class="story-photo cell">
+        <img src="assets/pogonnoe/p2.jpg"
+             alt="клуб сверху"
+             data-caption="клуб сверху">
+        <div class="photo-caption">клуб сверху</div>
+      </div>
+
+      <div class="story-text">
+        <strong>XVII век и уточнение времени возникновения</strong>
+        <p>
+          В привилегии короля Яна Собеского от 30 марта 1688 года деревня фигурирует как Подгонное (Podhonne)
+          и передаётся во владение дворянину Стефану Криницкому. 
+          Это один из ключевых документов, по которому исследователи связывают
+          возникновение села с началом–серединой XVII века.
+        </p>
+      </div>
+    </div>
+
+    <!-- 3 -->
+    <div class="story-item">
+      <div class="story-text">
+        <strong>В составе империи и развитие деревни</strong>
+        <p>
+          После 2-го раздела Речи Посполитой (1793 год) Погонное оказалось в составе Российской империи.
+          В 1879 году оно упоминается среди селений Оревичского церковного прихода.
+          В 1889 году здесь отмечено поместье М. В. Ельницкого (123 десятины земли),
+          а в 1894 году проводились мелиоративные работы под руководством И. И. Жилинского.
+          По переписи 1897 года действовали народное училище и хлебозапасный магазин.
+        </p>
+        <p>
+          С 8 декабря 1926 года Погонное стало центром Погонненского сельсовета,
+          а в 1939 году здесь организован колхоз.
+        </p>
+      </div>
+
+      <div class="story-photo cell">
+        <img src="assets/pogonnoe/p3.jpg"
+             alt="клуб"
+             data-caption="клуб">
+        <div class="photo-caption">клуб</div>
+      </div>
+    </div>
+
+    <!-- 4 -->
+    <div class="story-item reverse">
+      <div class="story-photo cell">
+        <img src="assets/pogonnoe/p5.jpg"
+             alt="надпись"
+             data-caption="надпись">
+        <div class="photo-caption">надпись</div>
+      </div>
+
+      <div class="story-text">
+        <strong>К вопросу о названии «Погонное»</strong>
+        <p>
+          В районной прессе обсуждались разные версии происхождения топонима:
+          от «гони» (узкая полоса пашни) и от «пагон» (пастбище/выгон).
+          Но исследователи отмечают, что важнее всего — связь названия с
+          погонным типом дворовой застройки, распространённым после «Устава на валоки» 1557 года.
+        </p>
+        <p>
+          При такой планировке жилые и хозяйственные постройки ставились в одну линию,
+          а улицы тянулись параллельно. Именно поэтому деревня отличалась своей схемой,
+          и в плане имеет 6 параллельных улиц.
+        </p>
+      </div>
+    </div>
+
+    <!-- 5 -->
+    <div class="story-item">
+      <div class="story-text">
+        <strong>Великая Отечественная война</strong>
+        <p>
+          В мае 1943 года оккупанты полностью сожгли деревню и убили 13 жителей.
+          На фронтах и в партизанской борьбе погибли 89 жителей деревень совхоза
+          «Победа социализма». В память о них в 1971 году в центре деревни
+          установили скульптурную композицию.
+        </p>
+      </div>
+
+      <div class="story-photo cell">
+        <img src="assets/pogonnoe/p14.jpg"
+             alt="памятник"
+             data-caption="памятник">
+        <div class="photo-caption">памятник</div>
+      </div>
+    </div>
+
+    <!-- 6 -->
+    <div class="story-item reverse">
+      <div class="story-photo cell">
+        <img src="assets/pogonnoe/p7.jpg"
+             alt="библиотека"
+             data-caption="библиотека">
+        <div class="photo-caption">библиотека</div>
+      </div>
+
+      <div class="story-text">
+        <strong>После войны и эвакуация</strong>
+        <p>
+          Погонное было центром совхоза «Победа социализма»:
+          работали лесопилка, мельница, механическая мастерская,
+          средняя школа, Дом культуры, библиотека, ясли-сад, больница,
+          отделение связи, столовая, хлебозавод и магазины.
+          В 1976 году сюда переселились жители посёлка Боровица.
+        </p>
+        <p>
+          До аварии на Чернобыльской АЭС в деревне проживало 1053 жителя (421 семья).
+        </p>
+      </div>
+    </div>
+
+  </div><!-- /story -->
+
+  <!-- Панорама (id НЕ трогаем, JS будет работать) -->
+  <div class="pano-wrap" id="pogonnoe-pano-wrap" style="margin-top:18px; margin-bottom:18px">
+    <div class="pano-caption">клуб</div>
+    <div class="pano" id="pogonnoe-pano" style="background-image:url('assets/pogonnoe/pano1.jpg');"></div>
+    <div class="pano-controls">
+      <button id="pogonnoe-left" aria-label="Влево">&larr;</button>
+      <button id="pogonnoe-right" aria-label="Вправо">&rarr;</button>
+    </div>
+  </div>
+
+  <!-- Полная галерея (все-все фотки, как требовал) -->
+  <div class="gallery-title">Фотогалерея Погонного</div>
+  <p class="gallery-note">Нажми на фото, чтобы открыть в полном размере.</p>
+
+  <div class="grid" aria-live="polite">
+    <div class="cell"><img src="assets/pogonnoe/p0_01.jpg" alt="поганное снаружи" data-caption="поганное снаружи"><div class="photo-caption">снаружи</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p0_02.jpg" alt="поганное снаружи" data-caption="поганное снаружи"><div class="photo-caption">снаружи</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p1.jpg" alt="дорога в погонное" data-caption="дорога в погонное"><div class="photo-caption">дорога</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p2.jpg" alt="клуб сверху" data-caption="клуб сверху"><div class="photo-caption">клуб сверху</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p3.jpg" alt="клуб" data-caption="клуб"><div class="photo-caption">клуб</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p4.jpg" alt="клуб" data-caption="клуб"><div class="photo-caption">клуб</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p5.jpg" alt="надпись" data-caption="надпись"><div class="photo-caption">надпись</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p5_01.jpg" alt="надпись" data-caption="надпись"><div class="photo-caption">надпись</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6.jpg" alt="список людей" data-caption="список людей проживающих - встреча"><div class="photo-caption">список</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6_01.jpg" alt="спорт зал" data-caption="спорт зал"><div class="photo-caption">спорт зал</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6_02.jpg" alt="спорт зал" data-caption="спорт зал"><div class="photo-caption">спорт зал</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6_03.jpg" alt="лестница" data-caption="лестница"><div class="photo-caption">лестница</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6_04.jpg" alt="пианино" data-caption="пианино"><div class="photo-caption">пианино</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6_05.jpg" alt="комната" data-caption="комната"><div class="photo-caption">комната</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6_07.jpg" alt="комната" data-caption="комната"><div class="photo-caption">комната</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6_08.jpg" alt="комната" data-caption="комната"><div class="photo-caption">комната</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6_09.jpg" alt="комната" data-caption="комната"><div class="photo-caption">комната</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p6_10.jpg" alt="кухня" data-caption="кухня"><div class="photo-caption">кухня</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p7.jpg" alt="библиотека" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p8.jpg" alt="библиотека" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p9.jpg" alt="библиотека" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p10.jpg" alt="библиотека" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p11.jpg" alt="библиотека" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p12.jpg" alt="игрушка" data-caption="игрушка"><div class="photo-caption">игрушка</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p13.jpg" alt="игрушка" data-caption="игрушка"><div class="photo-caption">игрушка</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p14.jpg" alt="памятник" data-caption="памятник"><div class="photo-caption">памятник</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p15.jpg" alt="старый мотоцикл" data-caption="старый мотоцикл"><div class="photo-caption">старый мотоцикл</div></div>
+    <div class="cell"><img src="assets/pogonnoe/p16.jpg" alt="металлолом" data-caption="металлолом"><div class="photo-caption">металлолом</div></div>
+  </div>
+
+  <!-- Журнал посетителей как был -->
+  <div class="journal" style="margin-top:16px">
+    <strong>Журнал посетителей</strong>
+    <div class="grid" style="margin-top:10px">
+      <div class="cell"><img src="assets/pogonnoe/journal/j1.jpg" alt=""></div>
+      <div class="cell"><img src="assets/pogonnoe/journal/j2.jpg" alt=""></div>
+      <div class="cell"><img src="assets/pogonnoe/journal/j3.jpg" alt=""></div>
+      <div class="cell"><img src="assets/pogonnoe/journal/j4.jpg" alt=""></div>
+      <div class="cell"><img src="assets/pogonnoe/journal/j5.jpg" alt=""></div>
+      <div class="cell"><img src="assets/pogonnoe/journal/j6.jpg" alt=""></div>
+      <div class="cell"><img src="assets/pogonnoe/journal/j7.jpg" alt=""></div>
+      <div class="cell"><img src="assets/pogonnoe/journal/j8.jpg" alt=""></div>
+    </div>
+  </div>
+
+</section>
+
+
+  <!-- ====== SCHOOL ====== -->
+<section id="school" class="place-section orevichi-section school-section" aria-labelledby="school-title">
+  <h2 id="school-title">Старая школа (Бабчины)</h2>
+
+  <!-- Большое фото-хедер (любое самое “главное”) -->
+  <div class="school-hero cell">
+    <img src="assets/school/s1.jpg"
+         alt="Старая школа в Бабчине"
+         data-caption="Старая школа в Бабчине">
+  </div>
+
+  <!-- Текст одним блоком-цитатой -->
+  <div class="quote-wrap" role="note" aria-label="Свидетельство очевидца">
+    <div class="quote-head">
+      <div class="who">Смольский Владимир говорит:</div>
+      <div class="badge">воспоминания семьи</div>
+    </div>
+
+    <!-- можно свернуть/развернуть без JS -->
+    <details class="quote-details" open>
+      <summary>Показать / скрыть рассказ</summary>
+      <div class="quote-text">
+        <p>
+          По воспоминаниям моей бабушки, которая родилась в 1929 г. в д. Бабчин Хойникского района
+          и проживала с семьёй до самого отселения до сентября 1986. Она рассказывала, что местный
+          священник Михаил Дроздовский, который служил в д. Бабчин в Крестовоздвиженской церкви
+          с 1878 г. в 1906 г. построил это здание школы. Её ещё называли «Поповская школа».
+          Этому есть ещё очевидное подтверждение, если внимательно присмотреться на лицевую сторону
+          школу, то под крышей мы увидим выложенный их кирпича небольшой четырёхконечный крест.
+          В ней училась до войны моя бабушка.
+        </p>
+
+        <p>
+          Церковь находилась на том месте где в д. Бабчин был расположен клуб. Церковь закрыли
+          в 1930-е гг. и переделали её под склад. Бабушкин отец работал в ней кладовщиком.
+          Открою вам ещё одну тайну, если так можно сказать. Да, моя бабушка родилась в 1929 г.,
+          как она говорит, её в этой церкви крестили, когда была маленькая ходила вместе с отцом
+          на праздники. Она помнит как выглядела сама церковь, была она кирпичная, большая,
+          а рядом стояла маленькая деревянная. Стояла церковь на том месте, где сейчас стоит клуб.
+        </p>
+
+        <p>
+          Возле церкви были ещё похоронены 2 дочки священника, как бабушка говорит
+          «2 поповские дачки». И всегда мне говорила, что был у них батюшка Дроздовский!
+          Ещё как ехать из Бабчина на Воротец, с одной стороны по второй стороне дороги
+          росли вербы, их посадил батюшка, и все говорили, что это поповская дорога,
+          дорога по которой батюшка ездил.
+        </p>
+
+        <p>
+          Еще бабушка рассказывала, что ещё её прадед был старостой в Бабчинской церкви.
+          Могу привести этому подтверждение. Отец моей бабушки Кирченко Иван (Иоанн)
+          Степанович, 1894 г.р., будучи ещё мальчишкой по просьбе своего деда (который был старостой церкви)
+          отвозил на телеге батюшку Дроздовского в соседнюю деревню Мокиш.
+          И он его знал, и бабушка моя знали.
+        </p>
+      </div>
+    </details>
+  </div>
+
+  <!-- Отдельная галерея без привязки к абзацам -->
+  <div class="gallery-title">Фотографии школы и места</div>
+  <div class="gallery-note">
+    Здесь собраны разные ракурсы и детали здания — листай и открывай каждую фотографию.
+  </div>
+
+  <div class="grid" aria-label="Галерея школы Бабчина">
+    <div class="cell"><img src="assets/school/s2.jpg" alt="Школа, вид сбоку" data-caption="Школа, вид сбоку"><div class="photo-caption">вид сбоку</div></div>
+    <div class="cell"><img src="assets/school/s3.jpg" alt="Окна старой школы" data-caption="Окна старой школы"><div class="photo-caption">окна</div></div>
+    <div class="cell"><img src="assets/school/s4.jpg" alt="Кирпичная кладка" data-caption="Кирпичная кладка"><div class="photo-caption">кладка</div></div>
+    <div class="cell"><img src="assets/school/s5.jpg" alt="Внутри старой школы" data-caption="Внутри старой школы"><div class="photo-caption">внутри</div></div>
+    <div class="cell"><img src="assets/school/s6.jpg" alt="Ещё один интерьер" data-caption="Ещё один интерьер"><div class="photo-caption">интерьер</div></div>
+    <div class="cell"><img src="assets/school/s7.jpg" alt="Новая школа рядом" data-caption="Новая школа рядом со старой"><div class="photo-caption">новая рядом</div></div>
+    <div class="cell"><img src="assets/school/s8.jpg" alt="Двери новой школы" data-caption="Двери новой школы"><div class="photo-caption">двери</div></div>
+    <div class="cell"><img src="assets/school/s9.jpg" alt="Внутри новой школы" data-caption="Внутри новой школы"><div class="photo-caption">внутри новой</div></div>
+    <div class="cell"><img src="assets/school/s10.jpg" alt="Надпись" data-caption="Надпись в новой школе"><div class="photo-caption">надпись</div></div>
+    <div class="cell"><img src="assets/school/s11.jpg" alt="Территория" data-caption="Территория возле школы"><div class="photo-caption">территория</div></div>
+    <div class="cell"><img src="assets/school/s12.jpg" alt="Детали рядом" data-caption="Детали возле школы"><div class="photo-caption">детали</div></div>
+    <div class="cell"><img src="assets/school/s13.jpg" alt="Хижина рядом" data-caption="Хижина рядом со школой"><div class="photo-caption">хижина</div></div>
+  </div>
+</section>
+  
+
+  <!-- ====== OREVICHI ====== -->
+    <!-- ====== OREVICHI ====== -->
+  <section id="orevichi" class="place-section orevichi-section" aria-labelledby="orevichi-title">
+    <h2 id="orevichi-title">Оревичи</h2>
+
+    <p class="lead muted" style="margin:6px 0 12px 0">
+      Небольшая остановка на маршруте веб-экскурсии: пройдёмся по истории деревни и посмотрим её сегодня.
+    </p>
+
+    <div class="story" aria-label="История и места Оревичей">
+
+      <!-- 1 -->
+      <div class="story-item">
+        <div class="story-text">
+          <strong>Следы древности</strong>
+          <p>
+            Оревичи — деревня в полесских лесах, и её история начинается задолго до письменных времён.
+            Археологи нашли рядом поселения эпохи неолита (в 1 км к юго-западу и в 2 км к западу),
+            что подтверждает заселение этих мест с глубокой древности.
+          </p>
+        </div>
+
+        <div class="story-photo cell">
+          <img src="assets/orevichi/o1.jpg"
+               alt="Здание в Оревичах"
+               data-caption="Здание в Оревичах">
+          <!--<div class="photo-caption">общий вид</div>-->
+        </div>
+      </div>
+
+      <!-- 2 -->
+      <div class="story-item reverse">
+        <div class="story-photo cell">
+          <img src="assets/orevichi/o5.jpg"
+               alt="Надпись в Оревичах"
+               data-caption="Надпись в Оревичах">
+          <!--<div class="photo-caption">история</div>-->
+        </div>
+
+        <div class="story-text">
+          <strong>Первые упоминания</strong>
+          <p>
+            В письменных источниках деревня известна с начала XVI века как селение Аревичи
+            в Киевском воеводстве Великого княжества Литовского. В 1570–1580-х Оревичи принадлежали
+            Златоверхому Михайловскому монастырю в Киеве. В 1777 году здесь построили деревянную
+            Рождества-Богородицкую церковь. После раздела Речи Посполитой в 1793 году деревня вошла
+            в состав Российской империи.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="story-item">
+        <div class="story-text">
+          <strong>Деревня в ХХ веке</strong>
+          <p>
+            С 8 декабря 1926 года Оревичи стали центром сельсовета Хойникского района.
+            В 1931 году в деревне работали начальная школа, отделение кооперации,
+            ветряная мельница, кузница, шерстечесалка и изба-читальня.
+            Тогда же появились колхозы «Коммунар» и «Победа социализма».
+          </p>
+        </div>
+
+        <div class="story-photo cell">
+          <img src="assets/orevichi/o6.jpg"
+               alt="Надпись в Оревичах"
+               data-caption="Надпись в Оревичах">
+          <!-- <div class="photo-caption">ХХ век</div> -->
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="story-item reverse">
+        <div class="story-photo cell">
+          <img src="assets/orevichi/o2.jpg"
+               alt="Здание в Оревичах"
+               data-caption="Здание в Оревичах">
+          <!-- <div class="photo-caption">партизаны</div> -->
+        </div>
+
+        <div class="story-text">
+          <strong>Великая Отечественная война</strong>
+          <p>
+            В апреле–мае 1943 года в деревне и окрестных лесах базировался отдельный
+            Путиловский партизанский отряд и штаб соединения С. А. Ковпака.
+            На реке Припять партизаны разгромили немецкую флотилию —
+            на месте событий позже появился памятный знак.
+          </p>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="story-item">
+        <div class="story-text">
+          <strong>Память о героях</strong>
+          <p>
+            На фронтах и в партизанской борьбе погибли 81 житель Оревичей.
+            В 1970 году возле конторы совхоза установили памятник —
+            скульптуру воина и партизанки.
+            Неподалёку расположена могила врача-связной Веры Михайловны Скирмант
+            и её двух сыновей, расстрелянных в сентябре 1942 года; над могилой стоит обелиск.
+          </p>
+        </div>
+
+        <div class="story-photo cell">
+          <img src="assets/orevichi/o3.jpg"
+               alt="Здание в Оревичах"
+               data-caption="Здание в Оревичах">
+          <!-- <div class="photo-caption">память</div> -->
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="story-item reverse">
+        <div class="story-photo cell">
+          <img src="assets/orevichi/o4.jpg"
+               alt="Здание в Оревичах"
+               data-caption="Здание в Оревичах">
+          <!-- <div class="photo-caption">сегодня</div> -->
+        </div>
+
+        <div class="story-text">
+          <strong>После войны и эвакуация</strong>
+          <p>
+            После войны деревня стала центром совхоза «Оревичи»:
+            работали средняя школа, клуб, библиотека, детский сад, больница, аптека,
+            отделение связи и магазины.
+            Но 4 мая 1986 года из-за аварии на Чернобыльской АЭС всех жителей эвакуировали —
+            557 человек (222 семьи) покинули деревню.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<!-- MODAL (галерея) -->
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" onclick="/* click handled in JS */">
+  <div class="modal-content" onclick="event.stopPropagation()">
+    <button class="modal-arrow left" id="modal-prev" aria-label="Предыдущее">◀</button>
+    <img id="modal-img" src="" alt="">
+    <button class="modal-arrow right" id="modal-next" aria-label="Следующее">▶</button>
+    <div id="modal-caption" class="modal-caption"></div>
+    <button class="close-x" id="modal-close" aria-label="Закрыть" style="position:absolute;right:8px;top:8px;background:rgba(255,255,255,0.06);border-radius:8px;padding:8px 10px;border:0;color:#fff;cursor:pointer">✕</button>
+  </div>
+</div>
+
+<script>
+// ======================
+// НАВИГАЦИЯ ПО СЕКЦИЯМ 
+// ======================
+
+const navButtons = document.querySelectorAll("nav button");
+const sections = document.querySelectorAll("main section");
+const hotspots = document.querySelectorAll(".hotspot");
+
+
+
+
+
+// Функция для плавной прокрутки к секции
+function scrollToSection(id) {
+  const section = document.getElementById(id);
+  if (section) {
+    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// Функция для обновления активной кнопки навигации
+function updateActiveNav(targetId) {
+  navButtons.forEach(b => b.classList.toggle("active", b.dataset.target === targetId));
+}
+
+// Обработчики для навигационных кнопок
+navButtons.forEach(btn => {
+  btn.addEventListener("click", () => {
+    scrollToSection(btn.dataset.target);
+    updateActiveNav(btn.dataset.target);
+  });
+});
+
+// Обработчики для точек на карте
+hotspots.forEach(h => {
+  h.addEventListener("click", () => {
+    scrollToSection(h.dataset.target);
+    updateActiveNav(h.dataset.target);
+  });
+});
+
+// Обновление активной кнопки при прокрутке
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(section => {
+    const sectionTop = section.offsetTop;
+    const sectionHeight = section.clientHeight;
+    if (scrollY >= (sectionTop - 150)) {
+      current = section.getAttribute('id');
+    }
+  });
+  
+  updateActiveNav(current);
+});
+
+// ==========================
+// ПАНОРАМЫ 
+// ==========================
+
+// ==========================
+// ПАНОРАМЫ — плавное движение с удержанием
+// ==========================
+
+function initPano(id) {
+  const pano = document.getElementById(id + "-pano");
+  const btnLeft = document.getElementById(id + "-left");
+  const btnRight = document.getElementById(id + "-right");
+
+  if (!pano || !btnLeft || !btnRight) return;
+
+  let x = 50;                 // позиция фона в %
+  let velocity = 0;           // текущая скорость (для удержания)
+  let lastTime = performance.now();
+
+  let isPressing = false;     // кнопка сейчас зажата?
+  let currentDirection = 0;   // -1 влево, 1 вправо, 0 — ничего
+  let pressStartTime = 0;     // когда нажали (для определения клика/удержания)
+
+  // параметры
+  const CLICK_STEP = 30;        // шаг при ОДНОМ клике
+  const MAX_HOLD_SPEED = 25;    // максимальная скорость при удержании
+  const HOLD_ACCEL = 80;        // ускорение при старте удержания
+  const HOLD_DECEL = 120;       // замедление, когда отпустили
+  const CLICK_THRESHOLD = 180;  // до скольки мс считаем, что это "клик", а не удержание
+
+  // параметры анимации КЛИКА
+  let animFrom = x;
+  let animTo = x;
+  let animTime = 0;
+  let animDuration = 0;         // 0 — анимации клика нет
+
+  function clamp() {
+    if (x < 0) x = 0;
+    if (x > 100) x = 100;
+  }
+
+  function apply() {
+    pano.style.backgroundPosition = x + "% center";
+  }
+
+  // главный цикл
+  function loop(now) {
+    const dt = (now - lastTime) / 1000;
+    lastTime = now;
+
+    // 1) Анимация одиночного клика
+    if (animDuration > 0 && animTime < animDuration) {
+      animTime += dt;
+      let t = animTime / animDuration;
+      if (t > 1) t = 1;
+
+      // ease-out
+      const ease = 1 - Math.pow(1 - t, 3);
+      x = animFrom + (animTo - animFrom) * ease;
+      clamp();
+      apply();
+
+    } else {
+      // 2) Удержание: плавный разгон / торможение скорости
+
+      if (isPressing && currentDirection !== 0) {
+        // разгон к целевой скорости
+        const targetSpeed = currentDirection * MAX_HOLD_SPEED;
+        const diff = targetSpeed - velocity;
+        const maxChange = HOLD_ACCEL * dt;
+
+        if (Math.abs(diff) <= maxChange) {
+          velocity = targetSpeed;
+        } else {
+          velocity += Math.sign(diff) * maxChange;
+        }
+      } else {
+        // отпустили кнопку — плавно тормозим
+        if (Math.abs(velocity) > 0.001) {
+          const diff = -velocity;
+          const maxChange = HOLD_DECEL * dt;
+
+          if (Math.abs(diff) <= maxChange) {
+            velocity = 0;
+          } else {
+            velocity += Math.sign(diff) * maxChange;
+          }
+        } else {
+          velocity = 0;
+        }
+      }
+
+      if (Math.abs(velocity) > 0.001) {
+        x += velocity * dt;
+        clamp();
+        apply();
+      }
+    }
+
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+
+  function startPress(direction) {
+    currentDirection = direction;
+    isPressing = true;
+    pressStartTime = performance.now();
+
+    // если была анимация клика — обрываем и переходим к удержанию
+    animDuration = 0;
+  }
+
+  function endPress() {
+    if (!currentDirection) {
+      isPressing = false;
+      return;
+    }
+
+    const pressDuration = performance.now() - pressStartTime;
+
+    // короткий клик → отдельная плавная прокрутка на шаг
+    if (pressDuration < CLICK_THRESHOLD) {
+      animFrom = x;
+      animTo = x + currentDirection * CLICK_STEP;
+      if (animTo < 0) animTo = 0;
+      if (animTo > 100) animTo = 100;
+
+      animTime = 0;
+      animDuration = 0.35; // длительность анимации клика
+      velocity = 0;        // на всякий случай, чтобы не "тянуло" инерцией
+    }
+
+    isPressing = false;
+    currentDirection = 0;
+  }
+
+  // ======= МЫШЬ =======
+  btnLeft.addEventListener("mousedown", () => startPress(-1));
+  btnRight.addEventListener("mousedown", () => startPress(1));
+
+  window.addEventListener("mouseup", endPress);
+  btnLeft.addEventListener("mouseleave", endPress);
+  btnRight.addEventListener("mouseleave", endPress);
+
+  // ======= ТАЧ =======
+  btnLeft.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    startPress(-1);
+  }, { passive: false });
+
+  btnRight.addEventListener("touchstart", (e) => {
+    e.preventDefault();
+    startPress(1);
+  }, { passive: false });
+
+  window.addEventListener("touchend", endPress);
+  window.addEventListener("touchcancel", endPress);
+}
+
+
+
+["museum", "dronki", "dronki2", "dronki3", "pogonnoe"]
+  .forEach(id => initPano(id));
+
+// ======================
+// МОДАЛКА ФОТОГРАФИЙ
+// ======================
+
+const modal = document.getElementById("modal");
+const modalImg = document.getElementById("modal-img");
+const modalCaption = document.getElementById("modal-caption");
+const modalPrev = document.getElementById("modal-prev");
+const modalNext = document.getElementById("modal-next");
+const modalClose = document.getElementById("modal-close");
+
+let gallery = [];
+let currentIndex = 0;
+
+function openModal(index){
+  currentIndex = index;
+  modalImg.src = gallery[index].src;
+  modalCaption.textContent = gallery[index].caption;
+
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("modal-open");
+}
+
+function closeModal(){
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+}
+
+function showNext(){
+  currentIndex = (currentIndex + 1) % gallery.length;
+  openModal(currentIndex);
+}
+
+function showPrev(){
+  currentIndex = (currentIndex - 1 + gallery.length) % gallery.length;
+  openModal(currentIndex);
+}
+
+modalPrev.onclick = showPrev;
+modalNext.onclick = showNext;
+modalClose.onclick = closeModal;
+modal.onclick = closeModal;
+
+window.addEventListener("keydown", e=>{
+  if(!modal.classList.contains("show")) return;
+  if(e.key === "ArrowRight") showNext();
+  if(e.key === "ArrowLeft") showPrev();
+  if(e.key === "Escape") closeModal();
+});
+
+// Сбор всех фото:
+function initGallery(){
+  const cells = document.querySelectorAll(".cell img");
+  gallery = [];
+  cells.forEach((img, i)=>{
+    gallery.push({
+      src: img.src,
+      caption: img.dataset.caption || ""
+    });
+    img.dataset.index = i;
+    img.addEventListener("click",()=>{
+      openModal(parseInt(img.dataset.index));
+    });
+  });
+}
+initGallery();
+
+
+
+// ======================
+// SCROLL PROGRESS + TO TOP
+// ======================
+const progress = document.getElementById("scroll-progress");
+const toTop = document.getElementById("toTop");
+
+function onScrollUI(){
+  const doc = document.documentElement;
+  const scrolled = (doc.scrollTop / (doc.scrollHeight - doc.clientHeight)) * 100;
+  if(progress) progress.style.width = scrolled + "%";
+
+  if(toTop){
+    toTop.classList.toggle("show", doc.scrollTop > 600);
+  }
+}
+window.addEventListener("scroll", onScrollUI);
+onScrollUI();
+
+toTop?.addEventListener("click", ()=> {
+  window.scrollTo({ top:0, behavior:"smooth" });
+});
+
+
+// ======================
+// REVEAL ANIMATION (sections only)
+// ======================
+const revealTargets = document.querySelectorAll(
+  "main section, .story-item, .pano-wrap, .facts .fact, .quote-wrap"
+);
+revealTargets.forEach(el => el.classList.add("reveal"));
+
+const io = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add("show");
+      io.unobserve(e.target);
+    }
+  });
+},{ threshold:0.12, rootMargin:"0px 0px -5% 0px" });
+
+revealTargets.forEach(el=>io.observe(el));
+
+</script>
