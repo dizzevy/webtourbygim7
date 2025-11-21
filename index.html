@@ -1108,6 +1108,45 @@ nav button{
   body{ background-attachment: scroll; }
 }
 
+/* ===== ROUTE (линия навигации на карте) ===== */
+.route-layer{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:2;            /* под точками, потому что hotspots z-index:10 */
+  pointer-events:none;
+}
+
+#route-path-bg{
+  stroke: rgba(17, 24, 39, 0.18);
+  stroke-width: 2.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: blur(1px);
+}
+
+#route-path{
+  stroke: url(#routeGrad);
+  stroke-width: 1.35;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: url(#routeGlow);
+  stroke-dasharray: 2.6 2.2;  /* пунктир */
+  animation: routeDash 30s linear infinite;
+}
+
+.route-dot{
+  fill: #fff;
+  stroke: #1f4f37;
+  stroke-width: 0.35;
+  opacity: .95;
+  filter: drop-shadow(0 0 3px rgba(79,148,104,0.8));
+}
+
+@keyframes routeDash{
+  to { stroke-dashoffset: -240; }
+}
 
 
 </style>
@@ -1154,9 +1193,37 @@ nav button{
 
     <div class="map" id="map" role="img" aria-label="Карта местности">
       <img src="assets/map.webp" loading="lazy" decoding="async" alt="Карта местности" id="map-img" />
-      
 
-      
+      <!-- ROUTE LAYER: линия маршрута поверх карты -->
+<svg class="route-layer" id="route-layer"
+     viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+  <defs>
+    <linearGradient id="routeGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#1f4f37"/>
+      <stop offset="50%" stop-color="#4f9468"/>
+      <stop offset="100%" stop-color="#a3b18a"/>
+    </linearGradient>
+
+    <filter id="routeGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="1.2" result="b"/>
+      <feMerge>
+        <feMergeNode in="b"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <marker id="routeArrow" viewBox="0 0 10 10" refX="8" refY="5"
+            markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4f9468"></path>
+    </marker>
+  </defs>
+
+  <!-- мягкая подложка -->
+  <path id="route-path-bg" d="" fill="none"></path>
+  <!-- основная линия -->
+  <path id="route-path" d="" fill="none" marker-end="url(#routeArrow)"></path>
+</svg>
+
 
       <!-- Hotspots: позиции сохранены из архива -->
       <button class="hotspot" data-target="museum" style="left:51.8%;top:15.5%;" title="Музей (Бабчины)">
@@ -2193,5 +2260,99 @@ const io = new IntersectionObserver((entries)=>{
 },{ threshold:0.12, rootMargin:"0px 0px -5% 0px" });
 
 revealTargets.forEach(el=>io.observe(el));
+
+
+// ==========================
+// ROUTE ON MAP (маршрут линией)
+// ==========================
+(function initRouteOnMap(){
+  const map = document.getElementById('map');
+  const layer = document.getElementById('route-layer');
+  const path = document.getElementById('route-path');
+  const pathBg = document.getElementById('route-path-bg');
+  if(!map || !layer || !path) return;
+
+  // порядок маршрута:
+  // Бабчин = музей (hotspot data-target="museum")
+  const orderIds = ["museum", "dronki", "pogonnoe", "orevichi"];
+
+  // финальная точка "р. Припять" (на карте горячей точки нет)
+  // поставил примерные координаты. Подвинь, если нужно:
+  const pripyatPoint = { x: 35, y: 54 }; // % от ширины/высоты карты
+
+  function getSpotCenter(id){
+    const el = map.querySelector(`.hotspot[data-target="${id}"]`);
+    if(!el) return null;
+
+    // основной случай: left/top заданы в % (и autoSpreadHotspots их тоже так пишет)
+    const left = parseFloat(el.style.left);
+    const top  = parseFloat(el.style.top);
+    if(Number.isFinite(left) && Number.isFinite(top)){
+      return { x: left, y: top };
+    }
+
+    // fallback: если вдруг в px — пересчёт пикселей в %
+    const rect = map.getBoundingClientRect();
+    const r2 = el.getBoundingClientRect();
+    const x = (r2.left - rect.left + r2.width/2) / rect.width  * 100;
+    const y = (r2.top  - rect.top  + r2.height/2) / rect.height * 100;
+    return { x, y };
+  }
+
+  // плавная кривая через mid-points (Q + T)
+  function buildSmoothPath(points){
+    if(points.length < 2) return "";
+    let d = `M ${points[0].x},${points[0].y}`;
+    for(let i=1;i<points.length;i++){
+      const p0 = points[i-1], p1 = points[i];
+      const mx = (p0.x + p1.x) / 2;
+      const my = (p0.y + p1.y) / 2;
+      d += ` Q ${p0.x},${p0.y} ${mx},${my}`;
+    }
+    const last = points[points.length-1];
+    d += ` T ${last.x},${last.y}`;
+    return d;
+  }
+
+  function drawRoute(){
+    const pts = [];
+    orderIds.forEach(id=>{
+      const p = getSpotCenter(id);
+      if(p) pts.push(p);
+    });
+    pts.push(pripyatPoint);
+
+    const d = buildSmoothPath(pts);
+    path.setAttribute("d", d);
+    if(pathBg) pathBg.setAttribute("d", d);
+
+    // точки-маркеры
+    layer.querySelectorAll("circle.route-dot").forEach(c=>c.remove());
+    pts.forEach((p,i)=>{
+      const c = document.createElementNS("http://www.w3.org/2000/svg","circle");
+      c.setAttribute("class","route-dot");
+      c.setAttribute("cx", p.x);
+      c.setAttribute("cy", p.y);
+      c.setAttribute("r", i===0 ? 1.5 : 1.15);
+      layer.appendChild(c);
+    });
+  }
+
+  // рисуем после загрузки карты
+  const img = document.getElementById("map-img");
+  if(img && !img.complete){
+    img.addEventListener("load", ()=>requestAnimationFrame(drawRoute));
+  } else {
+    requestAnimationFrame(drawRoute);
+  }
+
+  // и при ресайзе (в т.ч. когда autoSpreadHotspots раздвигает точки)
+  let t;
+  window.addEventListener("resize", ()=>{
+    clearTimeout(t);
+    t = setTimeout(drawRoute, 120);
+  });
+})();
+
 
 </script>
