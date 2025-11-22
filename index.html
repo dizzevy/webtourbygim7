@@ -400,6 +400,7 @@
   /* ---------- MODAL ---------- */
 
   .modal{
+    animation: modalFade 0.45s ease-out;
     position:fixed;
     inset:0;
     background: linear-gradient(135deg, rgba(95, 95, 95, 0.559), rgba(63, 63, 63, 0.445));
@@ -412,26 +413,29 @@
 
   .modal.show{display:flex;}
 
-  .modal-content{
-    position:relative;
-    max-width:94%;
-    max-height:94%;
-    animation: modalAppear 0.25s ease-out;
-  }
+   .modal-content{
+  position:relative;
+  max-width:94%;
+  max-height:94%;
+  animation: modalAppear 0.45s cubic-bezier(.16,.84,.3,1);
+}
 
   @keyframes modalAppear {
     from { opacity: 0; transform: scale(0.92); }
     to { opacity: 1; transform: scale(1); }
   }
 
-  #modal-img{
+#modal-img{
   max-width:100%;
   max-height:85vh;
   border-radius:18px;
   box-shadow:0 24px 70px rgba(0,0,0,0.85), var(--shadow-glow);
   border: 1px solid rgba(148,163,184,0.6);
-  background:#000;
-  transition: opacity .2s ease;
+
+  /* убираем чёрный фон и готовим плавное проявление */
+  background: transparent;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
 }
 
   .modal-caption{
@@ -2365,28 +2369,57 @@ const modalClose = document.getElementById("modal-close");
 
 let gallery = [];
 let currentIndex = 0;
+let openingIndex = null; // какой кадр сейчас готовим к открытию
 
-function openModal(index) {
+async function openModal(index){
   currentIndex = index;
+  openingIndex = index;
+
   const item = gallery[index];
+  const src = item.src;
+  const caption = item.caption || "";
 
-  // Сначала прячем картинку, чтобы не было моргания старой
-  modalImg.style.opacity = 0;
+  // прячем модалку пока готовим кадр
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
 
-  // Сбрасываем предыдущий onload (на всякий случай)
-  modalImg.onload = null;
+  // чтобы старая фотка не мелькала
+  modalImg.style.opacity = "0";
+  modalCaption.textContent = "";
 
-  // Назначаем новый обработчик: когда НОВАЯ картинка загрузилась — показываем её
-  modalImg.onload = () => {
-    modalImg.style.opacity = 1;
-  };
+  // грузим и декодируем картинку в фоне
+  const pre = new Image();
+  pre.src = src;
 
-  // Обновляем src/alt/подпись
-  modalImg.src = item.src;
-  modalImg.alt = item.caption || "";
-  modalCaption.textContent = item.caption || "";
+  try{
+    if (pre.decode) {
+      await pre.decode(); // ждём полной декодировки
+    } else {
+      await new Promise((res, rej)=>{
+        pre.onload = res;
+        pre.onerror = rej;
+      });
+    }
+  } catch(e){
+    // если decode не сработал — просто ждём onload
+    await new Promise(res=>{
+      pre.onload = res;
+      pre.onerror = res;
+    });
+  }
 
-  // Открываем модалку
+  // если за это время пользователь успел открыть другое фото/закрыть
+  if (openingIndex !== index) return;
+
+  // ставим картинку
+  modalImg.src = src;
+  modalCaption.textContent = caption;
+
+  // КЛЮЧЕВОЕ: делаем видимой ДО показа модалки
+  modalImg.style.opacity = "1";
+
+  // теперь показываем модалку и картинку одновременно
   modal.classList.add("show");
   modal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
@@ -2394,10 +2427,12 @@ function openModal(index) {
 
 
 function closeModal(){
+  openingIndex = null; // больше ничего не открываем
   modal.classList.remove("show");
   modal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
 }
+
 
 function showNext(){
   currentIndex = (currentIndex + 1) % gallery.length;
@@ -2422,14 +2457,26 @@ window.addEventListener("keydown", e=>{
 });
 
 // Сбор всех фото:
+let preloadImages = [];
+
 function initGallery(){
   const cells = document.querySelectorAll(".cell img");
   gallery = [];
+  preloadImages = [];
+
   cells.forEach((img, i)=>{
+    const src = img.getAttribute("data-full") || img.src;
+
     gallery.push({
-      src: img.dataset.full || img.src,
+      src,
       caption: img.dataset.caption || ""
     });
+
+    // фоновой прелоад
+    const pre = new Image();
+    pre.src = src;
+    preloadImages.push(pre);
+
     img.dataset.index = i;
     img.addEventListener("click",()=>{
       openModal(parseInt(img.dataset.index));
@@ -2437,6 +2484,7 @@ function initGallery(){
   });
 }
 initGallery();
+
 
 
 
