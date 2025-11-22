@@ -425,13 +425,14 @@
   }
 
   #modal-img{
-    max-width:100%;
-    max-height:85vh;
-    border-radius:18px;
-    box-shadow:0 24px 70px rgba(0,0,0,0.85), var(--shadow-glow);
-    border: 1px solid rgba(148,163,184,0.6);
-    background:#000;
-  }
+  max-width:100%;
+  max-height:85vh;
+  border-radius:18px;
+  box-shadow:0 24px 70px rgba(0,0,0,0.85), var(--shadow-glow);
+  border: 1px solid rgba(148,163,184,0.6);
+  background:#000;
+  transition: opacity .2s ease;
+}
 
   .modal-caption{
     position:absolute;
@@ -1226,6 +1227,22 @@ nav button{
 .beta-close:hover{ background:#eef5ef; }
 
 
+/* ==== PREMIUM SMOOTH SCROLL ==== */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+* {
+  scroll-behavior: smooth;
+}
+
+
 </style>
 
 </head>
@@ -1984,6 +2001,28 @@ nav button{
 </div>
 
 <script>
+/* ==== ULTRA SMOOTH SCROLL ENGINE ==== */
+let current = 0;
+let target = 0;
+let ease = 0.08;
+
+function smoothScroll() {
+  current += (target - current) * ease;
+  window.scrollTo(0, current);
+  requestAnimationFrame(smoothScroll);
+}
+
+window.addEventListener("wheel", e => {
+  e.preventDefault();
+  target += e.deltaY;
+}, { passive: false });
+
+requestAnimationFrame(smoothScroll);
+</script>
+
+
+
+<script>
 // ======================
 // НАВИГАЦИЯ ПО СЕКЦИЯМ 
 // ======================
@@ -2352,15 +2391,32 @@ const modalClose = document.getElementById("modal-close");
 let gallery = [];
 let currentIndex = 0;
 
-function openModal(index){
+function openModal(index) {
   currentIndex = index;
-  modalImg.src = gallery[index].src;
-  modalCaption.textContent = gallery[index].caption;
+  const item = gallery[index];
 
+  // Сначала прячем картинку, чтобы не было моргания старой
+  modalImg.style.opacity = 0;
+
+  // Сбрасываем предыдущий onload (на всякий случай)
+  modalImg.onload = null;
+
+  // Назначаем новый обработчик: когда НОВАЯ картинка загрузилась — показываем её
+  modalImg.onload = () => {
+    modalImg.style.opacity = 1;
+  };
+
+  // Обновляем src/alt/подпись
+  modalImg.src = item.src;
+  modalImg.alt = item.caption || "";
+  modalCaption.textContent = item.caption || "";
+
+  // Открываем модалку
   modal.classList.add("show");
   modal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
 }
+
 
 function closeModal(){
   modal.classList.remove("show");
