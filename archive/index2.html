@@ -714,6 +714,125 @@
 }
 
 
+/* ---------- POGONNOE STORY LAYOUT (solid) ---------- */
+.pogonnoe-section .pogonnoe-hero{
+  width:100%;
+  height:auto;
+  border-radius:18px;
+  overflow:hidden;
+  margin: 8px 0 16px;
+  box-shadow: var(--shadow-2);
+  border:1px solid rgba(226,232,240,0.95);
+  flex:1 1 100%;
+}
+
+.pogonnoe-section .pogonnoe-hero img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+  display:block;
+}
+@media (max-width: 900px){
+  .pogonnoe-section .pogonnoe-hero img{ height:240px; }
+}
+
+/* компактные, аккуратные факты */
+.pogonnoe-section .facts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin: 4px 0 16px;
+}
+
+.pogonnoe-section .fact{
+  flex:1 1 160px;
+  min-width:140px;
+  background: linear-gradient(135deg, #ffffff, #f7faf7);
+  border:1px solid rgba(226,232,240,0.95);
+  border-radius:14px;
+  padding:10px 12px;
+  text-align:center;
+  box-shadow: var(--shadow-2);
+}
+
+.pogonnoe-section .fact-num{
+  font-size:20px;
+  font-weight:800;
+  color:#123524;
+  letter-spacing:0.02em;
+}
+
+.pogonnoe-section .fact-label{
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+/* заголовки внутри истории */
+.pogonnoe-section .story-text strong{
+  font-size:16px;
+  color:#0f3b25;
+}
+
+/* сама история — такие же карточки, как в Оревичах */
+.pogonnoe-section .story{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  margin-top:12px;
+}
+
+.pogonnoe-section .story-item{
+  display:grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap:16px;
+  align-items:center;
+
+  background: linear-gradient(135deg, #ffffff, #f7faf7);
+  border:1px solid rgba(226,232,240,0.95);
+  border-radius:16px;
+  padding:14px;
+  box-shadow: var(--shadow-2);
+}
+
+.pogonnoe-section .story-item.reverse{
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+.pogonnoe-section .story-text{
+  font-size:15px;
+  line-height:1.55;
+  color:#111827;
+}
+
+.pogonnoe-section .story-text p + p{
+  margin-top:8px;
+}
+
+/* крупное фото внутри карточки истории */
+.pogonnoe-section .story-photo.cell{
+  width:100%;
+  height:260px;
+  border-radius:14px;
+}
+
+.pogonnoe-section .story-photo.cell img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* на телефонах: стопка, без сломов верстки */
+@media (max-width: 900px){
+  .pogonnoe-section .story-item,
+  .pogonnoe-section .story-item.reverse{
+    grid-template-columns:1fr;
+  }
+  .pogonnoe-section .story-photo.cell{
+    height:220px;
+  }
+}
 
 
 /* ===========================
@@ -1173,96 +1292,6 @@ nav button{
 }
 .beta-close:hover{ background:#eef5ef; }
 
-/* ===== КРАСИВЫЕ ФАКТЫ ДЛЯ ПОГОННОГО ===== */
-.facts-wrap{
-  margin: 20px 0 8px;
-}
-
-.facts-title{
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-
-.facts{
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 10px;
-}
-
-.fact{
-  background: linear-gradient(135deg, #ffffff, #f3f7f3);
-  border-radius: 14px;
-  padding: 10px 12px;
-  border: 1px solid rgba(226,232,240,0.95);
-  box-shadow: var(--shadow-2);
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-
-.fact-num{
-  font-size: 16px;
-  font-weight: 800;
-  color: #123524;
-}
-
-.fact-label{
-  font-size: 13px;
-  color: var(--muted);
-  line-height: 1.4;
-}
-
-
-/* ===== КНОПКА "ЖУРНАЛ ПОСЕТИТЕЛЕЙ" ===== */
-.journal{
-  margin-top: 22px;
-}
-
-.journal > summary{
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-
-  padding: 10px 16px;
-  border-radius: 999px;
-
-  background: linear-gradient(135deg, var(--leaf1), var(--leaf3));
-  color: #f9fafb;
-  font-weight: 700;
-  font-size: 14px;
-
-  border: 1px solid rgba(209,250,229,0.8);
-  box-shadow: var(--shadow-2);
-
-  cursor: pointer;
-  list-style: none;
-  user-select: none;
-
-  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
-}
-
-.journal > summary::marker,
-.journal > summary::-webkit-details-marker{
-  display: none;  /* убираем стандартный треугольник */
-}
-
-.journal[open] > summary{
-  filter: brightness(1.05);
-  box-shadow: 0 12px 26px rgba(15,23,42,0.25);
-  transform: translateY(-1px);
-}
-
-.journal > summary:hover{
-  filter: brightness(1.03);
-  box-shadow: 0 10px 22px rgba(15,23,42,0.22);
-  transform: translateY(-1px);
-}
-
-
 
 
 </style>
@@ -1495,273 +1524,305 @@ nav button{
     </div>
   </section>
 
-</section>
+  <!-- ====== POGONNOE (новый красивый сторителлинг) ====== -->
+<section id="pogonnoe"
+         class="place-section pogonnoe-section"
+         aria-labelledby="pogonnoe-title">
 
-
-
- <!-- ====== POGONNOE (как Оревичи, но с твоими подписями) ====== -->
-<section id="pogonnoe" class="place-section orevichi-section pogonnoe-section" aria-labelledby="pogonnoe-title">
   <h2 id="pogonnoe-title">Погонное</h2>
 
-  <p class="lead muted" style="margin:6px 0 12px 0">
-    Одна из крупнейших отселённых деревень маршрута: шесть параллельных улиц,
-    история от XVI века до Чернобыля и очень сильное ощущение остановившегося времени.
-  </p>
+  <div class="pogonnoe-inner">
 
-    <!-- КОРОТКО О ПОГОННОМ -->
-<div class="facts-wrap">
-  <div class="facts-title">Коротко о Погонном</div>
+    <!-- HERO / главное фото -->
+    <div class="pogonnoe-hero cell">
+      <img src="assets/thumb/pogonnoe/p0_01.webp"
+           data-full="assets/pogonnoe/p0_01.webp"
+           alt="поганное снаружи"
+           loading="lazy"
+           decoding="async"
+           data-caption="поганное снаружи">
+      <div class="photo-caption">снаружи</div>
+    </div>
 
-  <div class="facts" aria-label="Короткие факты о деревне Погонное">
-    <div class="fact">
-      <div class="fact-num">1516–1526</div>
-      <div class="fact-label">первые документы о земле и Погонном</div>
-    </div>
-    <div class="fact">
-      <div class="fact-num">6 улиц</div>
-      <div class="fact-label">погонная планировка деревни</div>
-    </div>
-    <div class="fact">
-      <div class="fact-num">1053</div>
-      <div class="fact-label">жителя до аварии на ЧАЭС</div>
-    </div>
-    <div class="fact">
-      <div class="fact-num">май 1943</div>
-      <div class="fact-label">деревня сожжена, 13 жителей убиты</div>
-    </div>
-  </div>
-</div>
-
-  <!-- Панорама №1 в самом начале -->
-  <div class="pano-wrap" id="pogonnoe-pano-wrap" style="margin-bottom:14px;">
-    <div class="pano" id="pogonnoe-pano"
-         style="background-image:url('assets/pogonnoe/pano1.webp');"></div>
-    <div class="pano-caption">клуб</div>
-    <div class="pano-controls">
-      <button id="pogonnoe-left" aria-label="Влево">&larr;</button>
-      <button id="pogonnoe-right" aria-label="Вправо">&rarr;</button>
-    </div>
-  </div>
-
-  <!-- STORY-БЛОКИ, как в Оревичах, с текстом из Word и твоими подписями -->
-  <div class="story">
-
-    <!-- 1. Первые упоминания -->
-    <div class="story-item">
-      <div class="story-text">
-        <strong>Первые упоминания (XVI век)</strong>
-        <p>
-          Самые ранние документы связывают Погонное с землями по Припяти.
-          В «Литовской Метрике» есть лист короля Жигимонта от 14 (24) мая 1516 года,
-          где говорится о даровании «землицы нагонной (пагонной)» — это ещё не было
-          селением, а местом прогона и выпаса скота.
-        </p>
-        <p>
-          Памятная запись 1526 года и грамота 1543 года подтверждают владение
-          этими землями Михайловским (Златоверхим) монастырём в Киеве и упоминают
-          Погонное как уже значимое место.
-        </p>
+    <!-- Короткие факты-цифры -->
+    <div class="facts" aria-label="Короткие факты о деревне Погонное">
+      <div class="fact">
+        <div class="fact-num">1516–1526</div>
+        <div class="fact-label">первые документы о земле и Погонном</div>
       </div>
-
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p1.webp"
-             data-full="assets/pogonnoe/p1.webp"
-             alt="дорога в погонное" loading="lazy" decoding="async"
-             data-caption="дорога в погонное">
-        <div class="photo-caption">дорога</div>
+      <div class="fact">
+        <div class="fact-num">6 улиц</div>
+        <div class="fact-label">погонная планировка деревни</div>
+      </div>
+      <div class="fact">
+        <div class="fact-num">1053</div>
+        <div class="fact-label">жителя до аварии на ЧАЭС</div>
+      </div>
+      <div class="fact">
+        <div class="fact-num">май 1943</div>
+        <div class="fact-label">деревня сожжена, 13 жителей убиты</div>
       </div>
     </div>
 
-    <!-- 2. XVII век и время возникновения -->
-    <div class="story-item reverse">
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p2.webp"
-             data-full="assets/pogonnoe/p2.webp"
-             alt="клуб сверху" loading="lazy" decoding="async"
-             data-caption="клуб сверху">
-        <div class="photo-caption">клуб сверху</div>
+    <!-- ИСТОРИЯ -->
+    <div class="story">
+
+      <!-- 1 -->
+      <div class="story-item">
+        <div class="story-text">
+          <strong>Первые упоминания (XVI век)</strong>
+          <p>
+            Самые ранние документы связывают Погонное с землями по Припяти.
+            В «Литовской Метрике» есть лист короля Жигимонта от 14 (24) мая 1516 года,
+            где говорится о даровании «землицы нагонной (пагонной)» — это ещё не было селением,
+            а местом прогона и выпаса скота.
+          </p>
+          <p>
+            Памятная запись 1526 года и грамота 1543 года подтверждают владение
+            этими землями Михайловским (Златоверхим) монастырём в Киеве и упоминают Погонное
+            как уже значимое место. 
+          </p>
+        </div>
+
+        <div class="story-photo cell">
+          <img src="assets/thumb/pogonnoe/p1.webp"
+               data-full="assets/pogonnoe/p1.webp"
+               alt="дорога в погонное"
+               loading="lazy"
+               decoding="async"
+               data-caption="дорога в погонное">
+          <div class="photo-caption">дорога</div>
+        </div>
       </div>
 
-      <div class="story-text">
-        <strong>XVII век и уточнение времени возникновения</strong>
-        <p>
-          В привилегии короля Яна Собеского от 30 марта 1688 года деревня фигурирует
-          как Подгонное (Podhonne) и передаётся во владение дворянину Стефану Криницкому.
-        </p>
-        <p>
-          На основании этих документов исследователи осторожно относят возникновение
-          Погонного к началу–середине XVII века.
-        </p>
+      <!-- 2 -->
+      <div class="story-item reverse">
+        <div class="story-photo cell">
+          <img src="assets/thumb/pogonnoe/p2.webp"
+               data-full="assets/pogonnoe/p2.webp"
+               alt="клуб сверху"
+               loading="lazy"
+               decoding="async"
+               data-caption="клуб сверху"> 
+          <div class="photo-caption">клуб сверху</div>
+        </div>
+
+        <div class="story-text">
+          <strong>XVII век и уточнение времени возникновения</strong>
+          <p>
+            В привилегии короля Яна Собеского от 30 марта 1688 года деревня фигурирует как Подгонное (Podhonne)
+            и передаётся во владение дворянину Стефану Криницскому. 
+            Это один из ключевых документов, по которому исследователи связывают
+            возникновение села с началом–серединой XVII века.
+          </p>
+        </div>
+      </div>
+
+      <!-- 3 -->
+      <div class="story-item">
+        <div class="story-text">
+          <strong>В составе империи и развитие деревни</strong>
+          <p>
+            После 2-го раздела Речи Посполитой (1793 год) Погонное оказалось в составе Российской империи.
+            В 1879 году оно упоминается среди селений Оревичского церковного прихода.
+            В 1889 году здесь отмечено поместье М. В. Ельницкого (123 десятины земли),
+            а в 1894 году проводились мелиоративные работы под руководством И. И. Жилинского.
+            По переписи 1897 года действовали народное училище и хлебозапасный магазин.
+          </p>
+          <p>
+            С 8 декабря 1926 года Погонное стало центром Погонненского сельсовета,
+            а в 1939 году здесь организован колхоз.
+          </p>
+        </div>
+
+        <div class="story-photo cell">
+          <img src="assets/thumb/pogonnoe/p3.webp"
+               data-full="assets/pogonnoe/p3.webp"
+               alt="клуб"
+               loading="lazy"
+               decoding="async"
+               data-caption="клуб">
+          <div class="photo-caption">клуб</div>
+        </div>
+      </div>
+
+      <!-- 4 -->
+      <div class="story-item reverse">
+        <div class="story-photo cell">
+          <img src="assets/thumb/pogonnoe/p5.webp"
+               data-full="assets/pogonnoe/p5.webp"
+               alt="надпись"
+               loading="lazy"
+               decoding="async"
+               data-caption="надпись">
+          <div class="photo-caption">надпись</div>
+        </div>
+
+        <div class="story-text">
+          <strong>К вопросу о названии «Погонное»</strong>
+          <p>
+            В районной прессе обсуждались разные версии происхождения топонима:
+            от «гони» (узкая полоса пашни) и от «пагон» (пастбище/выгон).
+            Но исследователи отмечают, что важнее всего — связь названия с
+            погонным типом дворовой застройки, распространённым после «Устава на валоки» 1557 года.
+          </p>
+          <p>
+            При такой планировке жилые и хозяйственные постройки ставились в одну линию,
+            а улицы тянулись параллельно. Именно поэтому деревня отличалась своей схемой,
+            и в плане имеет 6 параллельных улиц.
+          </p>
+        </div>
+      </div>
+
+      <!-- 5 -->
+      <div class="story-item">
+        <div class="story-text">
+          <strong>Великая Отечественная война</strong>
+          <p>
+            В мае 1943 года оккупанты полностью сожгли деревню и убили 13 жителей.
+            На фронтах и в партизанской борьбе погибли 89 жителей деревень совхоза
+            «Победа социализма». В память о них в 1971 году в центре деревни
+            установили скульптурную композицию.
+          </p>
+        </div>
+
+        <div class="story-photo cell">
+          <img src="assets/thumb/pogonnoe/p14.webp"
+               data-full="assets/pogonnoe/p14.webp"
+               alt="памятник"
+               loading="lazy"
+               decoding="async"
+               data-caption="памятник">
+          <div class="photo-caption">памятник</div>
+        </div>
+      </div>
+
+      <!-- 6 -->
+      <div class="story-item reverse">
+        <div class="story-photo cell">
+          <img src="assets/thumb/pogonnoe/p7.webp"
+               data-full="assets/pogonnoe/p7.webp"
+               alt="библиотека"
+               loading="lazy"
+               decoding="async"
+               data-caption="библиотека">
+          <div class="photo-caption">библиотека</div>
+        </div>
+
+        <div class="story-text">
+          <strong>После войны и эвакуация</strong>
+          <p>
+            Погонное было центром совхоза «Победа социализма»:
+            работали лесопилка, мельница, механическая мастерская,
+            средняя школа, Дом культуры, библиотека, ясли-сад, больница,
+            отделение связи, столовая, хлебозавод и магазины.
+            В 1976 году сюда переселились жители посёлка Боровица.
+          </p>
+          <p>
+            До аварии на Чернобыльской АЭС в деревне проживало 1053 жителя (421 семья).
+          </p>
+        </div>
+      </div>
+
+    </div><!-- /story -->
+
+    <!-- Панорама -->
+    <div class="pano-wrap" id="pogonnoe-pano-wrap" style="margin-top:18px; margin-bottom:18px">
+      <div class="pano-caption">клуб</div>
+      <div class="pano" id="pogonnoe-pano"
+           style="background-image:url('assets/pogonnoe/pano1.webp');"></div>
+      <div class="pano-controls">
+        <button id="pogonnoe-left" aria-label="Влево">&larr;</button>
+        <button id="pogonnoe-right" aria-label="Вправо">&rarr;</button>
       </div>
     </div>
 
-    <!-- 3. Империя и развитие -->
-    <div class="story-item">
-      <div class="story-text">
-        <strong>В составе империи и развитие деревни</strong>
-        <p>
-          После 2-го раздела Речи Посполитой (1793 год) Погонное оказалось
-          в составе Российской империи. В 1879 году оно упоминается среди
-          селений Оревичского церковного прихода.
-        </p>
-        <p>
-          В 1889 году здесь отмечено поместье М.&nbsp;В. Ельницкого
-          (123 десятины земли), а в 1894-м проводились мелиоративные работы
-          под руководством И.&nbsp;И. Жилинского. По переписи 1897 года
-          действовали народное училище и хлебозапасный магазин.
-        </p>
-        <p>
-          С 8 декабря 1926 года Погонное стало центром сельсовета,
-          а в 1939 году здесь организовали колхоз.
-        </p>
-      </div>
-
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p3.webp"
-             data-full="assets/pogonnoe/p3.webp"
-             alt="клуб" loading="lazy" decoding="async"
-             data-caption="клуб">
-        <div class="photo-caption">клуб</div>
-      </div>
-    </div>
-
-    <!-- 4. К вопросу о названии -->
-    <div class="story-item reverse">
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p5.webp"
-             data-full="assets/pogonnoe/p5.webp"
-             alt="надпись" loading="lazy" decoding="async"
-             data-caption="надпись">
-        <div class="photo-caption">надпись</div>
-      </div>
-
-      <div class="story-text">
-        <strong>К вопросу о названии «Погонное»</strong>
-        <p>
-          В районной прессе обсуждались разные версии: от «гони» (узкая полоса пашни)
-          и от «пагон» (пастбище, выгон). Но исследователи обращают внимание
-          на погонный тип дворовой застройки, распространившийся после
-          «Устава на валоки» 1557 года.
-        </p>
-        <p>
-          При такой планировке жилые и хозяйственные постройки ставились в одну линию,
-          а улицы вытягивались параллельными полосами. Погонное отличается именно
-          такой схемой и в плане состоит из шести параллельных улиц.
-        </p>
-      </div>
-    </div>
-
-    <!-- 5. Война -->
-    <div class="story-item">
-      <div class="story-text">
-        <strong>Великая Отечественная война</strong>
-        <p>
-          В мае 1943 года оккупанты полностью сожгли деревню и убили 13 жителей.
-          На фронтах и в партизанской борьбе погибли 89 жителей деревень
-          совхоза «Победа социализма».
-        </p>
-        <p>
-          В 1971 году в центре Погонного установили скульптурную композицию
-          в память о погибших.
-        </p>
-      </div>
-
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p14.webp"
-             data-full="assets/pogonnoe/p14.webp"
-             alt="памятник" loading="lazy" decoding="async"
-             data-caption="памятник">
-        <div class="photo-caption">памятник</div>
-      </div>
-    </div>
-
-    <!-- 6. После войны и до Чернобыля -->
-    <div class="story-item reverse">
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p7.webp"
-             data-full="assets/pogonnoe/p7.webp"
-             alt="библиотека" loading="lazy" decoding="async"
-             data-caption="библиотека">
-        <div class="photo-caption">библиотека</div>
-      </div>
-
-      <div class="story-text">
-        <strong>После войны и эвакуация</strong>
-        <p>
-          Погонное было центром совхоза «Победа социализма»: работали лесопилка,
-          мельница, механическая мастерская, школа, Дом культуры, библиотека,
-          ясли-сад, больница, столовая, хлебозавод и магазины. В 1976 году сюда
-          переселились жители посёлка Боровица.
-        </p>
-        <p>
-          До аварии на Чернобыльской АЭС в деревне проживало 1053 жителя (421 семья).
-          После аварии Погонное было отселено.
-        </p>
-      </div>
-    </div>
-
-  </div><!-- /story -->
-
-
-
-  <!-- ГАЛЕРЕЯ С ПРАВИЛЬНЫМИ НАЗВАНИЯМИ -->
-  <h3 class="gallery-title">Фотогалерея Погонного</h3>
+  <!-- Полная галерея (все-все фотки, как требовал) -->
+  <div class="gallery-title">Фотогалерея Погонного</div>
   <p class="gallery-note">Нажми на фото, чтобы открыть в полном размере.</p>
 
   <div class="grid" aria-live="polite">
     <div class="cell"><img src="assets/thumb/pogonnoe/p0_01.webp" data-full="assets/pogonnoe/p0_01.webp" alt="поганное снаружи" loading="lazy" decoding="async" data-caption="поганное снаружи"><div class="photo-caption">снаружи</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p0_02.webp" data-full="assets/pogonnoe/p0_02.webp" alt="поганное снаружи" loading="lazy" decoding="async" data-caption="поганное снаружи"><div class="photo-caption">снаружи</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p1.webp" data-full="assets/pogonnoe/p1.webp" alt="дорога в погонное" loading="lazy" decoding="async" data-caption="дорога в погонное"><div class="photo-caption">дорога</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p2.webp" data-full="assets/pogonnoe/p2.webp" alt="клуб сверху" loading="lazy" decoding="async" data-caption="клуб сверху"><div class="photo-caption">клуб сверху</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p3.webp" data-full="assets/pogonnoe/p3.webp" alt="клуб" loading="lazy" decoding="async" data-caption="клуб"><div class="photo-caption">клуб</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p4.webp" data-full="assets/pogonnoe/p4.webp" alt="клуб" loading="lazy" decoding="async" data-caption="клуб"><div class="photo-caption">клуб</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p5.webp" data-full="assets/pogonnoe/p5.webp" alt="надпись" loading="lazy" decoding="async" data-caption="надпись"><div class="photo-caption">надпись</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p5_01.webp" data-full="assets/pogonnoe/p5_01.webp" alt="надпись" loading="lazy" decoding="async" data-caption="надпись"><div class="photo-caption">надпись</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6.webp" data-full="assets/pogonnoe/p6.webp" alt="список людей" loading="lazy" decoding="async" data-caption="список людей проживающих - встреча"><div class="photo-caption">список</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6_01.webp" data-full="assets/pogonnoe/p6_01.webp" alt="спорт зал" loading="lazy" decoding="async" data-caption="спорт зал"><div class="photo-caption">спорт зал</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6_02.webp" data-full="assets/pogonnoe/p6_02.webp" alt="спорт зал" loading="lazy" decoding="async" data-caption="спорт зал"><div class="photo-caption">спорт зал</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6_03.webp" data-full="assets/pogonnoe/p6_03.webp" alt="лестница" loading="lazy" decoding="async" data-caption="лестница"><div class="photo-caption">лестница</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6_04.webp" data-full="assets/pogonnoe/p6_04.webp" alt="пианино" loading="lazy" decoding="async" data-caption="пианино"><div class="photo-caption">пианино</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6_05.webp" data-full="assets/pogonnoe/p6_05.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6_07.webp" data-full="assets/pogonnoe/p6_07.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6_08.webp" data-full="assets/pogonnoe/p6_08.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6_09.webp" data-full="assets/pogonnoe/p6_09.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p6_10.webp" data-full="assets/pogonnoe/p6_10.webp" alt="кухня" loading="lazy" decoding="async" data-caption="кухня"><div class="photo-caption">кухня</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p7.webp" data-full="assets/pogonnoe/p7.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p8.webp" data-full="assets/pogonnoe/p8.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p9.webp" data-full="assets/pogonnoe/p9.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p10.webp" data-full="assets/pogonnoe/p10.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p11.webp" data-full="assets/pogonnoe/p11.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p12.webp" data-full="assets/pogonnoe/p12.webp" alt="игрушка" loading="lazy" decoding="async" data-caption="игрушка"><div class="photo-caption">игрушка</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p13.webp" data-full="assets/pogonnoe/p13.webp" alt="игрушка" loading="lazy" decoding="async" data-caption="игрушка"><div class="photo-caption">игрушка</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p14.webp" data-full="assets/pogonnoe/p14.webp" alt="памятник" loading="lazy" decoding="async" data-caption="памятник"><div class="photo-caption">памятник</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p15.webp" data-full="assets/pogonnoe/p15.webp" alt="старый мотоцикл" loading="lazy" decoding="async" data-caption="старый мотоцикл"><div class="photo-caption">старый мотоцикл</div></div>
-    <div class="cell"><img src="assets/thumb/pogonnoe/p16.webp" data-full="assets/pogonnoe/p16.webp" alt="металлолом" loading="lazy" decoding="async" data-caption="металлолом"><div class="photo-caption">металлолом</div></div>
+<div class="cell"><img src="assets/thumb/pogonnoe/p0_02.webp" data-full="assets/pogonnoe/p0_02.webp" alt="поганное снаружи" loading="lazy" decoding="async" data-caption="поганное снаружи"><div class="photo-caption">снаружи</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p1.webp" data-full="assets/pogonnoe/p1.webp" alt="дорога в погонное" loading="lazy" decoding="async" data-caption="дорога в погонное"><div class="photo-caption">дорога</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p2.webp" data-full="assets/pogonnoe/p2.webp" alt="клуб сверху" loading="lazy" decoding="async" data-caption="клуб сверху"><div class="photo-caption">клуб сверху</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p3.webp" data-full="assets/pogonnoe/p3.webp" alt="клуб" loading="lazy" decoding="async" data-caption="клуб"><div class="photo-caption">клуб</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p4.webp" data-full="assets/pogonnoe/p4.webp" alt="клуб" loading="lazy" decoding="async" data-caption="клуб"><div class="photo-caption">клуб</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p5.webp" data-full="assets/pogonnoe/p5.webp" alt="надпись" loading="lazy" decoding="async" data-caption="надпись"><div class="photo-caption">надпись</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p5_01.webp" data-full="assets/pogonnoe/p5_01.webp" alt="надпись" loading="lazy" decoding="async" data-caption="надпись"><div class="photo-caption">надпись</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6.webp" data-full="assets/pogonnoe/p6.webp" alt="список людей" loading="lazy" decoding="async" data-caption="список людей проживающих - встреча"><div class="photo-caption">список</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6_01.webp" data-full="assets/pogonnoe/p6_01.webp" alt="спорт зал" loading="lazy" decoding="async" data-caption="спорт зал"><div class="photo-caption">спорт зал</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6_02.webp" data-full="assets/pogonnoe/p6_02.webp" alt="спорт зал" loading="lazy" decoding="async" data-caption="спорт зал"><div class="photo-caption">спорт зал</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6_03.webp" data-full="assets/pogonnoe/p6_03.webp" alt="лестница" loading="lazy" decoding="async" data-caption="лестница"><div class="photo-caption">лестница</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6_04.webp" data-full="assets/pogonnoe/p6_04.webp" alt="пианино" loading="lazy" decoding="async" data-caption="пианино"><div class="photo-caption">пианино</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6_05.webp" data-full="assets/pogonnoe/p6_05.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6_07.webp" data-full="assets/pogonnoe/p6_07.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6_08.webp" data-full="assets/pogonnoe/p6_08.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6_09.webp" data-full="assets/pogonnoe/p6_09.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p6_10.webp" data-full="assets/pogonnoe/p6_10.webp" alt="кухня" loading="lazy" decoding="async" data-caption="кухня"><div class="photo-caption">кухня</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p7.webp" data-full="assets/pogonnoe/p7.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p8.webp" data-full="assets/pogonnoe/p8.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p9.webp" data-full="assets/pogonnoe/p9.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p10.webp" data-full="assets/pogonnoe/p10.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p11.webp" data-full="assets/pogonnoe/p11.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p12.webp" data-full="assets/pogonnoe/p12.webp" alt="игрушка" loading="lazy" decoding="async" data-caption="игрушка"><div class="photo-caption">игрушка</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p13.webp" data-full="assets/pogonnoe/p13.webp" alt="игрушка" loading="lazy" decoding="async" data-caption="игрушка"><div class="photo-caption">игрушка</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p14.webp" data-full="assets/pogonnoe/p14.webp" alt="памятник" loading="lazy" decoding="async" data-caption="памятник"><div class="photo-caption">памятник</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p15.webp" data-full="assets/pogonnoe/p15.webp" alt="старый мотоцикл" loading="lazy" decoding="async" data-caption="старый мотоцикл"><div class="photo-caption">старый мотоцикл</div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/p16.webp" data-full="assets/pogonnoe/p16.webp" alt="металлолом" loading="lazy" decoding="async" data-caption="металлолом"><div class="photo-caption">металлолом</div></div>
+
   </div>
 
-  <!-- ЖУРНАЛ — подкатегория, которую можно свернуть -->
-  <details class="journal" style="margin-top:18px;">
-    <summary>
-      Журнал посетителей (развернуть / свернуть)
-    </summary>
-
+  <!-- Журнал посетителей как был -->
+  <div class="journal" style="margin-top:16px">
     <strong>Журнал посетителей</strong>
-    <div class="grid" style="margin-top:10px;">
-      <div class="cell"><img src="assets/thumb/pogonnoe/journal/j1.webp" data-full="assets/pogonnoe/journal/j1.webp" loading="lazy" decoding="async" alt=""></div>
-      <div class="cell"><img src="assets/thumb/pogonnoe/journal/j2.webp" data-full="assets/pogonnoe/journal/j2.webp" loading="lazy" decoding="async" alt=""></div>
-      <div class="cell"><img src="assets/thumb/pogonnoe/journal/j3.webp" data-full="assets/pogonnoe/journal/j3.webp" loading="lazy" decoding="async" alt=""></div>
-      <div class="cell"><img src="assets/thumb/pogonnoe/journal/j4.webp" data-full="assets/pogonnoe/journal/j4.webp" loading="lazy" decoding="async" alt=""></div>
-      <div class="cell"><img src="assets/thumb/pogonnoe/journal/j5.webp" data-full="assets/pogonnoe/journal/j5.webp" loading="lazy" decoding="async" alt=""></div>
-      <div class="cell"><img src="assets/thumb/pogonnoe/journal/j6.webp" data-full="assets/pogonnoe/journal/j6.webp" loading="lazy" decoding="async" alt=""></div>
-      <div class="cell"><img src="assets/thumb/pogonnoe/journal/j7.webp" data-full="assets/pogonnoe/journal/j7.webp" loading="lazy" decoding="async" alt=""></div>
-      <div class="cell"><img src="assets/thumb/pogonnoe/journal/j8.webp" data-full="assets/pogonnoe/journal/j8.webp" loading="lazy" decoding="async" alt=""></div>
+    <div class="grid" style="margin-top:10px">
+<div class="cell"><img src="assets/thumb/pogonnoe/journal/j1.webp" data-full="assets/pogonnoe/journal/j1.webp" loading="lazy" decoding="async" alt="" data-caption=""><div class="photo-caption"></div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/journal/j2.webp" data-full="assets/pogonnoe/journal/j2.webp" loading="lazy" decoding="async" alt="" data-caption=""><div class="photo-caption"></div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/journal/j3.webp" data-full="assets/pogonnoe/journal/j3.webp" loading="lazy" decoding="async" alt="" data-caption=""><div class="photo-caption"></div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/journal/j4.webp" data-full="assets/pogonnoe/journal/j4.webp" loading="lazy" decoding="async" alt="" data-caption=""><div class="photo-caption"></div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/journal/j5.webp" data-full="assets/pogonnoe/journal/j5.webp" loading="lazy" decoding="async" alt="" data-caption=""><div class="photo-caption"></div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/journal/j6.webp" data-full="assets/pogonnoe/journal/j6.webp" loading="lazy" decoding="async" alt="" data-caption=""><div class="photo-caption"></div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/journal/j7.webp" data-full="assets/pogonnoe/journal/j7.webp" loading="lazy" decoding="async" alt="" data-caption=""><div class="photo-caption"></div></div>
+
+<div class="cell"><img src="assets/thumb/pogonnoe/journal/j8.webp" data-full="assets/pogonnoe/journal/j8.webp" loading="lazy" decoding="async" alt="" data-caption=""><div class="photo-caption"></div></div>
+
     </div>
-  </details>
+  </div>
 
 </section>
-
-
-
 
 
   <!-- ====== SCHOOL ====== -->
@@ -2387,8 +2448,7 @@ let currentIndex = 0;
 let pendingIndex = null; // какой кадр сейчас должен быть показан
 
 // Открытие модалки — максимально простой и надёжный вариант
-// Открытие модалки — с предварительной загрузкой, но без багов на телефонах
-async function openModal(index){
+function openModal(index) {
   const item = gallery[index];
   if (!item) return;
 
@@ -2398,54 +2458,33 @@ async function openModal(index){
   const src = item.src;
   const caption = item.caption || "";
 
-  // прячем модалку, пока готовим кадр
-  modal.classList.remove("show");
-  modal.setAttribute("aria-hidden", "true");
-  document.body.classList.remove("modal-open");
-
-  // убираем старый кадр
+  // Скрываем картинку, чтобы не мелькала старая
   modalImg.style.opacity = "0";
   modalCaption.textContent = "";
 
-  // создаём "черновой" объект Image для фоновой загрузки
-  const pre = new Image();
-
-  // промис, который точно отработает и при onload, и при onerror
-  const waitLoad = new Promise(resolve => {
-    pre.onload  = () => resolve();
-    pre.onerror = () => resolve();
-  });
-
-  // СНАЧАЛА навешиваем обработчики, ПОТОМ задаём src
-  pre.src = src;
-
-  // если decode есть — пробуем его, если он глючит/падает — ждём обычный onload
-  if ('decode' in pre) {
-    try {
-      await pre.decode();
-    } catch (e) {
-      await waitLoad;
-    }
-  } else {
-    await waitLoad;
-  }
-
-  // если за это время пользователь уже открыл другое фото / закрыл модалку
-  if (pendingIndex !== index) return;
-
-  // теперь подменяем реальный <img> в модалке
-  modalImg.src = src;
-  modalCaption.textContent = caption;
-
-  // делаем картинку видимой ДО показа модалки
-  modalImg.style.opacity = "1";
-
-  // и только теперь показываем модалку — кадр и рамка появляются вместе
+  // Показываем модалку сразу, чтобы на телефоне было видно, что что-то происходит
   modal.classList.add("show");
   modal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
-}
 
+  // Когда новая картинка загрузится — плавно проявляем
+  modalImg.onload = () => {
+    // Если пока грузилось, пользователь уже переключил фото — выходим
+    if (pendingIndex !== index) return;
+
+    modalImg.style.opacity = "1";
+    modalCaption.textContent = caption;
+    modalImg.onload = null; // чистим обработчик
+  };
+
+  // Если уже эта же самая картинка — не ждём onload
+  if (modalImg.src === src) {
+    modalImg.style.opacity = "1";
+    modalCaption.textContent = caption;
+  } else {
+    modalImg.src = src;
+  }
+}
 
 function closeModal() {
   pendingIndex = null;
