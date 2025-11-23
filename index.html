@@ -944,6 +944,19 @@ main{
   padding-bottom: clamp(64px, 8vh, 120px);
 }
 
+/* чтобы топбар не перекрывал "Карту" на телефонах */
+@media (max-width: 768px){
+  main{
+    margin-top: calc(120px + env(safe-area-inset-top));
+  }
+}
+
+@media (max-width: 480px){
+  main{
+    margin-top: calc(135px + env(safe-area-inset-top));
+  }
+}
+
 /* заголовки/текст — плавные размеры под любой экран */
 h2{
   font-size: clamp(18px, 2.2vw, 28px);
