@@ -693,9 +693,15 @@
 }
 
 .gallery-title{
-  margin:18px 0 10px;
+  margin:18px 0 8px;   /* можно 8–10px, как тебе нравится */
   font-weight:800;
   color:#0f172a;
+}
+
+.gallery-note{
+  font-size:14px;
+  color: var(--muted);
+  margin:0 0 10px;     /* единый отступ вниз */
 }
 .school-section .gallery-note{
   font-size:14px;
@@ -2150,17 +2156,11 @@ nav button{
   <section id="orevichi" class="place-section orevichi-section" aria-labelledby="orevichi-title">
     <h2 id="orevichi-title">Оревичи</h2>
 
-<div class="pogonnoe-text-card">
 
-        <div class="gallery-title">Следы древности</div>
-  <p class="gallery-note">В письменных источниках деревня известна с начала XVI века как селение Аревичи в Киевском воеводстве Великого княжества Литовского. 
-На момент аварии на ЧАЭС в Оревичах работали клуб, контора, школа, аптека, детский сад, магазин, столовая, проживало 557 человек.</p>
-
-
-    </div>
 
     <div class="story" aria-label="История и места Оревичей">
 
+      
 
   <!-- Панорама Оревичей -->
 <div class="pano-wrap" id="orevichi-pano-wrap" style="margin-top:18px; margin-bottom:18px">
@@ -2173,6 +2173,13 @@ nav button{
   </div>
 </div>
 
+<div class="pogonnoe-text-card">
+
+        <div class="gallery-title">Фотографии Оревичи</div>
+  <p class="gallery-note">Несколько ракурсов и деталей Оревич — листай и открывай каждое фото.</p>
+
+
+    </div>
 
      <!-- 1 -->
 <div class="story-item">
@@ -2182,6 +2189,7 @@ nav button{
 
 
  <div class="story-photo cell">
+  
     <img src="assets/thumb/orevichi/o5.webp"
          data-full="assets/orevichi/o5.webp"
          alt="Надпись в Оревичах" loading="lazy" decoding="async"
