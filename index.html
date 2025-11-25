@@ -377,7 +377,9 @@
   }
 
   .photo-caption{
-    position:absolute;
+
+    display: none !important;
+    /* position:absolute;
     bottom:10px;left:50%;
     transform:translateX(-50%) translateY(8px);
     background: rgba(15,23,42,0.8);
@@ -389,7 +391,7 @@
     transition:.22s;
     font-weight:500;
     backdrop-filter: blur(4px);
-    border:1px solid rgba(55,65,81,0.7);
+    border:1px solid rgba(55,65,81,0.7); */
   }
 
   .cell:hover .photo-caption{
@@ -439,7 +441,11 @@
 }
 
   .modal-caption{
-    position:absolute;
+
+    display: none !important;
+
+
+    /* position:absolute;
     bottom:14px;left:50%;
     transform:translateX(-50%);
     background: rgba(15,23,42,0.78);
@@ -451,7 +457,7 @@
     font-size:14px;
     font-weight:500;
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(75,85,99,0.8);
+    border: 1px solid rgba(75,85,99,0.8); */
   }
 
   .modal-arrow{
@@ -1023,8 +1029,8 @@ nav button{
     transform: translateX(-50%) translateY(0);
   }
   .pano-caption{
-    opacity: 1;
-    transform: translateX(-50%);
+    /* opacity: 1;
+    transform: translateX(-50%); */
   }
   /* убираем эффекты hover, чтобы не было “залипаний” */
   .cell:hover img{ transform: none; }
@@ -1044,6 +1050,14 @@ nav button{
     width: 52px; height: 52px;
     font-size: 18px;
   }
+}
+
+.photo-caption {
+  display: none !important;
+}
+
+.pano-caption {
+  display: none !important;
 }
 
 /* ТВ / очень большие экраны */
@@ -1338,6 +1352,66 @@ nav button{
 
 
 
+/* ОДИНОЧНАЯ ТЕКСТОВАЯ КАРТОЧКА ДЛЯ ПОГОННОГО */
+.pogonnoe-section .pogonnoe-text-card{
+  margin-top: 16px;
+
+  background: linear-gradient(135deg, #ffffff, #f7faf7);
+  border: 1px solid rgba(226,232,240,0.95);
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: var(--shadow-2);
+
+  font-size: 15px;
+  line-height: 1.6;
+  color: #111827;
+  text-align: justify;
+}
+
+/* заголовки внутри */
+.pogonnoe-section .pogonnoe-text-card strong{
+  display: block;
+  font-size: 16px;
+  color: #0f3b25;
+  margin-bottom: 6px;
+}
+
+/* отступы между абзацами */
+.pogonnoe-section .pogonnoe-text-card p + p{
+  margin-top: 8px;
+}
+
+/* отступ между блоками с заголовком */
+.pogonnoe-section .pogonnoe-text-card p + strong{
+  margin-top: 14px;
+}
+
+
+/* ---------- PRIPYAT LAYOUT ---------- */
+/* ---------- PRIPYAT HERO (Припять) ---------- */
+.privat-section .privat-hero{
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  overflow: hidden;
+  margin: 8px 0 16px;
+  box-shadow: var(--shadow-2);
+  border: 1px solid rgba(226,232,240,0.95);
+  flex: 1 1 100%;
+}
+
+.privat-section .privat-hero img{
+  width: 100%;
+  height: 420px;       /* можешь поменять под себя */
+  object-fit: cover;
+  display: block;
+}
+
+@media (max-width: 900px){
+  .privat-section .privat-hero img{
+    height: 240px;
+  }
+}
 
 
 
@@ -1387,10 +1461,11 @@ nav button{
     <nav id="nav" role="navigation" aria-label="Навигация по секциям">
       <button data-target="map-section" class="active">Карта</button>
       <button data-target="museum">Музей</button>
+      <button data-target="school">б.н.п. Бабчин</button>
       <button data-target="dronki">Дроньки</button>
       <button data-target="pogonnoe">Погонное</button>
-      <button data-target="school">Старая школа</button>
       <button data-target="orevichi">Оревичи</button>
+      <button data-target="privat">Припять</button>
     </nav>
   </div>
 </header>
@@ -1437,7 +1512,7 @@ nav button{
       <!-- Hotspots: позиции сохранены из архива -->
       <button class="hotspot" data-target="museum" style="left:51.8%;top:15.5%;" title="Музей (Бабчины)">
         M
-        <span class="dot-label">Музей (Бабчины)</span>
+        <span class="dot-label">Музей в б.н.п. Бабчин</span>
       </button>
       <button class="hotspot" data-target="dronki" style="left:43.3%;top:41.2%;" title="Дроньки">
         Д
@@ -1455,12 +1530,19 @@ nav button{
         O
         <span class="dot-label">Оревичи</span>
       </button>
+
+      <button class="hotspot" data-target="privat" style="left:35%;top:54%;" title="р. Припять">
+        Р
+        <span class="dot-label">р. Припять</span>
+      </button>
     </div>
+
+    
   </section>
 
   <!-- ====== MUSEUM (панорама + сетка) ====== -->
   <section id="museum" class="place-section" aria-labelledby="museum-title">
-    <h2 id="museum-title">Музей (Бабчины)</h2>
+    <h2 id="museum-title">Музей в б.н.п. Бабчин</h2>
 
     <div class="pano-wrap" id="museum-pano-wrap" aria-hidden="false" style="margin-bottom:12px">
       <div class="pano" id="museum-pano" style="background-image:url('assets/museum_pano.webp');"></div>
@@ -1505,7 +1587,6 @@ nav button{
 <div class="cell"><img src="assets/thumb/museum/m9.webp" data-full="assets/museum/m9.webp" alt="литература" loading="lazy" decoding="async" data-caption="литература"><div class="photo-caption">литература</div></div>
 <div class="cell"><img src="assets/thumb/museum/m10.webp" data-full="assets/museum/m10.webp" alt="музей стенд" loading="lazy" decoding="async" data-caption="музей стенд сотрудник"><div class="photo-caption">музей стенд</div></div>
 <div class="cell"><img src="assets/thumb/museum/m11.webp" data-full="assets/museum/m11.webp" alt="оборудование" loading="lazy" decoding="async" data-caption="оборудование и приборы"><div class="photo-caption">оборудование</div></div>
-<div class="cell"><img src="assets/thumb/museum/m12.webp" data-full="assets/museum/m12.webp" alt="памятник" loading="lazy" decoding="async" data-caption="памятник ВОВ напротив музея"><div class="photo-caption">памятник</div></div>
 <div class="cell"><img src="assets/thumb/museum/m13.webp" data-full="assets/museum/m13.webp" alt="прылады працы" loading="lazy" decoding="async" data-caption="прылады працы"><div class="photo-caption">прылады працы</div></div>
 <div class="cell"><img src="assets/thumb/museum/m14.webp" data-full="assets/museum/m14.webp" alt="растения" loading="lazy" decoding="async" data-caption="растения и грибы"><div class="photo-caption">растения</div></div>
 <div class="cell"><img src="assets/thumb/museum/m15.webp" data-full="assets/museum/m15.webp" alt="СИЧ" loading="lazy" decoding="async" data-caption="СИЧ"><div class="photo-caption">СИЧ</div></div>
@@ -1513,10 +1594,84 @@ nav button{
 <div class="cell"><img src="assets/thumb/museum/m17.webp" data-full="assets/museum/m17.webp" alt="форма" loading="lazy" decoding="async" data-caption="форма одежды работника"><div class="photo-caption">форма</div></div>
 <div class="cell"><img src="assets/thumb/museum/m18.webp" data-full="assets/museum/m18.webp" alt="маршруты" loading="lazy" decoding="async" data-caption="экскурсионные маршруты"><div class="photo-caption">маршруты</div></div>
 <div class="cell"><img src="assets/thumb/museum/m19.webp" data-full="assets/museum/m19.webp" alt="газета" loading="lazy" decoding="async" data-caption="экспозиция старой газеты"><div class="photo-caption">старая газета</div></div>
-<div class="cell"><img src="assets/thumb/museum/m20.webp" data-full="assets/museum/m20.webp" alt="напротив музея" loading="lazy" decoding="async" data-caption="напротив музея"><div class="photo-caption">напротив музея</div></div>
 
     </div>
   </section>
+
+<!-- ====== SCHOOL ====== -->
+<section id="school" class="place-section orevichi-section school-section" aria-labelledby="school-title">
+  <h2 id="school-title">б.н.п. Бабчин</h2>
+
+  <!-- Большое фото-хедер (любое самое “главное”) -->
+  <div class="school-hero cell">
+    <img src="assets/thumb/school/s1.webp" data-full="assets/school/s1.webp"
+         alt="Старая школа в Бабчине" loading="lazy" decoding="async"
+         data-caption="Старая школа в Бабчине">
+  </div>
+
+  <!-- Текст одним блоком-цитатой
+  <div class="quote-wrap" role="note" aria-label="Свидетельство очевидца">
+    <div class="quote-head">
+      <div class="who">Смольский Владимир говорит:</div>
+      <div class="badge">воспоминания семьи</div>
+    </div>
+       можно свернуть/развернуть без JS -->
+    <!-- <details class="quote-details" open>
+      <summary>Показать / скрыть рассказ</summary>
+      <div class="quote-text">
+        <p>
+          текст
+        </p>
+
+        <p>
+          текст
+        </p>
+
+        <p>
+          текст
+        </p>
+
+        <p>
+          текст
+        </p>
+      </div>
+    </details>
+  </div> -->
+
+  <!-- Отдельная галерея без привязки к абзацам -->
+  <div class="gallery-title">Фотографии школы и места</div>
+  <div class="gallery-note">
+    Здесь собраны разные ракурсы и детали здания — листай и открывай каждую фотографию.
+  </div>
+
+  <div class="grid" aria-label="Галерея школы Бабчина">
+<div class="cell"><img src="assets/thumb/school/s2.webp" data-full="assets/school/s2.webp" alt="Школа, вид сбоку" loading="lazy" decoding="async" data-caption="Школа, вид сбоку"><div class="photo-caption">вид сбоку</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s3.webp" data-full="assets/school/s3.webp" alt="Окна старой школы" loading="lazy" decoding="async" data-caption="Окна старой школы"><div class="photo-caption">окна</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s4.webp" data-full="assets/school/s4.webp" alt="Кирпичная кладка" loading="lazy" decoding="async" data-caption="Кирпичная кладка"><div class="photo-caption">кладка</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s5.webp" data-full="assets/school/s5.webp" alt="Внутри старой школы" loading="lazy" decoding="async" data-caption="Внутри старой школы"><div class="photo-caption">внутри</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s7.webp" data-full="assets/school/s7.webp" alt="Новая школа рядом" loading="lazy" decoding="async" data-caption="Новая школа рядом со старой"><div class="photo-caption">новая рядом</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s8.webp" data-full="assets/school/s8.webp" alt="Двери новой школы" loading="lazy" decoding="async" data-caption="Двери новой школы"><div class="photo-caption">двери</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s9.webp" data-full="assets/school/s9.webp" alt="Внутри новой школы" loading="lazy" decoding="async" data-caption="Внутри новой школы"><div class="photo-caption">внутри новой</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s10.webp" data-full="assets/school/s10.webp" alt="Надпись" loading="lazy" decoding="async" data-caption="Надпись в новой школе"><div class="photo-caption">надпись</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s11.webp" data-full="assets/school/s11.webp" alt="Территория" loading="lazy" decoding="async" data-caption="Территория возле школы"><div class="photo-caption">территория</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s12.webp" data-full="assets/school/s12.webp" alt="Детали рядом" loading="lazy" decoding="async" data-caption="Детали возле школы"><div class="photo-caption">детали</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s13.webp" data-full="assets/school/s13.webp" alt="Хижина рядом" loading="lazy" decoding="async" data-caption="Хижина рядом со школой"><div class="photo-caption">хижина</div></div>
+
+  </div>
+</section>
+  
+
+
 
   <!-- ====== DRONKI ====== -->
   <section id="dronki" class="place-section" aria-labelledby="dronki-title">
@@ -1547,8 +1702,6 @@ nav button{
       <div class="cell"><img src="assets/thumb/dronki/d8.webp" data-full="assets/dronki/d8.webp" alt="плакат" loading="lazy" decoding="async" data-caption="плакат культура поведения"> <div class="photo-caption">плакат</div></div>
       <div class="cell"><img src="assets/thumb/dronki/d9_01.webp" data-full="assets/dronki/d9_01.webp" alt="мотоциклы" loading="lazy" decoding="async" data-caption="мотоциклы за школой"> <div class="photo-caption">мотоциклы</div></div>
       <div class="cell"><img src="assets/thumb/dronki/d9_02.webp" data-full="assets/dronki/d9_02.webp" alt="мотоциклы" loading="lazy" decoding="async" data-caption="мотоциклы за школой"> <div class="photo-caption">мотоциклы</div></div>
-      <div class="cell"><img src="assets/thumb/dronki/d10.webp" data-full="assets/dronki/d10.webp" alt="территория" loading="lazy" decoding="async" data-caption="территория охраняемая птиц"> <div class="photo-caption">территория</div></div>
-      <div class="cell"><img src="assets/thumb/dronki/d11.webp" data-full="assets/dronki/d11.webp" alt="кпп" loading="lazy" decoding="async" data-caption="кпп"> <div class="photo-caption">кпп</div></div>
       <div class="cell"><img src="assets/thumb/dronki/d12.webp" data-full="assets/dronki/d12.webp" alt="кпп" loading="lazy" decoding="async" data-caption="кпп"> <div class="photo-caption">кпп</div></div>
 
     </div>
@@ -1628,7 +1781,7 @@ nav button{
   <div class="story">
 
     <!-- 1 -->
-    <div class="story-item">
+    <div class="pogonnoe-text-card">
       <div class="story-text">
         <strong>Первые упоминания (XVI век)</strong>
         <p>
@@ -1644,24 +1797,11 @@ nav button{
         </p>
       </div>
 
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p1.webp"
-             data-full="assets/pogonnoe/p1.webp"
-             alt="дорога в погонное" loading="lazy" decoding="async"
-             data-caption="дорога в погонное">
-        <div class="photo-caption">дорога</div>
-      </div>
     </div>
 
     <!-- 2 -->
-    <div class="story-item reverse">
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p2.webp"
-             data-full="assets/pogonnoe/p2.webp"
-             alt="клуб сверху" loading="lazy" decoding="async"
-             data-caption="клуб сверху"> 
-        <div class="photo-caption">клуб сверху</div>
-      </div>
+    <div class="pogonnoe-text-card">
+      
 
       <div class="story-text">
         <strong>XVII век и уточнение времени возникновения</strong>
@@ -1675,7 +1815,7 @@ nav button{
     </div>
 
     <!-- 3 -->
-    <div class="story-item">
+    <div class="pogonnoe-text-card">
       <div class="story-text">
         <strong>В составе империи и развитие деревни</strong>
         <p>
@@ -1691,24 +1831,11 @@ nav button{
         </p>
       </div>
 
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p13.webp"
-             data-full="assets/pogonnoe/p13.webp"
-             alt="клуб" loading="lazy" decoding="async"
-             data-caption="клуб">
-        <div class="photo-caption">клуб</div>
-      </div>
     </div>
 
     <!-- 4 -->
-    <div class="story-item reverse">
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p5.webp"
-             data-full="assets/pogonnoe/p5.webp"
-             alt="надпись" loading="lazy" decoding="async"
-             data-caption="надпись">
-        <div class="photo-caption">надпись</div>
-      </div>
+    <div class="pogonnoe-text-card">
+      
 
       <div class="story-text">
         <strong>К вопросу о названии «Погонное»</strong>
@@ -1727,7 +1854,7 @@ nav button{
     </div>
 
     <!-- 5 -->
-    <div class="story-item">
+    <div class="pogonnoe-text-card">
       <div class="story-text">
         <strong>Великая Отечественная война</strong>
         <p>
@@ -1737,25 +1864,10 @@ nav button{
           установили скульптурную композицию.
         </p>
       </div>
-
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p14.webp"
-             data-full="assets/pogonnoe/p14.webp"
-             alt="памятник" loading="lazy" decoding="async"
-             data-caption="памятник">
-        <div class="photo-caption">памятник</div>
-      </div>
     </div>
 
     <!-- 6 -->
-    <div class="story-item reverse">
-      <div class="story-photo cell">
-        <img src="assets/thumb/pogonnoe/p7.webp"
-             data-full="assets/pogonnoe/p7.webp"
-             alt="библиотека" loading="lazy" decoding="async"
-             data-caption="библиотека">
-        <div class="photo-caption">библиотека</div>
-      </div>
+    <div class="pogonnoe-text-card">
 
       <div class="story-text">
         <strong>После войны и эвакуация</strong>
@@ -1790,6 +1902,10 @@ nav button{
   <p class="gallery-note">Нажми на фото, чтобы открыть в полном размере.</p>
 
   <div class="grid" aria-live="polite">
+
+
+
+
     <div class="cell">
       <img src="assets/thumb/pogonnoe/p0_01.webp"
            data-full="assets/pogonnoe/p0_01.webp"
@@ -1815,6 +1931,15 @@ nav button{
       <div class="photo-caption">клуб</div>
     </div>
 
+    <div class="story-photo cell">
+        <img src="assets/thumb/pogonnoe/p2.webp"
+             data-full="assets/pogonnoe/p2.webp"
+             alt="дорога в погонное" loading="lazy" decoding="async"
+             data-caption="дорога в погонное">
+        <div class="photo-caption">дорога</div>
+      </div>
+
+      
     <div class="cell">
       <img src="assets/thumb/pogonnoe/p4.webp"
            data-full="assets/pogonnoe/p4.webp"
@@ -1823,6 +1948,23 @@ nav button{
       <div class="photo-caption">клуб</div>
     </div>
 
+ <div class="cell">
+      <img src="assets/thumb/pogonnoe/p5.webp"
+             data-full="assets/pogonnoe/p5.webp"
+             alt="надпись" loading="lazy" decoding="async"
+             data-caption="надпись">
+ </div>
+
+
+
+
+ <div class="cell">
+  <img src="assets/thumb/pogonnoe/p13.webp"
+             data-full="assets/pogonnoe/p13.webp"
+             alt="клуб" loading="lazy" decoding="async"
+             data-caption="клуб">
+
+ </div>
 
 
     <div class="cell">
@@ -1832,6 +1974,7 @@ nav button{
            data-caption="надпись">
       <div class="photo-caption">надпись</div>
     </div>
+
 
     <div class="cell">
       <img src="assets/thumb/pogonnoe/p6.webp"
@@ -1961,7 +2104,12 @@ nav button{
       <div class="photo-caption">игрушка</div>
     </div>
 
-
+<div class="cell">
+  <img src="assets/thumb/pogonnoe/p14.webp"
+             data-full="assets/pogonnoe/p14.webp"
+             alt="памятник" loading="lazy" decoding="async"
+             data-caption="памятник">
+</div>
 
     <div class="cell">
       <img src="assets/thumb/pogonnoe/p15.webp"
@@ -1997,132 +2145,51 @@ nav button{
 
 </section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- ====== SCHOOL ====== -->
-<section id="school" class="place-section orevichi-section school-section" aria-labelledby="school-title">
-  <h2 id="school-title">Старая школа (Бабчины)</h2>
-
-  <!-- Большое фото-хедер (любое самое “главное”) -->
-  <div class="school-hero cell">
-    <img src="assets/thumb/school/s1.webp" data-full="assets/school/s1.webp"
-         alt="Старая школа в Бабчине" loading="lazy" decoding="async"
-         data-caption="Старая школа в Бабчине">
-  </div>
-
-  <!-- Текст одним блоком-цитатой -->
-  <div class="quote-wrap" role="note" aria-label="Свидетельство очевидца">
-    <div class="quote-head">
-      <div class="who">Смольский Владимир говорит:</div>
-      <div class="badge">воспоминания семьи</div>
-    </div>
-
-    <!-- можно свернуть/развернуть без JS -->
-    <details class="quote-details" open>
-      <summary>Показать / скрыть рассказ</summary>
-      <div class="quote-text">
-        <p>
-          По воспоминаниям моей бабушки, которая родилась в 1929 г. в д. Бабчин Хойникского района
-          и проживала с семьёй до самого отселения до сентября 1986. Она рассказывала, что местный
-          священник Михаил Дроздовский, который служил в д. Бабчин в Крестовоздвиженской церкви
-          с 1878 г. в 1906 г. построил это здание школы. Её ещё называли «Поповская школа».
-          Этому есть ещё очевидное подтверждение, если внимательно присмотреться на лицевую сторону
-          школу, то под крышей мы увидим выложенный их кирпича небольшой четырёхконечный крест.
-          В ней училась до войны моя бабушка.
-        </p>
-
-        <p>
-          Церковь находилась на том месте где в д. Бабчин был расположен клуб. Церковь закрыли
-          в 1930-е гг. и переделали её под склад. Бабушкин отец работал в ней кладовщиком.
-          Открою вам ещё одну тайну, если так можно сказать. Да, моя бабушка родилась в 1929 г.,
-          как она говорит, её в этой церкви крестили, когда была маленькая ходила вместе с отцом
-          на праздники. Она помнит как выглядела сама церковь, была она кирпичная, большая,
-          а рядом стояла маленькая деревянная. Стояла церковь на том месте, где сейчас стоит клуб.
-        </p>
-
-        <p>
-          Возле церкви были ещё похоронены 2 дочки священника, как бабушка говорит
-          «2 поповские дачки». И всегда мне говорила, что был у них батюшка Дроздовский!
-          Ещё как ехать из Бабчина на Воротец, с одной стороны по второй стороне дороги
-          росли вербы, их посадил батюшка, и все говорили, что это поповская дорога,
-          дорога по которой батюшка ездил.
-        </p>
-
-        <p>
-          Еще бабушка рассказывала, что ещё её прадед был старостой в Бабчинской церкви.
-          Могу привести этому подтверждение. Отец моей бабушки Кирченко Иван (Иоанн)
-          Степанович, 1894 г.р., будучи ещё мальчишкой по просьбе своего деда (который был старостой церкви)
-          отвозил на телеге батюшку Дроздовского в соседнюю деревню Мокиш.
-          И он его знал, и бабушка моя знали.
-        </p>
-      </div>
-    </details>
-  </div>
-
-  <!-- Отдельная галерея без привязки к абзацам -->
-  <div class="gallery-title">Фотографии школы и места</div>
-  <div class="gallery-note">
-    Здесь собраны разные ракурсы и детали здания — листай и открывай каждую фотографию.
-  </div>
-
-  <div class="grid" aria-label="Галерея школы Бабчина">
-<div class="cell"><img src="assets/thumb/school/s2.webp" data-full="assets/school/s2.webp" alt="Школа, вид сбоку" loading="lazy" decoding="async" data-caption="Школа, вид сбоку"><div class="photo-caption">вид сбоку</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s3.webp" data-full="assets/school/s3.webp" alt="Окна старой школы" loading="lazy" decoding="async" data-caption="Окна старой школы"><div class="photo-caption">окна</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s4.webp" data-full="assets/school/s4.webp" alt="Кирпичная кладка" loading="lazy" decoding="async" data-caption="Кирпичная кладка"><div class="photo-caption">кладка</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s5.webp" data-full="assets/school/s5.webp" alt="Внутри старой школы" loading="lazy" decoding="async" data-caption="Внутри старой школы"><div class="photo-caption">внутри</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s6.webp" data-full="assets/school/s6.webp" alt="Ещё один интерьер" loading="lazy" decoding="async" data-caption="Ещё один интерьер"><div class="photo-caption">интерьер</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s7.webp" data-full="assets/school/s7.webp" alt="Новая школа рядом" loading="lazy" decoding="async" data-caption="Новая школа рядом со старой"><div class="photo-caption">новая рядом</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s8.webp" data-full="assets/school/s8.webp" alt="Двери новой школы" loading="lazy" decoding="async" data-caption="Двери новой школы"><div class="photo-caption">двери</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s9.webp" data-full="assets/school/s9.webp" alt="Внутри новой школы" loading="lazy" decoding="async" data-caption="Внутри новой школы"><div class="photo-caption">внутри новой</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s10.webp" data-full="assets/school/s10.webp" alt="Надпись" loading="lazy" decoding="async" data-caption="Надпись в новой школе"><div class="photo-caption">надпись</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s11.webp" data-full="assets/school/s11.webp" alt="Территория" loading="lazy" decoding="async" data-caption="Территория возле школы"><div class="photo-caption">территория</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s12.webp" data-full="assets/school/s12.webp" alt="Детали рядом" loading="lazy" decoding="async" data-caption="Детали возле школы"><div class="photo-caption">детали</div></div>
-
-<div class="cell"><img src="assets/thumb/school/s13.webp" data-full="assets/school/s13.webp" alt="Хижина рядом" loading="lazy" decoding="async" data-caption="Хижина рядом со школой"><div class="photo-caption">хижина</div></div>
-
-  </div>
-</section>
-  
-
   <!-- ====== OREVICHI ====== -->
     <!-- ====== OREVICHI ====== -->
   <section id="orevichi" class="place-section orevichi-section" aria-labelledby="orevichi-title">
     <h2 id="orevichi-title">Оревичи</h2>
 
-    <p class="lead muted" style="margin:6px 0 12px 0">
-      Небольшая остановка на маршруте веб-экскурсии: пройдёмся по истории деревни и посмотрим её сегодня.
-    </p>
+<div class="pogonnoe-text-card">
+
+        <div class="gallery-title">Следы древности</div>
+  <p class="gallery-note">В письменных источниках деревня известна с начала XVI века как селение Аревичи в Киевском воеводстве Великого княжества Литовского. 
+На момент аварии на ЧАЭС в Оревичах работали клуб, контора, школа, аптека, детский сад, магазин, столовая, проживало 557 человек.</p>
+
+
+    </div>
 
     <div class="story" aria-label="История и места Оревичей">
+
+
+  <!-- Панорама Оревичей -->
+<div class="pano-wrap" id="orevichi-pano-wrap" style="margin-top:18px; margin-bottom:18px">
+  <div class="pano-caption">центр Оревичей</div>
+  <div class="pano" id="orevichi-pano"
+       style="background-image:url('assets/orevichi/pano_orev.webp');"></div>
+  <div class="pano-controls">
+    <button id="orevichi-left" aria-label="Влево">&larr;</button>
+    <button id="orevichi-right" aria-label="Вправо">&rarr;</button>
+  </div>
+</div>
+
 
      <!-- 1 -->
 <div class="story-item">
   <div class="story-text">
-    <strong>Следы древности</strong>
+    
     <p>
-      Оревичи — деревня в полесских лесах, и её история начинается задолго до письменных времён.
-      Археологи нашли рядом поселения эпохи неолита (в 1 км к юго-западу и в 2 км к западу),
-      что подтверждает заселение этих мест с глубокой древности.
+
+
+ <div class="story-photo cell">
+    <img src="assets/thumb/orevichi/o5.webp"
+         data-full="assets/orevichi/o5.webp"
+         alt="Надпись в Оревичах" loading="lazy" decoding="async"
+         data-caption="Надпись в Оревичах">
+    <div class="photo-caption"></div>
+  </div>
+
+
     </p>
   </div>
 
@@ -2138,21 +2205,22 @@ nav button{
 <!-- 2 -->
 <div class="story-item reverse">
   <div class="story-photo cell">
-    <img src="assets/thumb/orevichi/o5.webp"
-         data-full="assets/orevichi/o5.webp"
+    <img src="assets/thumb/orevichi/o2.webp"
+         data-full="assets/orevichi/o2.webp"
          alt="Надпись в Оревичах" loading="lazy" decoding="async"
          data-caption="Надпись в Оревичах">
     <div class="photo-caption"></div>
   </div>
 
   <div class="story-text">
-    <strong>Первые упоминания</strong>
     <p>
-      В письменных источниках деревня известна с начала XVI века как селение Аревичи
-      в Киевском воеводстве Великого княжества Литовского. В 1570–1580-х Оревичи принадлежали
-      Златоверхому Михайловскому монастырю в Киеве. В 1777 году здесь построили деревянную
-      Рождества-Богородицкую церковь. После раздела Речи Посполитой в 1793 году деревня вошла
-      в состав Российской империи.
+      <div class="story-photo cell">
+    <img src="assets/thumb/orevichi/o6.webp"
+         data-full="assets/orevichi/o6.webp"
+         alt="Надпись в Оревичах" loading="lazy" decoding="async"
+         data-caption="Надпись в Оревичах">
+    <div class="photo-caption"></div>
+  </div>
     </p>
   </div>
 </div>
@@ -2161,70 +2229,9 @@ nav button{
 <!-- 3 -->
 <div class="story-item">
   <div class="story-text">
-    <strong>Деревня в ХХ веке</strong>
     <p>
-      С 8 декабря 1926 года Оревичи стали центром сельсовета Хойникского района.
-      В 1931 году в деревне работали начальная школа, отделение кооперации,
-      ветряная мельница, кузница, шерстечесалка и изба-читальня.
-      Тогда же появились колхозы «Коммунар» и «Победа социализма».
-    </p>
-  </div>
 
-  <div class="story-photo cell">
-    <img src="assets/thumb/orevichi/o6.webp"
-         data-full="assets/orevichi/o6.webp"
-         alt="Надпись в Оревичах" loading="lazy" decoding="async"
-         data-caption="Надпись в Оревичах">
-    <div class="photo-caption"></div>
-  </div>
-</div>
-
-<!-- 4 -->
-<div class="story-item reverse">
-  <div class="story-photo cell">
-    <img src="assets/thumb/orevichi/o2.webp"
-         data-full="assets/orevichi/o2.webp"
-         alt="Здание в Оревичах" loading="lazy" decoding="async"
-         data-caption="Здание в Оревичах">
-    <div class="photo-caption"></div>
-  </div>
-
-  <div class="story-text">
-    <strong>Великая Отечественная война</strong>
-    <p>
-      В апреле–мае 1943 года в деревне и окрестных лесах базировался отдельный
-      Путиловский партизанский отряд и штаб соединения С. А. Ковпака.
-      На реке Припять партизаны разгромили немецкую флотилию —
-      на месте событий позже появился памятный знак.
-    </p>
-  </div>
-</div>
-
-<!-- 5 -->
-<div class="story-item">
-  <div class="story-text">
-    <strong>Память о героях</strong>
-    <p>
-      На фронтах и в партизанской борьбе погибли 81 житель Оревичей.
-      В 1970 году возле конторы совхоза установили памятник —
-      скульптуру воина и партизанки.
-      Неподалёку расположена могила врача-связной Веры Михайловны Скирмант
-      и её двух сыновей, расстрелянных в сентябре 1942 года; над могилой стоит обелиск.
-    </p>
-  </div>
-
-  <div class="story-photo cell">
-    <img src="assets/thumb/orevichi/o3.webp"
-         data-full="assets/orevichi/o3.webp"
-         alt="Здание в Оревичах" loading="lazy" decoding="async"
-         data-caption="Здание в Оревичах">
-    <div class="photo-caption"></div>
-  </div>
-</div>
-
-<!-- 6 -->
-<div class="story-item reverse">
-  <div class="story-photo cell">
+<div class="story-photo cell">
     <img src="assets/thumb/orevichi/o4.webp"
          data-full="assets/orevichi/o4.webp"
          alt="Здание в Оревичах" loading="lazy" decoding="async"
@@ -2232,21 +2239,23 @@ nav button{
     <div class="photo-caption"></div>
   </div>
 
-  <div class="story-text">
-    <strong>После войны и эвакуация</strong>
-    <p>
-      После войны деревня стала центром совхоза «Оревичи»:
-      работали средняя школа, клуб, библиотека, детский сад, больница, аптека,
-      отделение связи и магазины.
-      Но 4 мая 1986 года из-за аварии на Чернобыльской АЭС всех жителей эвакуировали —
-      557 человек (222 семьи) покинули деревню.
+      
     </p>
+  </div>
+
+  <div class="story-photo cell">
+    <img src="assets/thumb/orevichi/o3.webp"
+         data-full="assets/orevichi/o3.webp"
+         alt="Надпись в Оревичах" loading="lazy" decoding="async"
+         data-caption="Надпись в Оревичах">
+    <div class="photo-caption"></div>
   </div>
 </div>
 
+<!-- 4 -->
+
   </section>
 
-</main>
 
 <!-- MODAL (галерея) -->
 <div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true" onclick="/* click handled in JS */">
@@ -2257,7 +2266,124 @@ nav button{
     <div id="modal-caption" class="modal-caption"></div>
     <button class="close-x" id="modal-close" aria-label="Закрыть" style="position:absolute;right:8px;top:8px;background:rgba(255,255,255,0.06);border-radius:8px;padding:8px 10px;border:0;color:#fff;cursor:pointer">✕</button>
   </div>
+
+
+
+
+
+
+  
 </div>
+
+  </section>
+
+  <!-- ====== PRIPYAT ====== -->
+  <section id="privat" class="place-section privat-section" aria-labelledby="privat-title">
+    <h2 id="privat-title">р. Припять</h2>
+
+    <!-- Большое фото на весь экран -->
+    <div class="privat-hero cell">
+      <img src="assets/thumb/privat/privat_00.webp"
+           data-full="assets/privat/privat_00.webp"
+           alt="Река Припять" loading="lazy" decoding="async"
+           data-caption="Река Припять">
+      <div class="photo-caption">Река Припять</div>
+    </div>
+
+    <!-- Галерея из 9 фото -->
+    <div class="gallery-title">Фотографии Припяти</div>
+    <div class="gallery-note">
+      Несколько ракурсов и деталей Припяти — листай и открывай каждое фото.
+    </div>
+
+    <div class="grid" aria-label="Галерея реки Припять">
+      <div class="cell">
+        <img src="assets/thumb/privat/privat_01.webp"
+             data-full="assets/privat/privat_01.webp"
+             alt="Припять — фото 1" loading="lazy" decoding="async"
+             data-caption="Припять — фото 1">
+        <div class="photo-caption"></div>
+      </div>
+
+      <div class="cell">
+        <img src="assets/thumb/privat/privat_02.webp"
+             data-full="assets/privat/privat_02.webp"
+             alt="Припять — фото 2" loading="lazy" decoding="async"
+             data-caption="Припять — фото 2">
+        <div class="photo-caption"></div>
+      </div>
+
+      <div class="cell">
+        <img src="assets/thumb/privat/privat_03.webp"
+             data-full="assets/privat/privat_03.webp"
+             alt="Припять — фото 3" loading="lazy" decoding="async"
+             data-caption="Припять — фото 3">
+        <div class="photo-caption"></div>
+      </div>
+
+      <div class="cell">
+        <img src="assets/thumb/privat/privat_04.webp"
+             data-full="assets/privat/privat_04.webp"
+             alt="Припять — фото 4" loading="lazy" decoding="async"
+             data-caption="Припять — фото 4">
+        <div class="photo-caption"></div>
+      </div>
+
+      <div class="cell">
+        <img src="assets/thumb/privat/privat_05.webp"
+             data-full="assets/privat/privat_05.webp"
+             alt="Припять — фото 5" loading="lazy" decoding="async"
+             data-caption="Припять — фото 5">
+        <div class="photo-caption"></div>
+      </div>
+
+      <div class="cell">
+        <img src="assets/thumb/privat/privat_06.webp"
+             data-full="assets/privat/privat_06.webp"
+             alt="Припять — фото 6" loading="lazy" decoding="async"
+             data-caption="Припять — фото 6">
+        <div class="photo-caption"></div>
+      </div>
+
+      <div class="cell">
+        <img src="assets/thumb/privat/privat_07.webp"
+             data-full="assets/privat/privat_07.webp"
+             alt="Припять — фото 7" loading="lazy" decoding="async"
+             data-caption="Припять — фото 7">
+        <div class="photo-caption"></div>
+      </div>
+
+      <div class="cell">
+        <img src="assets/thumb/privat/privat_08.webp"
+             data-full="assets/privat/privat_08.webp"
+             alt="Припять — фото 8" loading="lazy" decoding="async"
+             data-caption="Припять — фото 8">
+        <div class="photo-caption"></div>
+      </div>
+
+      <div class="cell">
+        <img src="assets/thumb/privat/privat_09.webp"
+             data-full="assets/privat/privat_09.webp"
+             alt="Припять — фото 9" loading="lazy" decoding="async"
+             data-caption="Припять — фото 9">
+        <div class="photo-caption"></div>
+      </div>
+    </div>
+
+    <!-- Панорама privat -->
+<div class="pano-wrap" id="privat-pano-wrap" style="margin-top:18px; margin-bottom:18px">
+  <div class="pano-caption">центр Оревичей</div>
+  <div class="pano" id="privat-pano"
+       style="background-image:url('assets/privat/privat_pano.webp');"></div>
+  <div class="pano-controls">
+    <button id="privat-left" aria-label="Влево">&larr;</button>
+    <button id="privat-right" aria-label="Вправо">&rarr;</button>
+  </div>
+</div>
+  </section>
+
+
+</main>
 
 
 
@@ -2619,7 +2745,7 @@ function initPano(id) {
 
 
 
-["museum", "dronki", "dronki2", "dronki3", "pogonnoe"]
+["museum", "dronki", "dronki2", "dronki3", "pogonnoe", "orevichi", "privat"]
   .forEach(id => initPano(id));
 
 // ======================
@@ -2833,7 +2959,7 @@ if (!('IntersectionObserver' in window)) {
 
   // финальная точка "р. Припять" (на карте горячей точки нет)
   // поставил примерные координаты. Подвинь, если нужно:
-  const pripyatPoint = { x: 35, y: 54 }; // % от ширины/высоты карты
+  const privatPoint = { x: 35, y: 54 }; // % от ширины/высоты карты
 
   function getSpotCenter(id){
     const el = map.querySelector(`.hotspot[data-target="${id}"]`);
@@ -2875,7 +3001,7 @@ if (!('IntersectionObserver' in window)) {
       const p = getSpotCenter(id);
       if(p) pts.push(p);
     });
-    pts.push(pripyatPoint);
+    pts.push(privatPoint);
 
     const d = buildSmoothPath(pts);
     path.setAttribute("d", d);
