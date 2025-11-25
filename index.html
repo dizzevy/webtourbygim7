@@ -272,12 +272,12 @@
   }
 
   .pano{
-  height:100%;
-  background-repeat:no-repeat;
-  background-size:cover;
-  background-position:center center;
-  transition:none;
-}
+    height:100%;
+    background-repeat:no-repeat;
+    background-size:cover;
+    background-position:center center;
+    transition:none;
+  }
 
   .pano-caption{
     position:absolute;
@@ -400,6 +400,7 @@
   /* ---------- MODAL ---------- */
 
   .modal{
+    animation: modalFade 0.45s ease-out;
     position:fixed;
     inset:0;
     background: linear-gradient(135deg, rgba(95, 95, 95, 0.559), rgba(63, 63, 63, 0.445));
@@ -412,26 +413,30 @@
 
   .modal.show{display:flex;}
 
-  .modal-content{
-    position:relative;
-    max-width:94%;
-    max-height:94%;
-    animation: modalAppear 0.25s ease-out;
-  }
+   .modal-content{
+  position:relative;
+  max-width:94%;
+  max-height:94%;
+  animation: modalAppear 0.45s cubic-bezier(.16,.84,.3,1);
+}
 
   @keyframes modalAppear {
     from { opacity: 0; transform: scale(0.92); }
     to { opacity: 1; transform: scale(1); }
   }
 
-  #modal-img{
-    max-width:100%;
-    max-height:85vh;
-    border-radius:18px;
-    box-shadow:0 24px 70px rgba(0,0,0,0.85), var(--shadow-glow);
-    border: 1px solid rgba(148,163,184,0.6);
-    background:#000;
-  }
+#modal-img{
+  max-width:100%;
+  max-height:85vh;
+  border-radius:18px;
+  box-shadow:0 24px 70px rgba(0,0,0,0.85), var(--shadow-glow);
+  border: 1px solid rgba(148,163,184,0.6);
+
+  /* убираем чёрный фон и готовим плавное проявление */
+  background: transparent;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
 
   .modal-caption{
     position:absolute;
@@ -709,64 +714,7 @@
 }
 
 
-/* ---------- POGONNOE STORY LAYOUT ---------- */
-.pogonnoe-section .pogonnoe-hero{
-  width:100%;
-  height:auto;
-  border-radius:18px;
-  overflow:hidden;
-  margin: 8px 0 14px;
-  box-shadow: var(--shadow-2);
-  border:1px solid rgba(226,232,240,0.95);
-  flex:1 1 100%;
-}
 
-.pogonnoe-section .pogonnoe-hero img{
-  width:100%;
-  height:420px;
-  object-fit:cover;
-  display:block;
-}
-@media (max-width: 900px){
-  .pogonnoe-section .pogonnoe-hero img{ height:240px; }
-}
-
-.pogonnoe-section .facts{
-  display:flex;
-  flex-wrap:wrap;
-  gap:10px;
-  margin: 8px 0 16px;
-}
-
-.pogonnoe-section .fact{
-  flex:1 1 160px;
-  min-width:140px;
-  background: linear-gradient(135deg, #ffffff, #f7faf7);
-  border:1px solid rgba(226,232,240,0.95);
-  border-radius:14px;
-  padding:10px 12px;
-  text-align:center;
-  box-shadow: var(--shadow-2);
-}
-
-.pogonnoe-section .fact-num{
-  font-size:20px;
-  font-weight:800;
-  color:#123524;
-  letter-spacing:0.02em;
-}
-
-.pogonnoe-section .fact-label{
-  font-size:12px;
-  font-weight:600;
-  color:var(--muted);
-  margin-top:2px;
-}
-
-.pogonnoe-section .story-text strong{
-  font-size:16px;
-  color:#0f3b25;
-}
 
 /* ===========================
    UPGRADE PACK (safe)
@@ -994,6 +942,19 @@ main{
   padding-left: calc(20px + env(safe-area-inset-left));
   padding-right: calc(20px + env(safe-area-inset-right));
   padding-bottom: clamp(64px, 8vh, 120px);
+}
+
+/* чтобы топбар точно не перекрывал "Карту" на телефонах */
+@media (max-width: 768px){
+  main{
+    margin-top: calc(160px + env(safe-area-inset-top));
+  }
+}
+
+@media (max-width: 480px){
+  main{
+    margin-top: calc(190px + env(safe-area-inset-top));
+  }
 }
 
 /* заголовки/текст — плавные размеры под любой экран */
@@ -1225,6 +1186,160 @@ nav button{
 }
 .beta-close:hover{ background:#eef5ef; }
 
+/* ===== КРАСИВЫЕ ФАКТЫ ДЛЯ ПОГОННОГО ===== */
+.facts-wrap{
+  margin: 20px 0 8px;
+}
+
+.facts-title{
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+
+.facts{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.fact{
+  background: linear-gradient(135deg, #ffffff, #f3f7f3);
+  border-radius: 14px;
+  padding: 10px 12px;
+  border: 1px solid rgba(226,232,240,0.95);
+  box-shadow: var(--shadow-2);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fact-num{
+  font-size: 16px;
+  font-weight: 800;
+  color: #123524;
+}
+
+.fact-label{
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.4;
+}
+
+
+/* ===== КНОПКА "ЖУРНАЛ ПОСЕТИТЕЛЕЙ" ===== */
+.journal{
+  margin-top: 22px;
+}
+
+.journal > summary{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  padding: 10px 16px;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, var(--leaf1), var(--leaf3));
+  color: #f9fafb;
+  font-weight: 700;
+  font-size: 14px;
+
+  border: 1px solid rgba(209,250,229,0.8);
+  box-shadow: var(--shadow-2);
+
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+
+  transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+}
+
+.journal > summary::marker,
+.journal > summary::-webkit-details-marker{
+  display: none;  /* убираем стандартный треугольник */
+}
+
+.journal[open] > summary{
+  filter: brightness(1.05);
+  box-shadow: 0 12px 26px rgba(15,23,42,0.25);
+  transform: translateY(-1px);
+}
+
+.journal > summary:hover{
+  filter: brightness(1.03);
+  box-shadow: 0 10px 22px rgba(15,23,42,0.22);
+  transform: translateY(-1px);
+}
+
+
+
+/* ---------- POGONNOE STORY LAYOUT ---------- */
+.pogonnoe-section .pogonnoe-hero{
+  width:100%;
+  height:auto;
+  border-radius:18px;
+  overflow:hidden;
+  margin: 8px 0 14px;
+  box-shadow: var(--shadow-2);
+  border:1px solid rgba(226,232,240,0.95);
+  flex:1 1 100%;
+}
+
+.pogonnoe-section .pogonnoe-hero img{
+  width:100%;
+  height:420px;
+  object-fit:cover;
+  display:block;
+}
+@media (max-width: 900px){
+  .pogonnoe-section .pogonnoe-hero img{ height:240px; }
+}
+
+.pogonnoe-section .facts{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin: 8px 0 16px;
+}
+
+.pogonnoe-section .fact{
+  flex:1 1 160px;
+  min-width:140px;
+  background: linear-gradient(135deg, #ffffff, #f7faf7);
+  border:1px solid rgba(226,232,240,0.95);
+  border-radius:14px;
+  padding:10px 12px;
+  text-align:center;
+  box-shadow: var(--shadow-2);
+}
+
+.pogonnoe-section .fact-num{
+  font-size:20px;
+  font-weight:800;
+  color:#123524;
+  letter-spacing:0.02em;
+}
+
+.pogonnoe-section .fact-label{
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  margin-top:2px;
+}
+
+.pogonnoe-section .story-text strong{
+  font-size:16px;
+  color:#0f3b25;
+}
+
+
+
+
+
 
 </style>
 
@@ -1379,26 +1494,27 @@ nav button{
       </div>
 
     <div class="grid" id="museum-grid" aria-live="polite">
-      <div class="cell"><img src="assets/museum/m1.webp" alt="вход в музей" loading="lazy" decoding="async" data-caption="вход в музей"> <div class="photo-caption">вход в музей</div></div>
-      <div class="cell"><img src="assets/museum/m2.webp" alt="ветераны" loading="lazy" decoding="async" data-caption="ветераны"> <div class="photo-caption">ветераны</div></div>
-      <div class="cell"><img src="assets/museum/m3.webp" alt="герпетофауна" loading="lazy" decoding="async" data-caption="герпетофауна позвоночные рыбы"> <div class="photo-caption">герпетофауна</div></div>
-      <div class="cell"><img src="assets/museum/m4.webp" alt="крансокнижные птицы" loading="lazy" decoding="async" data-caption="крансокнижные птицы"> <div class="photo-caption">птицы</div></div>
-      <div class="cell"><img src="assets/museum/m5.webp" alt="краснокнижные животные" loading="lazy" decoding="async" data-caption="краснокнижные животные"> <div class="photo-caption">животные</div></div>
-      <div class="cell"><img src="assets/museum/m6.webp" alt="литература" loading="lazy" decoding="async" data-caption="литература"> <div class="photo-caption">литература</div></div>
-      <div class="cell"><img src="assets/museum/m7.webp" alt="литература" loading="lazy" decoding="async" data-caption="литература"> <div class="photo-caption">литература</div></div>
-      <div class="cell"><img src="assets/museum/m8.webp" alt="литература" loading="lazy" decoding="async" data-caption="литература"> <div class="photo-caption">литература</div></div>
-      <div class="cell"><img src="assets/museum/m9.webp" alt="литература" loading="lazy" decoding="async" data-caption="литература"> <div class="photo-caption">литература</div></div>
-      <div class="cell"><img src="assets/museum/m10.webp" alt="музей стенд" loading="lazy" decoding="async" data-caption="музей стенд сотрудник"> <div class="photo-caption">музей стенд</div></div>
-      <div class="cell"><img src="assets/museum/m11.webp" alt="оборудование" loading="lazy" decoding="async" data-caption="оборудование и приборы"> <div class="photo-caption">оборудование</div></div>
-      <div class="cell"><img src="assets/museum/m12.webp" alt="памятник" loading="lazy" decoding="async" data-caption="памятник ВОВ напротив музея"> <div class="photo-caption">памятник</div></div>
-      <div class="cell"><img src="assets/museum/m13.webp" alt="прылады працы" loading="lazy" decoding="async" data-caption="прылады працы"> <div class="photo-caption">прылады працы</div></div>
-      <div class="cell"><img src="assets/museum/m14.webp" alt="растения" loading="lazy" decoding="async" data-caption="растения и грибы"> <div class="photo-caption">растения</div></div>
-      <div class="cell"><img src="assets/museum/m15.webp" alt="СИЧ" loading="lazy" decoding="async" data-caption="СИЧ"> <div class="photo-caption">СИЧ</div></div>
-      <div class="cell"><img src="assets/museum/m16.webp" alt="техника" loading="lazy" decoding="async" data-caption="техника испозьуемая"> <div class="photo-caption">техника</div></div>
-      <div class="cell"><img src="assets/museum/m17.webp" alt="форма" loading="lazy" decoding="async" data-caption="форма одежды работника"> <div class="photo-caption">форма</div></div>
-      <div class="cell"><img src="assets/museum/m18.webp" alt="маршруты" loading="lazy" decoding="async" data-caption="экскурсионные маршруты"> <div class="photo-caption">маршруты</div></div>
-      <div class="cell"><img src="assets/museum/m19.webp" alt="газета" loading="lazy" decoding="async" data-caption="экспозиция старой газеты"> <div class="photo-caption">старая газета</div></div>
-      <div class="cell"><img src="assets/museum/m20.webp" alt="напротив музея" loading="lazy" decoding="async" data-caption="напротив музея"> <div class="photo-caption">напротив музея</div></div>
+<div class="cell"><img src="assets/thumb/museum/m1.webp" data-full="assets/museum/m1.webp" alt="вход в музей" loading="lazy" decoding="async" data-caption="вход в музей"><div class="photo-caption">вход в музей</div></div>
+<div class="cell"><img src="assets/thumb/museum/m2.webp" data-full="assets/museum/m2.webp" alt="ветераны" loading="lazy" decoding="async" data-caption="ветераны"><div class="photo-caption">ветераны</div></div>
+<div class="cell"><img src="assets/thumb/museum/m3.webp" data-full="assets/museum/m3.webp" alt="герпетофауна" loading="lazy" decoding="async" data-caption="герпетофауна позвоночные рыбы"><div class="photo-caption">герпетофауна</div></div>
+<div class="cell"><img src="assets/thumb/museum/m4.webp" data-full="assets/museum/m4.webp" alt="крансокнижные птицы" loading="lazy" decoding="async" data-caption="крансокнижные птицы"><div class="photo-caption">птицы</div></div>
+<div class="cell"><img src="assets/thumb/museum/m5.webp" data-full="assets/museum/m5.webp" alt="краснокнижные животные" loading="lazy" decoding="async" data-caption="краснокнижные животные"><div class="photo-caption">животные</div></div>
+<div class="cell"><img src="assets/thumb/museum/m6.webp" data-full="assets/museum/m6.webp" alt="литература" loading="lazy" decoding="async" data-caption="литература"><div class="photo-caption">литература</div></div>
+<div class="cell"><img src="assets/thumb/museum/m7.webp" data-full="assets/museum/m7.webp" alt="литература" loading="lazy" decoding="async" data-caption="литература"><div class="photo-caption">литература</div></div>
+<div class="cell"><img src="assets/thumb/museum/m8.webp" data-full="assets/museum/m8.webp" alt="литература" loading="lazy" decoding="async" data-caption="литература"><div class="photo-caption">литература</div></div>
+<div class="cell"><img src="assets/thumb/museum/m9.webp" data-full="assets/museum/m9.webp" alt="литература" loading="lazy" decoding="async" data-caption="литература"><div class="photo-caption">литература</div></div>
+<div class="cell"><img src="assets/thumb/museum/m10.webp" data-full="assets/museum/m10.webp" alt="музей стенд" loading="lazy" decoding="async" data-caption="музей стенд сотрудник"><div class="photo-caption">музей стенд</div></div>
+<div class="cell"><img src="assets/thumb/museum/m11.webp" data-full="assets/museum/m11.webp" alt="оборудование" loading="lazy" decoding="async" data-caption="оборудование и приборы"><div class="photo-caption">оборудование</div></div>
+<div class="cell"><img src="assets/thumb/museum/m12.webp" data-full="assets/museum/m12.webp" alt="памятник" loading="lazy" decoding="async" data-caption="памятник ВОВ напротив музея"><div class="photo-caption">памятник</div></div>
+<div class="cell"><img src="assets/thumb/museum/m13.webp" data-full="assets/museum/m13.webp" alt="прылады працы" loading="lazy" decoding="async" data-caption="прылады працы"><div class="photo-caption">прылады працы</div></div>
+<div class="cell"><img src="assets/thumb/museum/m14.webp" data-full="assets/museum/m14.webp" alt="растения" loading="lazy" decoding="async" data-caption="растения и грибы"><div class="photo-caption">растения</div></div>
+<div class="cell"><img src="assets/thumb/museum/m15.webp" data-full="assets/museum/m15.webp" alt="СИЧ" loading="lazy" decoding="async" data-caption="СИЧ"><div class="photo-caption">СИЧ</div></div>
+<div class="cell"><img src="assets/thumb/museum/m16.webp" data-full="assets/museum/m16.webp" alt="техника" loading="lazy" decoding="async" data-caption="техника испозьуемая"><div class="photo-caption">техника</div></div>
+<div class="cell"><img src="assets/thumb/museum/m17.webp" data-full="assets/museum/m17.webp" alt="форма" loading="lazy" decoding="async" data-caption="форма одежды работника"><div class="photo-caption">форма</div></div>
+<div class="cell"><img src="assets/thumb/museum/m18.webp" data-full="assets/museum/m18.webp" alt="маршруты" loading="lazy" decoding="async" data-caption="экскурсионные маршруты"><div class="photo-caption">маршруты</div></div>
+<div class="cell"><img src="assets/thumb/museum/m19.webp" data-full="assets/museum/m19.webp" alt="газета" loading="lazy" decoding="async" data-caption="экспозиция старой газеты"><div class="photo-caption">старая газета</div></div>
+<div class="cell"><img src="assets/thumb/museum/m20.webp" data-full="assets/museum/m20.webp" alt="напротив музея" loading="lazy" decoding="async" data-caption="напротив музея"><div class="photo-caption">напротив музея</div></div>
+
     </div>
   </section>
 
@@ -1416,23 +1532,25 @@ nav button{
     </div>
 
     <div class="grid">
-      <div class="cell"><img src="assets/dronki/d1.webp" alt="класс с доской" loading="lazy" decoding="async" data-caption="класс с доской"> <div class="photo-caption">класс с доской</div></div>
-      <div class="cell"><img src="assets/dronki/d1_03.webp" alt="класс с доской" loading="lazy" decoding="async" data-caption="класс с доской"> <div class="photo-caption">класс с доской</div></div>
-      <div class="cell"><img src="assets/dronki/d2.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">учительская</div></div>
-      <div class="cell"><img src="assets/dronki/d2_02.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">учительская</div></div>
-      <div class="cell"><img src="assets/dronki/d2_03.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">старая сумка</div></div>
-      <div class="cell"><img src="assets/dronki/d2_04.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">игрушка-плита</div></div>
-      <div class="cell"><img src="assets/dronki/d2_05.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">игрушка-машинка</div></div>
-      <div class="cell"><img src="assets/dronki/d3.webp" alt="парта" loading="lazy" decoding="async" data-caption="парта"> <div class="photo-caption">парта</div></div>
-      <div class="cell"><img src="assets/dronki/d4.webp" alt="принадлежности" loading="lazy" decoding="async" data-caption="принадлежности на столе"> <div class="photo-caption">принадлежности</div></div>
-      <div class="cell"><img src="assets/dronki/d5.webp" alt="план урока" loading="lazy" decoding="async" data-caption="план урока"> <div class="photo-caption">план урока</div></div>
-      <div class="cell"><img src="assets/dronki/d6.webp" alt="книга" loading="lazy" decoding="async" data-caption="книга польская поэзия"> <div class="photo-caption">книга</div></div>
-      <div class="cell"><img src="assets/dronki/d7.webp" alt="интерес к труду" loading="lazy" decoding="async" data-caption="интерес к труду"> <div class="photo-caption">интерес</div></div>
-      <div class="cell"><img src="assets/dronki/d8.webp" alt="плакат" loading="lazy" decoding="async" data-caption="плакат культура поведения"> <div class="photo-caption">плакат</div></div>
-      <div class="cell"><img src="assets/dronki/d9_01.webp" alt="мотоциклы" loading="lazy" decoding="async" data-caption="мотоциклы за школой"> <div class="photo-caption">мотоциклы</div></div>
-      <div class="cell"><img src="assets/dronki/d9_02.webp" alt="мотоциклы" loading="lazy" decoding="async" data-caption="мотоциклы за школой"> <div class="photo-caption">мотоциклы</div></div>
-      <div class="cell"><img src="assets/dronki/d10.webp" alt="территория" loading="lazy" decoding="async" data-caption="территория охраняемая птиц"> <div class="photo-caption">территория</div></div>
-      <div class="cell"><img src="assets/dronki/d11.webp" alt="кпп" loading="lazy" decoding="async" data-caption="кпп"> <div class="photo-caption">кпп</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d1.webp" data-full="assets/dronki/d1.webp" alt="класс с доской" loading="lazy" decoding="async" data-caption="класс с доской"> <div class="photo-caption">класс с доской</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d1_03.webp" data-full="assets/dronki/d1_03.webp" alt="класс с доской" loading="lazy" decoding="async" data-caption="класс с доской"> <div class="photo-caption">класс с доской</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d2.webp" data-full="assets/dronki/d2.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">учительская</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d2_02.webp" data-full="assets/dronki/d2_02.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">учительская</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d2_03.webp" data-full="assets/dronki/d2_03.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">старая сумка</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d2_04.webp" data-full="assets/dronki/d2_04.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">игрушка-плита</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d2_05.webp" data-full="assets/dronki/d2_05.webp" alt="учительская" loading="lazy" decoding="async" data-caption="учительская"> <div class="photo-caption">игрушка-машинка</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d3.webp" data-full="assets/dronki/d3.webp" alt="парта" loading="lazy" decoding="async" data-caption="парта"> <div class="photo-caption">парта</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d4.webp" data-full="assets/dronki/d4.webp" alt="принадлежности" loading="lazy" decoding="async" data-caption="принадлежности на столе"> <div class="photo-caption">принадлежности</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d5.webp" data-full="assets/dronki/d5.webp" alt="план урока" loading="lazy" decoding="async" data-caption="план урока"> <div class="photo-caption">план урока</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d6.webp" data-full="assets/dronki/d6.webp" alt="книга" loading="lazy" decoding="async" data-caption="книга польская поэзия"> <div class="photo-caption">книга</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d7.webp" data-full="assets/dronki/d7.webp" alt="интерес к труду" loading="lazy" decoding="async" data-caption="интерес к труду"> <div class="photo-caption">интерес</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d8.webp" data-full="assets/dronki/d8.webp" alt="плакат" loading="lazy" decoding="async" data-caption="плакат культура поведения"> <div class="photo-caption">плакат</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d9_01.webp" data-full="assets/dronki/d9_01.webp" alt="мотоциклы" loading="lazy" decoding="async" data-caption="мотоциклы за школой"> <div class="photo-caption">мотоциклы</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d9_02.webp" data-full="assets/dronki/d9_02.webp" alt="мотоциклы" loading="lazy" decoding="async" data-caption="мотоциклы за школой"> <div class="photo-caption">мотоциклы</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d10.webp" data-full="assets/dronki/d10.webp" alt="территория" loading="lazy" decoding="async" data-caption="территория охраняемая птиц"> <div class="photo-caption">территория</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d11.webp" data-full="assets/dronki/d11.webp" alt="кпп" loading="lazy" decoding="async" data-caption="кпп"> <div class="photo-caption">кпп</div></div>
+      <div class="cell"><img src="assets/thumb/dronki/d12.webp" data-full="assets/dronki/d12.webp" alt="кпп" loading="lazy" decoding="async" data-caption="кпп"> <div class="photo-caption">кпп</div></div>
+
     </div>
 
     <div class="pano-wrap" id="dronki2-pano-wrap" style="margin-top:18px; margin-bottom:18px">
@@ -1446,24 +1564,41 @@ nav button{
 
     <div class="pano-wrap" id="dronki3-pano-wrap" style="margin-top:18px; margin-bottom:18px">
       <div class="pano-caption">мотоциклы на заднем дворе</div>
-      <div class="pano" id="dronki3-pano" style="background-image:url('assets/dronki/pano3.webp');"loading="lazy" decoding="async"></div>
-      <div class="pano-controls">
+      <div class="pano" id="dronki3-pano" style="background-image:url('assets/dronki/pano3.webp');"></div>      <div class="pano-controls">
         <button id="dronki3-left" aria-label="Влево">&larr;</button>
         <button id="dronki3-right" aria-label="Вправо">&rarr;</button>
       </div>
     </div>
-  </section>
 
-  <!-- ====== POGONNOE (новый красивый сторителлинг) ====== -->
-<section id="pogonnoe"
-         class="place-section orevichi-section pogonnoe-section"
-         aria-labelledby="pogonnoe-title">
+</section>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ПОГОННОЕ -->
+
+
+<section id="pogonnoe" class="place-section pogonnoe-section orevichi-section" aria-labelledby="pogonnoe-title">
 
   <h2 id="pogonnoe-title">Погонное</h2>
 
   <!-- HERO / главное фото -->
   <div class="pogonnoe-hero cell">
-    <img src="assets/pogonnoe/p0_01.webp"
+    <img src="assets/thumb/pogonnoe/p0_01.webp"
+         data-full="assets/pogonnoe/p0_01.webp"
          alt="поганное снаружи" loading="lazy" decoding="async"
          data-caption="поганное снаружи">
     <div class="photo-caption">снаружи</div>
@@ -1510,7 +1645,8 @@ nav button{
       </div>
 
       <div class="story-photo cell">
-        <img src="assets/pogonnoe/p1.webp"
+        <img src="assets/thumb/pogonnoe/p1.webp"
+             data-full="assets/pogonnoe/p1.webp"
              alt="дорога в погонное" loading="lazy" decoding="async"
              data-caption="дорога в погонное">
         <div class="photo-caption">дорога</div>
@@ -1520,7 +1656,8 @@ nav button{
     <!-- 2 -->
     <div class="story-item reverse">
       <div class="story-photo cell">
-        <img src="assets/pogonnoe/p2.webp"
+        <img src="assets/thumb/pogonnoe/p2.webp"
+             data-full="assets/pogonnoe/p2.webp"
              alt="клуб сверху" loading="lazy" decoding="async"
              data-caption="клуб сверху"> 
         <div class="photo-caption">клуб сверху</div>
@@ -1555,7 +1692,8 @@ nav button{
       </div>
 
       <div class="story-photo cell">
-        <img src="assets/pogonnoe/p3.webp"
+        <img src="assets/thumb/pogonnoe/p13.webp"
+             data-full="assets/pogonnoe/p13.webp"
              alt="клуб" loading="lazy" decoding="async"
              data-caption="клуб">
         <div class="photo-caption">клуб</div>
@@ -1565,7 +1703,8 @@ nav button{
     <!-- 4 -->
     <div class="story-item reverse">
       <div class="story-photo cell">
-        <img src="assets/pogonnoe/p5.webp"
+        <img src="assets/thumb/pogonnoe/p5.webp"
+             data-full="assets/pogonnoe/p5.webp"
              alt="надпись" loading="lazy" decoding="async"
              data-caption="надпись">
         <div class="photo-caption">надпись</div>
@@ -1600,7 +1739,8 @@ nav button{
       </div>
 
       <div class="story-photo cell">
-        <img src="assets/pogonnoe/p14.webp"
+        <img src="assets/thumb/pogonnoe/p14.webp"
+             data-full="assets/pogonnoe/p14.webp"
              alt="памятник" loading="lazy" decoding="async"
              data-caption="памятник">
         <div class="photo-caption">памятник</div>
@@ -1610,7 +1750,8 @@ nav button{
     <!-- 6 -->
     <div class="story-item reverse">
       <div class="story-photo cell">
-        <img src="assets/pogonnoe/p7.webp"
+        <img src="assets/thumb/pogonnoe/p7.webp"
+             data-full="assets/pogonnoe/p7.webp"
              alt="библиотека" loading="lazy" decoding="async"
              data-caption="библиотека">
         <div class="photo-caption">библиотека</div>
@@ -1638,7 +1779,6 @@ nav button{
     <div class="pano-caption">клуб</div>
     <div class="pano" id="pogonnoe-pano"
      style="background-image:url('assets/pogonnoe/pano1.webp');"></div>
-
     <div class="pano-controls">
       <button id="pogonnoe-left" aria-label="Влево">&larr;</button>
       <button id="pogonnoe-right" aria-label="Вправо">&rarr;</button>
@@ -1650,34 +1790,194 @@ nav button{
   <p class="gallery-note">Нажми на фото, чтобы открыть в полном размере.</p>
 
   <div class="grid" aria-live="polite">
-    <div class="cell"><img src="assets/pogonnoe/p0_01.webp" alt="поганное снаружи" loading="lazy" decoding="async" data-caption="поганное снаружи"><div class="photo-caption">снаружи</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p0_02.webp" alt="поганное снаружи" loading="lazy" decoding="async" data-caption="поганное снаружи"><div class="photo-caption">снаружи</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p1.webp" alt="дорога в погонное" loading="lazy" decoding="async" data-caption="дорога в погонное"><div class="photo-caption">дорога</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p2.webp" alt="клуб сверху" loading="lazy" decoding="async" data-caption="клуб сверху"><div class="photo-caption">клуб сверху</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p3.webp" alt="клуб" loading="lazy" decoding="async" data-caption="клуб"><div class="photo-caption">клуб</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p4.webp" alt="клуб" loading="lazy" decoding="async" data-caption="клуб"><div class="photo-caption">клуб</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p5.webp" alt="надпись" loading="lazy" decoding="async" data-caption="надпись"><div class="photo-caption">надпись</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p5_01.webp" alt="надпись" loading="lazy" decoding="async" data-caption="надпись"><div class="photo-caption">надпись</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6.webp" alt="список людей" loading="lazy" decoding="async" data-caption="список людей проживающих - встреча"><div class="photo-caption">список</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6_01.webp" alt="спорт зал" loading="lazy" decoding="async" data-caption="спорт зал"><div class="photo-caption">спорт зал</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6_02.webp" alt="спорт зал" loading="lazy" decoding="async" data-caption="спорт зал"><div class="photo-caption">спорт зал</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6_03.webp" alt="лестница" loading="lazy" decoding="async" data-caption="лестница"><div class="photo-caption">лестница</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6_04.webp" alt="пианино" loading="lazy" decoding="async" data-caption="пианино"><div class="photo-caption">пианино</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6_05.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6_07.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6_08.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6_09.webp" alt="комната" loading="lazy" decoding="async" data-caption="комната"><div class="photo-caption">комната</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p6_10.webp" alt="кухня" loading="lazy" decoding="async" data-caption="кухня"><div class="photo-caption">кухня</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p7.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p8.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p9.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p10.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p11.webp" alt="библиотека" loading="lazy" decoding="async" data-caption="библиотека"><div class="photo-caption">библиотека</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p12.webp" alt="игрушка" loading="lazy" decoding="async" data-caption="игрушка"><div class="photo-caption">игрушка</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p13.webp" alt="игрушка" loading="lazy" decoding="async" data-caption="игрушка"><div class="photo-caption">игрушка</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p14.webp" alt="памятник" loading="lazy" decoding="async" data-caption="памятник"><div class="photo-caption">памятник</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p15.webp" alt="старый мотоцикл" loading="lazy" decoding="async" data-caption="старый мотоцикл"><div class="photo-caption">старый мотоцикл</div></div>
-    <div class="cell"><img src="assets/pogonnoe/p16.webp" alt="металлолом" loading="lazy" decoding="async" data-caption="металлолом"><div class="photo-caption">металлолом</div></div>
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p0_01.webp"
+           data-full="assets/pogonnoe/p0_01.webp"
+           alt="поганное снаружи" loading="lazy" decoding="async"
+           data-caption="поганное снаружи">
+      <div class="photo-caption">снаружи</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p0_02.webp"
+           data-full="assets/pogonnoe/p0_02.webp"
+           alt="поганное снаружи" loading="lazy" decoding="async"
+           data-caption="поганное снаружи">
+      <div class="photo-caption">снаружи</div>
+    </div>
+
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p3.webp"
+           data-full="assets/pogonnoe/p3.webp"
+           alt="клуб" loading="lazy" decoding="async"
+           data-caption="клуб">
+      <div class="photo-caption">клуб</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p4.webp"
+           data-full="assets/pogonnoe/p4.webp"
+           alt="клуб" loading="lazy" decoding="async"
+           data-caption="клуб">
+      <div class="photo-caption">клуб</div>
+    </div>
+
+
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p5_01.webp"
+           data-full="assets/pogonnoe/p5_01.webp"
+           alt="надпись" loading="lazy" decoding="async"
+           data-caption="надпись">
+      <div class="photo-caption">надпись</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6.webp"
+           data-full="assets/pogonnoe/p6.webp"
+           alt="список людей" loading="lazy" decoding="async"
+           data-caption="список людей проживающих - встреча">
+      <div class="photo-caption">список</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6_01.webp"
+           data-full="assets/pogonnoe/p6_01.webp"
+           alt="спорт зал" loading="lazy" decoding="async"
+           data-caption="спорт зал">
+      <div class="photo-caption">спорт зал</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6_02.webp"
+           data-full="assets/pogonnoe/p6_02.webp"
+           alt="спорт зал" loading="lazy" decoding="async"
+           data-caption="спорт зал">
+      <div class="photo-caption">спорт зал</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6_03.webp"
+           data-full="assets/pogonnoe/p6_03.webp"
+           alt="лестница" loading="lazy" decoding="async"
+           data-caption="лестница">
+      <div class="photo-caption">лестница</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6_04.webp"
+           data-full="assets/pogonnoe/p6_04.webp"
+           alt="пианино" loading="lazy" decoding="async"
+           data-caption="пианино">
+      <div class="photo-caption">пианино</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6_05.webp"
+           data-full="assets/pogonnoe/p6_05.webp"
+           alt="комната" loading="lazy" decoding="async"
+           data-caption="комната">
+      <div class="photo-caption">комната</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6_07.webp"
+           data-full="assets/pogonnoe/p6_07.webp"
+           alt="комната" loading="lazy" decoding="async"
+           data-caption="комната">
+      <div class="photo-caption">комната</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6_08.webp"
+           data-full="assets/pogonnoe/p6_08.webp"
+           alt="комната" loading="lazy" decoding="async"
+           data-caption="комната">
+      <div class="photo-caption">комната</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6_09.webp"
+           data-full="assets/pogonnoe/p6_09.webp"
+           alt="комната" loading="lazy" decoding="async"
+           data-caption="комната">
+      <div class="photo-caption">комната</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p6_10.webp"
+           data-full="assets/pogonnoe/p6_10.webp"
+           alt="кухня" loading="lazy" decoding="async"
+           data-caption="кухня">
+      <div class="photo-caption">кухня</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p7.webp"
+           data-full="assets/pogonnoe/p7.webp"
+           alt="библиотека" loading="lazy" decoding="async"
+           data-caption="библиотека">
+      <div class="photo-caption">библиотека</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p8.webp"
+           data-full="assets/pogonnoe/p8.webp"
+           alt="библиотека" loading="lazy" decoding="async"
+           data-caption="библиотека">
+      <div class="photo-caption">библиотека</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p9.webp"
+           data-full="assets/pogonnoe/p9.webp"
+           alt="библиотека" loading="lazy" decoding="async"
+           data-caption="библиотека">
+      <div class="photo-caption">библиотека</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p10.webp"
+           data-full="assets/pogonnoe/p10.webp"
+           alt="библиотека" loading="lazy" decoding="async"
+           data-caption="библиотека">
+      <div class="photo-caption">библиотека</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p11.webp"
+           data-full="assets/pogonnoe/p11.webp"
+           alt="библиотека" loading="lazy" decoding="async"
+           data-caption="библиотека">
+      <div class="photo-caption">библиотека</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p12.webp"
+           data-full="assets/pogonnoe/p12.webp"
+           alt="игрушка" loading="lazy" decoding="async"
+           data-caption="игрушка">
+      <div class="photo-caption">игрушка</div>
+    </div>
+
+
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p15.webp"
+           data-full="assets/pogonnoe/p15.webp"
+           alt="старый мотоцикл" loading="lazy" decoding="async"
+           data-caption="старый мотоцикл">
+      <div class="photo-caption">старый мотоцикл</div>
+    </div>
+
+    <div class="cell">
+      <img src="assets/thumb/pogonnoe/p16.webp"
+           data-full="assets/pogonnoe/p16.webp"
+           alt="металлолом" loading="lazy" decoding="async"
+           data-caption="металлолом">
+      <div class="photo-caption">металлолом</div>
+    </div>
   </div>
 
   <!-- Журнал посетителей как был -->
@@ -1698,13 +1998,24 @@ nav button{
 </section>
 
 
+
+
+
+
+
+
+
+
+
+
+
   <!-- ====== SCHOOL ====== -->
 <section id="school" class="place-section orevichi-section school-section" aria-labelledby="school-title">
   <h2 id="school-title">Старая школа (Бабчины)</h2>
 
   <!-- Большое фото-хедер (любое самое “главное”) -->
   <div class="school-hero cell">
-    <img src="assets/school/s1.webp"
+    <img src="assets/thumb/school/s1.webp" data-full="assets/school/s1.webp"
          alt="Старая школа в Бабчине" loading="lazy" decoding="async"
          data-caption="Старая школа в Бабчине">
   </div>
@@ -1765,18 +2076,30 @@ nav button{
   </div>
 
   <div class="grid" aria-label="Галерея школы Бабчина">
-    <div class="cell"><img src="assets/school/s2.webp" alt="Школа, вид сбоку" loading="lazy" decoding="async" data-caption="Школа, вид сбоку"><div class="photo-caption">вид сбоку</div></div>
-    <div class="cell"><img src="assets/school/s3.webp" alt="Окна старой школы" loading="lazy" decoding="async" data-caption="Окна старой школы"><div class="photo-caption">окна</div></div>
-    <div class="cell"><img src="assets/school/s4.webp" alt="Кирпичная кладка" loading="lazy" decoding="async" data-caption="Кирпичная кладка"><div class="photo-caption">кладка</div></div>
-    <div class="cell"><img src="assets/school/s5.webp" alt="Внутри старой школы" loading="lazy" decoding="async" data-caption="Внутри старой школы"><div class="photo-caption">внутри</div></div>
-    <div class="cell"><img src="assets/school/s6.webp" alt="Ещё один интерьер" loading="lazy" decoding="async" data-caption="Ещё один интерьер"><div class="photo-caption">интерьер</div></div>
-    <div class="cell"><img src="assets/school/s7.webp" alt="Новая школа рядом" loading="lazy" decoding="async" data-caption="Новая школа рядом со старой"><div class="photo-caption">новая рядом</div></div>
-    <div class="cell"><img src="assets/school/s8.webp" alt="Двери новой школы" loading="lazy" decoding="async" data-caption="Двери новой школы"><div class="photo-caption">двери</div></div>
-    <div class="cell"><img src="assets/school/s9.webp" alt="Внутри новой школы" loading="lazy" decoding="async" data-caption="Внутри новой школы"><div class="photo-caption">внутри новой</div></div>
-    <div class="cell"><img src="assets/school/s10.webp" alt="Надпись" loading="lazy" decoding="async" data-caption="Надпись в новой школе"><div class="photo-caption">надпись</div></div>
-    <div class="cell"><img src="assets/school/s11.webp" alt="Территория" loading="lazy" decoding="async" data-caption="Территория возле школы"><div class="photo-caption">территория</div></div>
-    <div class="cell"><img src="assets/school/s12.webp" alt="Детали рядом" loading="lazy" decoding="async" data-caption="Детали возле школы"><div class="photo-caption">детали</div></div>
-    <div class="cell"><img src="assets/school/s13.webp" alt="Хижина рядом" loading="lazy" decoding="async" data-caption="Хижина рядом со школой"><div class="photo-caption">хижина</div></div>
+<div class="cell"><img src="assets/thumb/school/s2.webp" data-full="assets/school/s2.webp" alt="Школа, вид сбоку" loading="lazy" decoding="async" data-caption="Школа, вид сбоку"><div class="photo-caption">вид сбоку</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s3.webp" data-full="assets/school/s3.webp" alt="Окна старой школы" loading="lazy" decoding="async" data-caption="Окна старой школы"><div class="photo-caption">окна</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s4.webp" data-full="assets/school/s4.webp" alt="Кирпичная кладка" loading="lazy" decoding="async" data-caption="Кирпичная кладка"><div class="photo-caption">кладка</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s5.webp" data-full="assets/school/s5.webp" alt="Внутри старой школы" loading="lazy" decoding="async" data-caption="Внутри старой школы"><div class="photo-caption">внутри</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s6.webp" data-full="assets/school/s6.webp" alt="Ещё один интерьер" loading="lazy" decoding="async" data-caption="Ещё один интерьер"><div class="photo-caption">интерьер</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s7.webp" data-full="assets/school/s7.webp" alt="Новая школа рядом" loading="lazy" decoding="async" data-caption="Новая школа рядом со старой"><div class="photo-caption">новая рядом</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s8.webp" data-full="assets/school/s8.webp" alt="Двери новой школы" loading="lazy" decoding="async" data-caption="Двери новой школы"><div class="photo-caption">двери</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s9.webp" data-full="assets/school/s9.webp" alt="Внутри новой школы" loading="lazy" decoding="async" data-caption="Внутри новой школы"><div class="photo-caption">внутри новой</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s10.webp" data-full="assets/school/s10.webp" alt="Надпись" loading="lazy" decoding="async" data-caption="Надпись в новой школе"><div class="photo-caption">надпись</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s11.webp" data-full="assets/school/s11.webp" alt="Территория" loading="lazy" decoding="async" data-caption="Территория возле школы"><div class="photo-caption">территория</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s12.webp" data-full="assets/school/s12.webp" alt="Детали рядом" loading="lazy" decoding="async" data-caption="Детали возле школы"><div class="photo-caption">детали</div></div>
+
+<div class="cell"><img src="assets/thumb/school/s13.webp" data-full="assets/school/s13.webp" alt="Хижина рядом" loading="lazy" decoding="async" data-caption="Хижина рядом со школой"><div class="photo-caption">хижина</div></div>
+
   </div>
 </section>
   
@@ -1792,129 +2115,135 @@ nav button{
 
     <div class="story" aria-label="История и места Оревичей">
 
-      <!-- 1 -->
-      <div class="story-item">
-        <div class="story-text">
-          <strong>Следы древности</strong>
-          <p>
-            Оревичи — деревня в полесских лесах, и её история начинается задолго до письменных времён.
-            Археологи нашли рядом поселения эпохи неолита (в 1 км к юго-западу и в 2 км к западу),
-            что подтверждает заселение этих мест с глубокой древности.
-          </p>
-        </div>
+     <!-- 1 -->
+<div class="story-item">
+  <div class="story-text">
+    <strong>Следы древности</strong>
+    <p>
+      Оревичи — деревня в полесских лесах, и её история начинается задолго до письменных времён.
+      Археологи нашли рядом поселения эпохи неолита (в 1 км к юго-западу и в 2 км к западу),
+      что подтверждает заселение этих мест с глубокой древности.
+    </p>
+  </div>
 
-        <div class="story-photo cell">
-          <img src="assets/orevichi/o1.webp"
-               alt="Здание в Оревичах" loading="lazy" decoding="async"
-               data-caption="Здание в Оревичах">
-          <!--<div class="photo-caption">общий вид</div>-->
-        </div>
-      </div>
+  <div class="story-photo cell">
+    <img src="assets/thumb/orevichi/o1.webp"
+         data-full="assets/orevichi/o1.webp"
+         alt="Здание в Оревичах" loading="lazy" decoding="async"
+         data-caption="Здание в Оревичах">
+    <div class="photo-caption"></div>
+  </div>
+</div>
 
-      <!-- 2 -->
-      <div class="story-item reverse">
-        <div class="story-photo cell">
-          <img src="assets/orevichi/o5.webp"
-               alt="Надпись в Оревичах" loading="lazy" decoding="async"
-               data-caption="Надпись в Оревичах">
-          <!--<div class="photo-caption">история</div>-->
-        </div>
+<!-- 2 -->
+<div class="story-item reverse">
+  <div class="story-photo cell">
+    <img src="assets/thumb/orevichi/o5.webp"
+         data-full="assets/orevichi/o5.webp"
+         alt="Надпись в Оревичах" loading="lazy" decoding="async"
+         data-caption="Надпись в Оревичах">
+    <div class="photo-caption"></div>
+  </div>
 
-        <div class="story-text">
-          <strong>Первые упоминания</strong>
-          <p>
-            В письменных источниках деревня известна с начала XVI века как селение Аревичи
-            в Киевском воеводстве Великого княжества Литовского. В 1570–1580-х Оревичи принадлежали
-            Златоверхому Михайловскому монастырю в Киеве. В 1777 году здесь построили деревянную
-            Рождества-Богородицкую церковь. После раздела Речи Посполитой в 1793 году деревня вошла
-            в состав Российской империи.
-          </p>
-        </div>
-      </div>
+  <div class="story-text">
+    <strong>Первые упоминания</strong>
+    <p>
+      В письменных источниках деревня известна с начала XVI века как селение Аревичи
+      в Киевском воеводстве Великого княжества Литовского. В 1570–1580-х Оревичи принадлежали
+      Златоверхому Михайловскому монастырю в Киеве. В 1777 году здесь построили деревянную
+      Рождества-Богородицкую церковь. После раздела Речи Посполитой в 1793 году деревня вошла
+      в состав Российской империи.
+    </p>
+  </div>
+</div>
 
-      <!-- 3 -->
-      <div class="story-item">
-        <div class="story-text">
-          <strong>Деревня в ХХ веке</strong>
-          <p>
-            С 8 декабря 1926 года Оревичи стали центром сельсовета Хойникского района.
-            В 1931 году в деревне работали начальная школа, отделение кооперации,
-            ветряная мельница, кузница, шерстечесалка и изба-читальня.
-            Тогда же появились колхозы «Коммунар» и «Победа социализма».
-          </p>
-        </div>
 
-        <div class="story-photo cell">
-          <img src="assets/orevichi/o6.webp"
-               alt="Надпись в Оревичах" loading="lazy" decoding="async"
-               data-caption="Надпись в Оревичах">
-          <!-- <div class="photo-caption">ХХ век</div> -->
-        </div>
-      </div>
+<!-- 3 -->
+<div class="story-item">
+  <div class="story-text">
+    <strong>Деревня в ХХ веке</strong>
+    <p>
+      С 8 декабря 1926 года Оревичи стали центром сельсовета Хойникского района.
+      В 1931 году в деревне работали начальная школа, отделение кооперации,
+      ветряная мельница, кузница, шерстечесалка и изба-читальня.
+      Тогда же появились колхозы «Коммунар» и «Победа социализма».
+    </p>
+  </div>
 
-      <!-- 4 -->
-      <div class="story-item reverse">
-        <div class="story-photo cell">
-          <img src="assets/orevichi/o2.webp"
-               alt="Здание в Оревичах"loading="lazy" decoding="async"
-               data-caption="Здание в Оревичах">
-          <!-- <div class="photo-caption">партизаны</div> -->
-        </div>
+  <div class="story-photo cell">
+    <img src="assets/thumb/orevichi/o6.webp"
+         data-full="assets/orevichi/o6.webp"
+         alt="Надпись в Оревичах" loading="lazy" decoding="async"
+         data-caption="Надпись в Оревичах">
+    <div class="photo-caption"></div>
+  </div>
+</div>
 
-        <div class="story-text">
-          <strong>Великая Отечественная война</strong>
-          <p>
-            В апреле–мае 1943 года в деревне и окрестных лесах базировался отдельный
-            Путиловский партизанский отряд и штаб соединения С. А. Ковпака.
-            На реке Припять партизаны разгромили немецкую флотилию —
-            на месте событий позже появился памятный знак.
-          </p>
-        </div>
-      </div>
+<!-- 4 -->
+<div class="story-item reverse">
+  <div class="story-photo cell">
+    <img src="assets/thumb/orevichi/o2.webp"
+         data-full="assets/orevichi/o2.webp"
+         alt="Здание в Оревичах" loading="lazy" decoding="async"
+         data-caption="Здание в Оревичах">
+    <div class="photo-caption"></div>
+  </div>
 
-      <!-- 5 -->
-      <div class="story-item">
-        <div class="story-text">
-          <strong>Память о героях</strong>
-          <p>
-            На фронтах и в партизанской борьбе погибли 81 житель Оревичей.
-            В 1970 году возле конторы совхоза установили памятник —
-            скульптуру воина и партизанки.
-            Неподалёку расположена могила врача-связной Веры Михайловны Скирмант
-            и её двух сыновей, расстрелянных в сентябре 1942 года; над могилой стоит обелиск.
-          </p>
-        </div>
+  <div class="story-text">
+    <strong>Великая Отечественная война</strong>
+    <p>
+      В апреле–мае 1943 года в деревне и окрестных лесах базировался отдельный
+      Путиловский партизанский отряд и штаб соединения С. А. Ковпака.
+      На реке Припять партизаны разгромили немецкую флотилию —
+      на месте событий позже появился памятный знак.
+    </p>
+  </div>
+</div>
 
-        <div class="story-photo cell">
-          <img src="assets/orevichi/o3.webp"
-               alt="Здание в Оревичах" loading="lazy" decoding="async"
-               data-caption="Здание в Оревичах">
-          <!-- <div class="photo-caption">память</div> -->
-        </div>
-      </div>
+<!-- 5 -->
+<div class="story-item">
+  <div class="story-text">
+    <strong>Память о героях</strong>
+    <p>
+      На фронтах и в партизанской борьбе погибли 81 житель Оревичей.
+      В 1970 году возле конторы совхоза установили памятник —
+      скульптуру воина и партизанки.
+      Неподалёку расположена могила врача-связной Веры Михайловны Скирмант
+      и её двух сыновей, расстрелянных в сентябре 1942 года; над могилой стоит обелиск.
+    </p>
+  </div>
 
-      <!-- 6 -->
-      <div class="story-item reverse">
-        <div class="story-photo cell">
-          <img src="assets/orevichi/o4.webp"
-               alt="Здание в Оревичах" loading="lazy" decoding="async"
-               data-caption="Здание в Оревичах">
-          <!-- <div class="photo-caption">сегодня</div> -->
-        </div>
+  <div class="story-photo cell">
+    <img src="assets/thumb/orevichi/o3.webp"
+         data-full="assets/orevichi/o3.webp"
+         alt="Здание в Оревичах" loading="lazy" decoding="async"
+         data-caption="Здание в Оревичах">
+    <div class="photo-caption"></div>
+  </div>
+</div>
 
-        <div class="story-text">
-          <strong>После войны и эвакуация</strong>
-          <p>
-            После войны деревня стала центром совхоза «Оревичи»:
-            работали средняя школа, клуб, библиотека, детский сад, больница, аптека,
-            отделение связи и магазины.
-            Но 4 мая 1986 года из-за аварии на Чернобыльской АЭС всех жителей эвакуировали —
-            557 человек (222 семьи) покинули деревню.
-          </p>
-        </div>
-      </div>
+<!-- 6 -->
+<div class="story-item reverse">
+  <div class="story-photo cell">
+    <img src="assets/thumb/orevichi/o4.webp"
+         data-full="assets/orevichi/o4.webp"
+         alt="Здание в Оревичах" loading="lazy" decoding="async"
+         data-caption="Здание в Оревичах">
+    <div class="photo-caption"></div>
+  </div>
 
-    </div>
+  <div class="story-text">
+    <strong>После войны и эвакуация</strong>
+    <p>
+      После войны деревня стала центром совхоза «Оревичи»:
+      работали средняя школа, клуб, библиотека, детский сад, больница, аптека,
+      отделение связи и магазины.
+      Но 4 мая 1986 года из-за аварии на Чернобыльской АЭС всех жителей эвакуировали —
+      557 человек (222 семьи) покинули деревню.
+    </p>
+  </div>
+</div>
+
   </section>
 
 </main>
@@ -1929,6 +2258,9 @@ nav button{
     <button class="close-x" id="modal-close" aria-label="Закрыть" style="position:absolute;right:8px;top:8px;background:rgba(255,255,255,0.06);border-radius:8px;padding:8px 10px;border:0;color:#fff;cursor:pointer">✕</button>
   </div>
 </div>
+
+
+
 
 <script>
 
@@ -2303,29 +2635,84 @@ const modalClose = document.getElementById("modal-close");
 
 let gallery = [];
 let currentIndex = 0;
+let pendingIndex = null; // какой кадр сейчас должен быть показан
 
-function openModal(index){
+// Открытие модалки — максимально простой и надёжный вариант
+// Открытие модалки — с предварительной загрузкой, но без багов на телефонах
+async function openModal(index){
+  const item = gallery[index];
+  if (!item) return;
+
   currentIndex = index;
-  modalImg.src = gallery[index].src;
-  modalCaption.textContent = gallery[index].caption;
+  pendingIndex = index;
 
+  const src = item.src;
+  const caption = item.caption || "";
+
+  // прячем модалку, пока готовим кадр
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("modal-open");
+
+  // убираем старый кадр
+  modalImg.style.opacity = "0";
+  modalCaption.textContent = "";
+
+  // создаём "черновой" объект Image для фоновой загрузки
+  const pre = new Image();
+
+  // промис, который точно отработает и при onload, и при onerror
+  const waitLoad = new Promise(resolve => {
+    pre.onload  = () => resolve();
+    pre.onerror = () => resolve();
+  });
+
+  // СНАЧАЛА навешиваем обработчики, ПОТОМ задаём src
+  pre.src = src;
+
+  // если decode есть — пробуем его, если он глючит/падает — ждём обычный onload
+  if ('decode' in pre) {
+    try {
+      await pre.decode();
+    } catch (e) {
+      await waitLoad;
+    }
+  } else {
+    await waitLoad;
+  }
+
+  // если за это время пользователь уже открыл другое фото / закрыл модалку
+  if (pendingIndex !== index) return;
+
+  // теперь подменяем реальный <img> в модалке
+  modalImg.src = src;
+  modalCaption.textContent = caption;
+
+  // делаем картинку видимой ДО показа модалки
+  modalImg.style.opacity = "1";
+
+  // и только теперь показываем модалку — кадр и рамка появляются вместе
   modal.classList.add("show");
   modal.setAttribute("aria-hidden", "false");
   document.body.classList.add("modal-open");
 }
 
-function closeModal(){
+
+function closeModal() {
+  pendingIndex = null;
   modal.classList.remove("show");
   modal.setAttribute("aria-hidden", "true");
   document.body.classList.remove("modal-open");
 }
 
-function showNext(){
+function showNext() {
+  if (!gallery.length) return;
   currentIndex = (currentIndex + 1) % gallery.length;
   openModal(currentIndex);
 }
 
-function showPrev(){
+function showPrev() {
+  if (!gallery.length) return;
   currentIndex = (currentIndex - 1 + gallery.length) % gallery.length;
   openModal(currentIndex);
 }
@@ -2335,29 +2722,43 @@ modalNext.onclick = showNext;
 modalClose.onclick = closeModal;
 modal.onclick = closeModal;
 
-window.addEventListener("keydown", e=>{
-  if(!modal.classList.contains("show")) return;
-  if(e.key === "ArrowRight") showNext();
-  if(e.key === "ArrowLeft") showPrev();
-  if(e.key === "Escape") closeModal();
+window.addEventListener("keydown", (e) => {
+  if (!modal.classList.contains("show")) return;
+  if (e.key === "ArrowRight") showNext();
+  if (e.key === "ArrowLeft") showPrev();
+  if (e.key === "Escape") closeModal();
 });
 
-// Сбор всех фото:
-function initGallery(){
+// Сбор всех фото (миниатюры + data-full)
+let preloadImages = [];
+
+function initGallery() {
   const cells = document.querySelectorAll(".cell img");
   gallery = [];
-  cells.forEach((img, i)=>{
+  preloadImages = [];
+
+  cells.forEach((img, i) => {
+    const src = img.getAttribute("data-full") || img.src;
+
     gallery.push({
-      src: img.src,
+      src,
       caption: img.dataset.caption || ""
     });
+
+    // фоновый прелоад (не обязателен, но пусть будет)
+    const pre = new Image();
+    pre.src = src;
+    preloadImages.push(pre);
+
     img.dataset.index = i;
-    img.addEventListener("click",()=>{
-      openModal(parseInt(img.dataset.index));
+    img.addEventListener("click", () => {
+      openModal(i);
     });
   });
 }
+
 initGallery();
+
 
 
 
@@ -2385,23 +2786,35 @@ toTop?.addEventListener("click", ()=> {
 
 
 // ======================
-// REVEAL ANIMATION (sections only)
+// REVEAL ANIMATION (плавное появление при скролле)
 // ======================
 const revealTargets = document.querySelectorAll(
-  "main section, .story-item, .pano-wrap, .facts .fact, .quote-wrap"
+  ".story-item, .pano-wrap, .facts .fact, .quote-wrap"
 );
+
+// добавляем базовый класс
 revealTargets.forEach(el => el.classList.add("reveal"));
 
-const io = new IntersectionObserver((entries)=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add("show");
-      io.unobserve(e.target);
-    }
-  });
-},{ threshold:0.12, rootMargin:"0px 0px -5% 0px" });
+// если браузер НЕ умеет IntersectionObserver — просто показываем всё без анимации
+if (!('IntersectionObserver' in window)) {
+  revealTargets.forEach(el => el.classList.add("show"));
+} else {
+  const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
 
-revealTargets.forEach(el=>io.observe(el));
+      entry.target.classList.add("show");
+      // один раз анимировался — дальше не наблюдаем
+      revealObserver.unobserve(entry.target);
+    });
+  }, {
+    threshold: 0.12,
+    rootMargin: "0px 0px -10% 0px"
+  });
+
+  revealTargets.forEach(el => revealObserver.observe(el));
+}
+
 
 
 // ==========================
