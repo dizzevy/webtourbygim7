@@ -272,12 +272,12 @@
   }
 
   .pano{
-    height:100%;
-    background-repeat:no-repeat;
-    background-size:cover;
-    background-position:center center;
-    transition: none; /* чтобы не было рывков */
-  }
+  height:100%;
+  background-repeat:no-repeat;
+  background-size:cover;
+  background-position:center center;
+  transition:none;
+}
 
   .pano-caption{
     position:absolute;
@@ -1439,8 +1439,8 @@ nav button{
       <div class="pano-caption">кабинет</div>
       <div class="pano" id="dronki2-pano" style="background-image:url('assets/dronki/pano2.webp');"></div>
       <div class="pano-controls">
-        <button id="dronki2-left" aria-label="Влево">&larr;</button>
-        <button id="dronki2-right" aria-label="Вправо">&rarr;</button>
+          <button id="dronki2-left" aria-label="Влево">&larr;</button>
+          <button id="dronki2-right" aria-label="Вправо">&rarr;</button>
       </div>
     </div>
 
@@ -1636,7 +1636,9 @@ nav button{
   <!-- Панорама (id НЕ трогаем, JS будет работать) -->
   <div class="pano-wrap" id="pogonnoe-pano-wrap" style="margin-top:18px; margin-bottom:18px">
     <div class="pano-caption">клуб</div>
-    <div class="pano" id="pogonnoe-pano" style="background-image:url('assets/pogonnoe/pano1.webp');"loading="lazy" decoding="async"></div>
+    <div class="pano" id="pogonnoe-pano"
+     style="background-image:url('assets/pogonnoe/pano1.webp');"></div>
+
     <div class="pano-controls">
       <button id="pogonnoe-left" aria-label="Влево">&larr;</button>
       <button id="pogonnoe-right" aria-label="Вправо">&rarr;</button>
@@ -1929,6 +1931,11 @@ nav button{
 </div>
 
 <script>
+
+
+
+
+
 // ======================
 // НАВИГАЦИЯ ПО СЕКЦИЯМ 
 // ======================
