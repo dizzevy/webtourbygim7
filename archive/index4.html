@@ -1470,24 +1470,6 @@ nav button{
 
 
 
-
-  /* Специальный вид иконки зубра на карте */
-  .hotspot.zubr-icon{
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    width: 54px;
-    height: 54px;
-    padding: 0;
-  }
-  .hotspot.zubr-icon img{
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-  }
-
-
 </style>
 
 </head>
@@ -1538,9 +1520,7 @@ nav button{
       <button data-target="school">б.н.п. Бабчин</button>
       <button data-target="dronki">Дроньки</button>
 
-
       <button data-target="pogonnoe">Погонное</button>
-
       <button data-target="orevichi">Оревичи</button>
       <button data-target="privat">Припять</button>
     </nav>
@@ -1591,32 +1571,18 @@ nav button{
         M
         <span class="dot-label">Музей в б.н.п. Бабчин</span>
       </button>
-
-      <!-- Новый маркер: дорожный знак (znakp) между музеем и Дроньками -->
-      <button class="hotspot zubr-icon" data-target="znakp" style="left:47%;top:28%;" title="Дорожный знак">
-        <img src="assets/bird.png" alt="Дорожный знак" loading="lazy" decoding="async">
-        <!-- <span class="dot-label">Дорожный знак</span> 0101 -->
-      </button>
-
       <button class="hotspot" data-target="dronki" style="left:43.3%;top:41.2%;" title="Дроньки">
         Д
         <span class="dot-label">Дроньки</span>
       </button>
-      <button class="hotspot zubr-icon" data-target="zubr" style="left:47%;top:43.5%;" title="Зубр">
-        <img src="assets/zubr01.png" alt="Зубр" loading="lazy" decoding="async">
+      <button class="hotspot" data-target="zubr" style="left:47%;top:43.5%;" title="Зубр">
+        З
         <span class="dot-label">Зубр</span>
       </button>
       <button class="hotspot" data-target="pogonnoe" style="left:50.5%;top:46.4%;" title="Погонное">
         П
         <span class="dot-label">Погонное</span>
       </button>
-
-      <!-- Новый маркер: Костенец (kostenec) между Погонным и Оревичами -->
-      <button class="hotspot zubr-icon" data-target="kostenec" style="left:45.5%;top:48.3%;" title="Костенец">
-        <img src="assets/table.png" alt="Костенец" loading="lazy" decoding="async">
-        <span class="dot-label">Костенец</span>
-      </button>
-
       <button class="hotspot" data-target="school" style="left:55.8%;top:15.5%;" title="б.н.п. Бабчин">
         Б
         <span class="dot-label">б.н.п. Бабчин</span>
@@ -1929,25 +1895,6 @@ nav button{
                data-caption="Зубр — фото 6">
           <div class="photo-caption"></div>
         </div>
-      </div>
-    </div>
-  </section>
-
-
-  <!-- ====== ZNAKP (дорожный знак) ====== -->
-  <section id="znakp" class="place-section" aria-labelledby="znakp-title">
-    <!-- <h2 id="znakp-title">Дорожный знак</h2>
-    <p class="lead muted" style="margin:6px 0 12px 0">
-      Памятный дорожный знак на маршруте между музеем и Дроньками.
-    </p> -->
-    <div class="grid" aria-label="Фотография дорожного знака">
-      <div class="cell">
-        <img src="assets/znakp.png"
-             data-full="assets/znakp.png"
-             alt="Дорожный знак"
-             loading="lazy"
-             decoding="async">
-        <div class="photo-caption"></div>
       </div>
     </div>
   </section>
@@ -2370,25 +2317,6 @@ nav button{
 
   <!-- ====== OREVICHI ====== -->
     <!-- ====== OREVICHI ====== -->
-
-  <!-- ====== KOSTENEC ====== -->
-  <section id="kostenec" class="place-section" aria-labelledby="kostenec-title">
-    <!-- <h2 id="kostenec-title">Костенец</h2> -->
-    <!-- <p class="lead muted" style="margin:6px 0 12px 0">
-      Локация на маршруте между Погонным и Оревичами.
-    </p> -->
-    <div class="grid" aria-label="Фотография места Костенец">
-      <div class="cell">
-        <img src="assets/kostenec.png"
-             data-full="assets/kostenec.png"
-             alt="Костенец"
-             loading="lazy"
-             decoding="async">
-        <div class="photo-caption"></div>
-      </div>
-    </div>
-  </section>
-
   <section id="orevichi" class="place-section orevichi-section" aria-labelledby="orevichi-title">
     <h2 id="orevichi-title">Оревичи</h2>
 
